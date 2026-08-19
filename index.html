@@ -1,0 +1,3118 @@
+আপনার **Rafin ERP**-এর সম্পূর্ণ সিঙ্গেল-ফাইল কোড নিচে দেওয়া হলো (এটি ইতিমধ্যে আপনার প্রজেক্টের [index.html](file:///c:/Users/PC/Downloads/123452/index.html) ফাইলে সেভ করা রয়েছে):
+
+```html
+<!DOCTYPE html>
+<html lang="bn" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rafin ERP - E-Commerce Order Management & Automation Suite</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Hind Siliguri"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Hind Siliguri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Chart.js & SweetAlert2 & JsBarcode -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Active Sidebar Item */
+    .sidebar-link.active {
+      background: #ede9fe !important;
+      color: #4f46e5 !important;
+      font-weight: 600;
+    }
+    .dark .sidebar-link.active {
+      background: rgba(99, 102, 241, 0.2) !important;
+      color: #a5b4fc !important;
+    }
+
+    /* Glowing Search Input */
+    .search-glow:focus-within {
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+      border-color: #6366f1;
+    }
+
+    /* Print Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-modal, #print-modal * {
+        visibility: visible;
+      }
+      #print-modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex antialiased">
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col flex-shrink-0 z-30 transition-all duration-200 ease-in-out h-screen sticky top-0">
+    <!-- Brand Header -->
+    <div class="h-16 flex items-center px-5 border-b border-slate-200 dark:border-slate-700 justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('dashboard')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-indigo-500/20">
+          R
+        </div>
+        <div>
+          <h1 class="text-base font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5">
+            Rafin ERP
+          </h1>
+          <p class="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Online Store
+          </p>
+        </div>
+      </div>
+      <button onclick="toggleSidebarCollapse()" class="lg:hidden text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Menu Items -->
+    <div class="flex-1 overflow-y-auto px-3 py-4 space-y-1 select-none">
+      
+      <!-- Dashboard -->
+      <a href="#dashboard" onclick="navigateTo('dashboard')" id="nav-dashboard" class="sidebar-link active flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+        <span class="w-6 flex items-center justify-center text-base mr-3 text-indigo-500 group-hover:scale-110 transition-transform">
+          📊
+        </span>
+        <span class="flex-1">Dashboard</span>
+      </a>
+
+      <!-- Search -->
+      <a href="#search" onclick="navigateTo('search')" id="nav-search" class="sidebar-link flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+        <span class="w-6 flex items-center justify-center text-base mr-3 text-cyan-500 group-hover:scale-110 transition-transform">
+          🔍
+        </span>
+        <span class="flex-1">Search</span>
+      </a>
+
+      <!-- New Order -->
+      <a href="#orders-new" onclick="navigateTo('orders-new')" id="nav-orders-new" class="sidebar-link flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+        <span class="w-6 flex items-center justify-center text-base mr-3 text-violet-500 group-hover:scale-110 transition-transform">
+          ➕
+        </span>
+        <span class="flex-1">New Order</span>
+        <span class="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 text-[10px] font-bold px-1.5 py-0.5 rounded-full">New</span>
+      </a>
+
+      <!-- Order List -->
+      <a href="#orders" onclick="navigateTo('orders')" id="nav-orders" class="sidebar-link flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+        <span class="w-6 flex items-center justify-center text-base mr-3 text-amber-500 group-hover:scale-110 transition-transform">
+          📦
+        </span>
+        <span class="flex-1">Order List</span>
+        <span id="sidebar-order-count" class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
+      </a>
+
+      <!-- Web Orders (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-web-orders')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-blue-500 group-hover:scale-110 transition-transform">
+            🌐
+          </span>
+          <span class="flex-1 text-left">Web Orders</span>
+          <i id="icon-web-orders" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-web-orders" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#web-orders" onclick="navigateTo('web-orders')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Web Order List</a>
+          <a href="#web-orders" onclick="navigateTo('web-orders')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Web Analysis</a>
+          <a href="#web-orders" onclick="navigateTo('web-orders')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Product Sync</a>
+          <a href="#web-orders" onclick="navigateTo('web-orders')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Web Setup</a>
+        </div>
+      </div>
+
+      <!-- Landing Page (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-landing')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-pink-500 group-hover:scale-110 transition-transform">
+            🚀
+          </span>
+          <span class="flex-1 text-left">Landing Page</span>
+          <i id="icon-landing" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-landing" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#landing-pages" onclick="showToast('info', 'Landing Pages List')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">All Pages</a>
+          <a href="#page-builder" onclick="showToast('info', 'Visual Builder Ready')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Page Builder</a>
+        </div>
+      </div>
+
+      <!-- Products -->
+      <a href="#products" onclick="navigateTo('products')" id="nav-products" class="sidebar-link flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+        <span class="w-6 flex items-center justify-center text-base mr-3 text-blue-500 group-hover:scale-110 transition-transform">
+          🛍️
+        </span>
+        <span class="flex-1">Products</span>
+        <span id="sidebar-product-count" class="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 text-xs font-semibold px-2 py-0.5 rounded-full">4</span>
+      </a>
+
+      <!-- Packaging -->
+      <a href="#packaging" onclick="navigateTo('packaging')" id="nav-packaging" class="sidebar-link flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+        <span class="w-6 flex items-center justify-center text-base mr-3 text-amber-600 group-hover:scale-110 transition-transform">
+          📦
+        </span>
+        <span class="flex-1">Packaging</span>
+      </a>
+
+      <!-- Accounting (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-accounting')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-emerald-500 group-hover:scale-110 transition-transform">
+            💰
+          </span>
+          <span class="flex-1 text-left">Accounting</span>
+          <i id="icon-accounting" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-accounting" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#accounting" onclick="navigateTo('accounting')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Overview & Expenses</a>
+          <a href="#accounting" onclick="navigateTo('accounting')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Courier Payments</a>
+        </div>
+      </div>
+
+      <!-- Automation (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-automation')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-purple-500 group-hover:scale-110 transition-transform">
+            🤖
+          </span>
+          <span class="flex-1 text-left">Automation</span>
+          <i id="icon-automation" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-automation" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#automation" onclick="showToast('info', 'Auto Courier Rules Active')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Auto Courier Assign</a>
+          <a href="#automation" onclick="showToast('info', 'Status Triggers Active')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Status Automation</a>
+        </div>
+      </div>
+
+      <!-- SMS (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-sms')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-blue-400 group-hover:scale-110 transition-transform">
+            📲
+          </span>
+          <span class="flex-1 text-left">SMS</span>
+          <i id="icon-sms" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-sms" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#sms" onclick="navigateTo('sms')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">SMS Gateway & Send</a>
+          <a href="#sms" onclick="navigateTo('sms')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Templates</a>
+        </div>
+      </div>
+
+      <!-- AI Call (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-aicall')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-rose-500 group-hover:scale-110 transition-transform">
+            📞
+          </span>
+          <span class="flex-1 text-left">AI Call</span>
+          <i id="icon-aicall" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-aicall" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#ai-call" onclick="navigateTo('ai-call')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Call Logs & Voice Bot</a>
+        </div>
+      </div>
+
+      <!-- Reports (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-reports')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-cyan-600 group-hover:scale-110 transition-transform">
+            📈
+          </span>
+          <span class="flex-1 text-left">Reports</span>
+          <i id="icon-reports" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-reports" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#reports" onclick="navigateTo('reports')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Sales & Returns</a>
+        </div>
+      </div>
+
+      <!-- Backup (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-backup')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-purple-600 group-hover:scale-110 transition-transform">
+            💾
+          </span>
+          <span class="flex-1 text-left">Backup</span>
+          <i id="icon-backup" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-backup" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#backup" onclick="exportDataToJSON()" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Export JSON/CSV</a>
+          <a href="#backup" onclick="document.getElementById('import-file-input').click()" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Import Backup</a>
+        </div>
+      </div>
+
+      <!-- My Limits -->
+      <a href="#limits" onclick="navigateTo('limits')" id="nav-limits" class="sidebar-link flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+        <span class="w-6 flex items-center justify-center text-base mr-3 text-teal-500 group-hover:scale-110 transition-transform">
+          📊
+        </span>
+        <span class="flex-1">My Limits</span>
+      </a>
+
+      <!-- Users -->
+      <a href="#users" onclick="navigateTo('users')" id="nav-users" class="sidebar-link flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+        <span class="w-6 flex items-center justify-center text-base mr-3 text-indigo-400 group-hover:scale-110 transition-transform">
+          👤
+        </span>
+        <span class="flex-1">Users</span>
+      </a>
+
+      <!-- Customers (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-customers')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-violet-600 group-hover:scale-110 transition-transform">
+            👥
+          </span>
+          <span class="flex-1 text-left">Customers</span>
+          <i id="icon-customers" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-customers" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#customers" onclick="navigateTo('customers')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Customer List & Fraud Check</a>
+        </div>
+      </div>
+
+      <!-- Settings (Dropdown) -->
+      <div class="space-y-0.5">
+        <button onclick="toggleSubmenu('submenu-settings')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 text-sm font-medium transition-all group">
+          <span class="w-6 flex items-center justify-center text-base mr-3 text-slate-500 group-hover:scale-110 transition-transform">
+            ⚙️
+          </span>
+          <span class="flex-1 text-left">Settings</span>
+          <i id="icon-settings" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+        </button>
+        <div id="submenu-settings" class="hidden pl-9 pr-2 py-1 space-y-1 text-xs">
+          <a href="#settings" onclick="navigateTo('settings')" class="block py-1.5 px-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700/50">Courier APIs & General</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Quick Info -->
+    <div class="p-3 border-t border-slate-200 dark:border-slate-700 text-[11px] text-slate-400 text-center">
+      Rafin ERP v2.4 • Active
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    
+    <!-- Top Navigation Bar -->
+    <header class="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 md:px-6 flex items-center justify-between sticky top-0 z-20">
+      
+      <!-- Left Action Buttons -->
+      <div class="flex items-center space-x-2 md:space-x-3">
+        <button onclick="toggleSidebarCollapse()" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-100 transition-colors">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+
+        <button onclick="navigateTo('orders-new')" class="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+          New Order
+        </button>
+
+        <button onclick="navigateTo('orders')" class="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+          Order List
+        </button>
+
+        <!-- Fast Search Pill Button -->
+        <button onclick="openFastSearchModal()" class="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-full text-xs md:text-sm font-medium shadow-sm shadow-indigo-500/25 transition-all">
+          <i class="fa-solid fa-magnifying-glass text-xs"></i>
+          <span>Search orders...</span>
+        </button>
+
+        <!-- Scan Button -->
+        <button onclick="openScannerModal()" class="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-colors">
+          <i class="fa-solid fa-camera text-slate-500 dark:text-slate-400"></i>
+          <span>Scan</span>
+        </button>
+      </div>
+
+      <!-- Right Actions: Theme Toggle & User Profile -->
+      <div class="flex items-center space-x-3">
+        
+        <!-- Dark Mode Toggle Button -->
+        <button onclick="toggleDarkMode()" id="theme-toggle-btn" class="w-9 h-9 rounded-full flex items-center justify-center text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-base" title="Toggle Light/Dark Theme">
+          <i class="fa-regular fa-moon" id="theme-icon"></i>
+        </button>
+
+        <!-- User Profile Dropdown -->
+        <div class="relative">
+          <button onclick="toggleUserDropdown()" class="flex items-center space-x-2 p-1 pl-1.5 pr-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+            <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+              R
+            </div>
+            <span class="text-sm font-semibold text-slate-800 dark:text-slate-200 hidden md:inline">Rafin ERP</span>
+            <i class="fa-solid fa-chevron-down text-slate-400 text-xs"></i>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 text-sm">
+            <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
+              <p class="font-semibold text-slate-900 dark:text-white">Rafin ERP</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">admin@rafinerp.com</p>
+            </div>
+            <a href="#settings" onclick="navigateTo('settings'); closeUserDropdown()" class="flex items-center px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50">
+              <i class="fa-solid fa-gear w-5 text-slate-400"></i> Settings
+            </a>
+            <a href="#backup" onclick="exportDataToJSON(); closeUserDropdown()" class="flex items-center px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50">
+              <i class="fa-solid fa-download w-5 text-slate-400"></i> Backup Data
+            </a>
+            <div class="border-t border-slate-100 dark:border-slate-700 mt-1"></div>
+            <button onclick="showToast('success', 'Logged out successfully'); closeUserDropdown()" class="w-full text-left flex items-center px-4 py-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20">
+              <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main View Containers -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 bg-slate-50 dark:bg-slate-900/50">
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN 1: DASHBOARD VIEW                                                 -->
+      <!-- ========================================================================= -->
+      <section id="view-dashboard" class="space-y-6 max-w-7xl mx-auto">
+        <!-- Top Title & Filter Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Dashboard</h2>
+            <p id="dashboard-date-range-text" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Financial summary: 2026-07-21 → 2026-08-19</p>
+          </div>
+
+          <!-- Date Filters -->
+          <div class="flex items-center bg-white dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm text-xs font-semibold overflow-x-auto">
+            <button onclick="setDashboardRange('today')" id="dash-btn-today" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition-all">Today</button>
+            <button onclick="setDashboardRange('7days')" id="dash-btn-7days" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition-all">7 Days</button>
+            <button onclick="setDashboardRange('30days')" id="dash-btn-30days" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition-all">30 Days</button>
+            <button onclick="setDashboardRange('custom')" id="dash-btn-custom" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition-all">Custom</button>
+            <button onclick="setDashboardRange('all')" id="dash-btn-all" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition-all">All Time</button>
+          </div>
+        </div>
+
+        <!-- 4 Big Financial KPI Metric Cards (Green, Blue, Orange, Red) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- Green Card: মোট বিক্রয় -->
+          <div class="bg-emerald-600 rounded-2xl p-5 text-white shadow-lg shadow-emerald-600/15 relative overflow-hidden flex flex-col justify-between h-32">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold opacity-90">মোট বিক্রয়</span>
+              <span class="text-xl">💰</span>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <span id="dash-stat-total-sales" class="text-3xl font-extrabold tracking-tight">৳0</span>
+              <span class="text-xs bg-emerald-700/60 px-2 py-0.5 rounded-full font-medium">→ 0%</span>
+            </div>
+          </div>
+
+          <!-- Blue Card: আজকের বিক্রয় -->
+          <div class="bg-blue-600 rounded-2xl p-5 text-white shadow-lg shadow-blue-600/15 relative overflow-hidden flex flex-col justify-between h-32">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold opacity-90">আজকের বিক্রয়</span>
+              <span class="text-xl">📅</span>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <span id="dash-stat-today-sales" class="text-3xl font-extrabold tracking-tight">৳0</span>
+              <span class="text-xs bg-blue-700/60 px-2 py-0.5 rounded-full font-medium">→ 0%</span>
+            </div>
+          </div>
+
+          <!-- Orange Card: মোট খরচ -->
+          <div class="bg-amber-600 rounded-2xl p-5 text-white shadow-lg shadow-amber-600/15 relative overflow-hidden flex flex-col justify-between h-32">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold opacity-90">মোট খরচ</span>
+              <span class="text-xl">💸</span>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <span id="dash-stat-total-expense" class="text-3xl font-extrabold tracking-tight">৳5,000</span>
+              <span class="text-xs bg-amber-700/60 px-2 py-0.5 rounded-full font-medium">↗ 100%</span>
+            </div>
+          </div>
+
+          <!-- Red Card: নিট মুনাফা -->
+          <div class="bg-rose-600 rounded-2xl p-5 text-white shadow-lg shadow-rose-600/15 relative overflow-hidden flex flex-col justify-between h-32">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold opacity-90">নিট মুনাফা</span>
+              <span class="text-xl">📈</span>
+            </div>
+            <div class="flex items-baseline justify-between mt-2">
+              <span id="dash-stat-net-profit" class="text-3xl font-extrabold tracking-tight">৳-5,000</span>
+              <span class="text-xs bg-rose-700/60 px-2 py-0.5 rounded-full font-medium">↘ 100%</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ORDER STATUS Section (Last 30 Days) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Order Status</h3>
+            <span class="text-xs font-semibold text-slate-400">Last 30 Days</span>
+          </div>
+
+          <!-- 7 Status Pill Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+            
+            <div onclick="filterOrdersByStatus('All')" class="cursor-pointer bg-slate-50 dark:bg-slate-700/40 hover:bg-indigo-50/50 dark:hover:bg-slate-700 rounded-xl p-3.5 text-center border border-slate-100 dark:border-slate-700 transition-all">
+              <div id="stat-count-total" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">0</div>
+              <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Total</div>
+            </div>
+
+            <div onclick="filterOrdersByStatus('Pending')" class="cursor-pointer bg-amber-50/50 dark:bg-amber-950/20 hover:bg-amber-100/50 rounded-xl p-3.5 text-center border border-amber-100 dark:border-amber-900/30 transition-all">
+              <div id="stat-count-pending" class="text-2xl font-bold text-amber-600 dark:text-amber-400">0</div>
+              <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Pending</div>
+            </div>
+
+            <div onclick="filterOrdersByStatus('RTS')" class="cursor-pointer bg-orange-50/50 dark:bg-orange-950/20 hover:bg-orange-100/50 rounded-xl p-3.5 text-center border border-orange-100 dark:border-orange-900/30 transition-all">
+              <div id="stat-count-rts" class="text-2xl font-bold text-orange-600 dark:text-orange-400">0</div>
+              <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">RTS</div>
+            </div>
+
+            <div onclick="filterOrdersByStatus('Shipping')" class="cursor-pointer bg-sky-50/50 dark:bg-sky-950/20 hover:bg-sky-100/50 rounded-xl p-3.5 text-center border border-sky-100 dark:border-sky-900/30 transition-all">
+              <div id="stat-count-shipping" class="text-2xl font-bold text-sky-600 dark:text-sky-400">0</div>
+              <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Shipped</div>
+            </div>
+
+            <div onclick="filterOrdersByStatus('Delivered')" class="cursor-pointer bg-emerald-50/50 dark:bg-emerald-950/20 hover:bg-emerald-100/50 rounded-xl p-3.5 text-center border border-emerald-100 dark:border-emerald-900/30 transition-all">
+              <div id="stat-count-delivered" class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">0</div>
+              <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Delivered</div>
+            </div>
+
+            <div onclick="filterOrdersByStatus('Returned')" class="cursor-pointer bg-pink-50/50 dark:bg-pink-950/20 hover:bg-pink-100/50 rounded-xl p-3.5 text-center border border-pink-100 dark:border-pink-900/30 transition-all">
+              <div id="stat-count-returned" class="text-2xl font-bold text-pink-600 dark:text-pink-400">0</div>
+              <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Returned</div>
+            </div>
+
+            <div onclick="filterOrdersByStatus('Cancelled')" class="cursor-pointer bg-rose-50/50 dark:bg-rose-950/20 hover:bg-rose-100/50 rounded-xl p-3.5 text-center border border-rose-100 dark:border-rose-900/30 transition-all">
+              <div id="stat-count-cancelled" class="text-2xl font-bold text-rose-600 dark:text-rose-400">0</div>
+              <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Cancelled</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Middle Row: Daily Orders Chart + Summary Side Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Left: Daily Orders Chart (2 Columns) -->
+          <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <span>📊</span> Daily Orders
+                </h3>
+                <p class="text-xs text-slate-400">Last 30 Days</p>
+              </div>
+              <select class="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-xs font-medium rounded-lg px-2.5 py-1 text-slate-700 dark:text-slate-200 outline-none">
+                <option value="30D">30D</option>
+                <option value="7D">7D</option>
+                <option value="90D">90D</option>
+              </select>
+            </div>
+
+            <!-- Canvas Chart Area -->
+            <div class="h-64 relative flex items-center justify-center">
+              <canvas id="dailyOrdersChart" class="w-full h-full"></canvas>
+            </div>
+          </div>
+
+          <!-- Right: Summary Side Boxes -->
+          <div class="space-y-4 flex flex-col justify-between">
+            
+            <!-- Created Orders Card -->
+            <div class="bg-indigo-50/50 dark:bg-indigo-950/20 rounded-2xl p-6 border border-indigo-100 dark:border-indigo-900/30 text-center flex-1 flex flex-col items-center justify-center">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Created Orders</span>
+              <span id="side-stat-created" class="text-4xl font-extrabold text-indigo-700 dark:text-indigo-300 my-2">0</span>
+              <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Total</span>
+            </div>
+
+            <!-- Sent to Courier Card -->
+            <div class="bg-emerald-50/50 dark:bg-emerald-950/20 rounded-2xl p-6 border border-emerald-100 dark:border-emerald-900/30 text-center flex-1 flex flex-col items-center justify-center">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Sent To Courier</span>
+              <span id="side-stat-courier" class="text-4xl font-extrabold text-emerald-700 dark:text-emerald-300 my-2">0</span>
+              <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">RTS + Shipped</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Bottom 4 Analytics Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- Card 1: Web Order Report -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-sm flex flex-col justify-between h-52">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2">
+              <div class="flex items-center space-x-2">
+                <span class="text-blue-500">🌐</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Web Order Report</span>
+              </div>
+              <span class="text-[10px] bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-full text-slate-500">📅 30 Days</span>
+            </div>
+            
+            <div class="flex space-x-2 border-b border-slate-100 dark:border-slate-700 text-xs font-semibold py-1">
+              <button class="text-indigo-600 border-b-2 border-indigo-600 pb-1">Web Orders</button>
+              <button class="text-slate-400 hover:text-slate-600 pb-1">Incomplete Orders</button>
+            </div>
+
+            <div class="flex-1 flex items-center justify-center text-slate-400 text-xs">
+              No data
+            </div>
+          </div>
+
+          <!-- Card 2: Area Heatmap -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-sm flex flex-col justify-between h-52">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2">
+              <div class="flex items-center space-x-2">
+                <span class="text-emerald-500">🗺️</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Area Heatmap</span>
+              </div>
+              <span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">30 Days</span>
+            </div>
+            <div class="flex-1 flex items-center justify-center text-slate-400 text-xs">
+              No data
+            </div>
+          </div>
+
+          <!-- Card 3: Return by District -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-sm flex flex-col justify-between h-52">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2">
+              <div class="flex items-center space-x-2">
+                <span class="text-pink-500">🔁</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Return by District</span>
+              </div>
+              <span class="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full">30 Days</span>
+            </div>
+            <div class="flex-1 flex items-center justify-center text-slate-400 text-xs">
+              No data
+            </div>
+          </div>
+
+          <!-- Card 4: Top Products -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-700 shadow-sm flex flex-col justify-between h-52">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2">
+              <div class="flex items-center space-x-2">
+                <span class="text-amber-500">🏆</span>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Top Products</span>
+              </div>
+              <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full">Today</span>
+            </div>
+            <div class="flex-1 flex items-center justify-center text-slate-400 text-xs">
+              No sales today
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN 2: SEARCH ORDERS VIEW                                             -->
+      <!-- ========================================================================= -->
+      <section id="view-search" class="hidden space-y-6 max-w-5xl mx-auto">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Search Orders</h2>
+        </div>
+
+        <!-- Glowing Search Input Box -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 border-2 border-indigo-500/80 dark:border-indigo-500 shadow-lg shadow-indigo-500/10 flex items-center search-glow transition-all">
+          <i class="fa-solid fa-magnifying-glass text-indigo-500 text-lg ml-2 mr-3"></i>
+          <input 
+            type="text" 
+            id="main-search-input" 
+            placeholder="নাম, ফোন নং বা Invoice দিয়ে খুঁজুন..." 
+            class="w-full bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none text-base font-medium py-1"
+            oninput="handleSearchQuery(this.value)"
+          >
+          <button onclick="clearSearchInput()" class="text-slate-400 hover:text-slate-600 px-2">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Search Category Pills -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="setSearchFilter('all')" id="sfilter-all" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold shadow-sm transition-all">
+            All Fields
+          </button>
+          <button onclick="setSearchFilter('name')" id="sfilter-name" class="px-4 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs font-semibold transition-all">
+            Name
+          </button>
+          <button onclick="setSearchFilter('invoice')" id="sfilter-invoice" class="px-4 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs font-semibold transition-all">
+            Invoice
+          </button>
+          <button onclick="setSearchFilter('mobile')" id="sfilter-mobile" class="px-4 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs font-semibold transition-all">
+            Mobile Number
+          </button>
+        </div>
+
+        <!-- Search Results / Empty State Container -->
+        <div id="search-content-area" class="min-h-[380px] flex flex-col items-center justify-center p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm text-center">
+          <!-- Magnifying Glass Graphic -->
+          <div class="w-20 h-20 rounded-full bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-4xl text-indigo-500 mb-4 shadow-inner">
+            🔍
+          </div>
+          <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Search করুন</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-sm">
+            নাম, ফোন নম্বর বা Invoice দিয়ে order খুঁজুন
+          </p>
+        </div>
+
+        <!-- Search Dynamic Results Table -->
+        <div id="search-results-table-wrapper" class="hidden bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+            <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200" id="search-results-header">Search Results (0)</h4>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
+                <tr>
+                  <th class="p-3.5">Invoice</th>
+                  <th class="p-3.5">Date</th>
+                  <th class="p-3.5">Customer</th>
+                  <th class="p-3.5">Products</th>
+                  <th class="p-3.5">Total</th>
+                  <th class="p-3.5">Courier</th>
+                  <th class="p-3.5">Status</th>
+                  <th class="p-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="search-results-tbody" class="divide-y divide-slate-100 dark:divide-slate-700 text-slate-700 dark:text-slate-300">
+                <!-- Dynamic Results -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN 3: NEW ORDER VIEW                                                 -->
+      <!-- ========================================================================= -->
+      <section id="view-orders-new" class="hidden space-y-6 max-w-6xl mx-auto">
+        
+        <!-- Header & AI Auto-fill Button -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">New Order</h2>
+          </div>
+
+          <!-- AI Auto-fill Box -->
+          <div class="flex flex-col items-end">
+            <span class="text-[10px] font-bold text-purple-600 dark:text-purple-400 mr-2">AI: 1 / 50</span>
+            <button onclick="openAIAutoFillModal()" class="flex items-center space-x-2 border-2 border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-950/20 text-purple-700 dark:text-purple-300 px-4 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
+              <span>🤖</span>
+              <span>AI Auto-fill</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Courier & Risk History Status Cards (6 in a row) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-[10px] font-extrabold uppercase text-indigo-600 dark:text-indigo-400">OUR RECORD</span>
+            <div id="risk-our-record" class="text-base font-bold text-slate-400 my-1">—</div>
+            <span class="text-[10px] text-slate-400">Order History</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-[10px] font-extrabold uppercase text-slate-500 dark:text-slate-400">PATHAO</span>
+            <div id="risk-pathao" class="text-base font-bold text-slate-400 my-1">—</div>
+            <span class="text-[10px] text-slate-400">Success Rate</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-[10px] font-extrabold uppercase text-slate-500 dark:text-slate-400">STEADFAST</span>
+            <div id="risk-steadfast" class="text-base font-bold text-slate-400 my-1">—</div>
+            <span class="text-[10px] text-slate-400">Success Rate</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-[10px] font-extrabold uppercase text-slate-500 dark:text-slate-400">REDX</span>
+            <div id="risk-redx" class="text-base font-bold text-slate-400 my-1">—</div>
+            <span class="text-[10px] text-slate-400">Success Rate</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-[10px] font-extrabold uppercase text-slate-500 dark:text-slate-400">CARRYBEE</span>
+            <div id="risk-carrybee" class="text-base font-bold text-slate-400 my-1">—</div>
+            <span class="text-[10px] text-slate-400">Success Rate</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-[10px] font-extrabold uppercase text-emerald-600 dark:text-emerald-400">OVERALL</span>
+            <div id="risk-overall" class="text-base font-bold text-slate-400 my-1">—</div>
+            <span class="text-[10px] text-slate-400">Trust Score</span>
+          </div>
+
+        </div>
+
+        <!-- Customer & Delivery Form Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 md:p-6 border border-slate-200/80 dark:border-slate-700 shadow-sm space-y-5">
+          
+          <!-- Row 1: Mobile Number, Customer Name, Delivery Method -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Mobile Number <span class="text-rose-500">*</span></label>
+              <input 
+                type="text" 
+                id="order-form-phone" 
+                placeholder="01XXXXXXXXX" 
+                class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none focus:border-indigo-500 transition-colors"
+                oninput="handleCustomerPhoneLookup(this.value)"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Customer Name <span class="text-rose-500">*</span></label>
+              <input 
+                type="text" 
+                id="order-form-name" 
+                placeholder="Full name" 
+                class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none focus:border-indigo-500 transition-colors"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Delivery Method</label>
+              <select 
+                id="order-form-courier" 
+                class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none focus:border-indigo-500 transition-colors"
+                onchange="handleCourierMethodChange(this.value)"
+              >
+                <option value="Pathao">Pathao</option>
+                <option value="Steadfast">Steadfast</option>
+                <option value="RedX">RedX</option>
+                <option value="Carrybee">Carrybee</option>
+                <option value="Paperfly">Paperfly</option>
+                <option value="Sundarban">Sundarban Courier</option>
+                <option value="COD">Cash On Delivery</option>
+              </select>
+            </div>
+
+          </div>
+
+          <!-- Row 2: Address, Shipping Note, Image Upload -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
+            <div class="md:col-span-6">
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Address <span class="text-rose-500">*</span></label>
+              <textarea 
+                id="order-form-address" 
+                rows="3" 
+                placeholder="Customer address" 
+                class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none focus:border-indigo-500 transition-colors resize-none"
+              ></textarea>
+            </div>
+
+            <div class="md:col-span-4">
+              <div class="flex justify-between items-center mb-1.5">
+                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Shipping Note</label>
+                <span id="note-char-count" class="text-[10px] text-slate-400">0/150</span>
+              </div>
+              <textarea 
+                id="order-form-note" 
+                rows="3" 
+                placeholder="Optional note" 
+                maxlength="150"
+                class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3.5 py-2.5 text-sm font-medium outline-none focus:border-indigo-500 transition-colors resize-none"
+                oninput="document.getElementById('note-char-count').innerText = this.value.length + '/150'"
+              ></textarea>
+            </div>
+
+            <div class="md:col-span-2 flex flex-col justify-end">
+              <div class="flex justify-between items-center mb-1.5">
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Attachments</span>
+                <span class="text-[10px] text-slate-400">0/2</span>
+              </div>
+              <div onclick="showToast('info', 'Image attachment option')" class="h-[88px] border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-indigo-400 text-slate-400 hover:text-indigo-500 transition-colors">
+                <i class="fa-solid fa-plus text-base mb-1"></i>
+                <span class="text-xs font-medium">Image</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Location Sync Alert Banner -->
+          <div class="bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 rounded-2xl p-4 text-emerald-900 dark:text-emerald-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2 text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                <span>📍 Delivery Location</span>
+                <span class="text-amber-600 dark:text-amber-400">⚠️ City list failed</span>
+              </div>
+              <div class="flex items-center space-x-2 text-xs text-emerald-700 dark:text-emerald-400">
+                <button onclick="syncLocationDataModal()" class="hover:text-emerald-900 p-1"><i class="fa-solid fa-rotate"></i></button>
+                <button onclick="this.closest('.bg-emerald-50/70').style.display='none'" class="hover:text-emerald-900 p-1"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+
+            <p class="text-xs font-medium text-emerald-800 dark:text-emerald-200">
+              🍃 Location data synced হয়নি
+            </p>
+            <p class="text-[11px] text-emerald-700/90 dark:text-emerald-300/80 leading-relaxed">
+              <a href="#settings" onclick="navigateTo('settings')" class="underline font-semibold hover:text-emerald-900">Settings → Pathao → "Sync Location Data"</a> চাপুন → তারপর এই page refresh করুন। একবার sync হলে আর করতে হবে না।
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Ordered Products & Add Products (Split Cards) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Left: Ordered Products Card -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700 shadow-sm flex flex-col justify-between min-h-[300px]">
+            <div>
+              <div class="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-700 mb-3">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Ordered Products</h3>
+                <span id="cart-item-count" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full">0 Items</span>
+              </div>
+
+              <!-- Cart Product List -->
+              <div id="cart-items-container" class="space-y-2.5 overflow-y-auto max-h-64 pr-1">
+                <div id="cart-empty-placeholder" class="py-12 text-center text-slate-400">
+                  <p class="text-sm font-semibold">No products added yet</p>
+                  <p class="text-xs mt-1 text-slate-400">Click a product on the right to add</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-xs font-semibold text-slate-600 dark:text-slate-300">
+              <span>Items Total:</span>
+              <span id="cart-subtotal-text" class="text-sm font-bold text-slate-900 dark:text-white">৳0.00</span>
+            </div>
+          </div>
+
+          <!-- Right: Add Products Card -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700 shadow-sm flex flex-col min-h-[300px]">
+            <div class="pb-3 border-b border-slate-100 dark:border-slate-700 mb-3 flex justify-between items-center">
+              <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Add Products</h3>
+              <button onclick="openCreateProductModal()" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">+ New Product</button>
+            </div>
+
+            <!-- Search Bar for Products -->
+            <div class="grid grid-cols-2 gap-2 mb-3">
+              <input 
+                type="text" 
+                id="product-search-sku" 
+                placeholder="SKU / Code" 
+                class="bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-xs font-medium outline-none focus:border-indigo-500"
+                oninput="filterAddProductsList()"
+              >
+              <input 
+                type="text" 
+                id="product-search-name" 
+                placeholder="Search by name" 
+                class="bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-xs font-medium outline-none focus:border-indigo-500"
+                oninput="filterAddProductsList()"
+              >
+            </div>
+
+            <!-- Available Product Cards List -->
+            <div id="available-products-container" class="space-y-2.5 overflow-y-auto max-h-64 pr-1 flex-1">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Order Summary & Pricing Bar (Bottom) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700 shadow-sm space-y-4">
+          
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 items-end">
+            
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Discount</label>
+              <input 
+                type="number" 
+                id="pricing-discount" 
+                value="0" 
+                min="0"
+                class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm font-semibold outline-none focus:border-indigo-500"
+                oninput="calculateOrderGrandTotal()"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Advance</label>
+              <input 
+                type="number" 
+                id="pricing-advance" 
+                value="0" 
+                min="0"
+                class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm font-semibold outline-none focus:border-indigo-500"
+                oninput="calculateOrderGrandTotal()"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Sub Total</label>
+              <div id="pricing-subtotal" class="bg-slate-100 dark:bg-slate-700/80 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-slate-800 dark:text-slate-200">
+                0.00
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Delivery Charge</label>
+              <input 
+                type="number" 
+                id="pricing-delivery" 
+                value="60" 
+                min="0"
+                class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm font-semibold outline-none focus:border-indigo-500"
+                oninput="calculateOrderGrandTotal()"
+              >
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1">Grand Total</label>
+              <div id="pricing-grandtotal" class="bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-500/80 rounded-xl px-3.5 py-2 text-lg font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                ৳0
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Save and Action Buttons -->
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-end gap-2.5">
+            <button onclick="resetNewOrderForm()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+              Clear Form
+            </button>
+            <button onclick="saveOrder('save-only')" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all flex items-center space-x-1.5">
+              <i class="fa-solid fa-check"></i>
+              <span>Save Order</span>
+            </button>
+            <button onclick="saveOrder('save-and-print')" class="px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold shadow-md shadow-violet-500/20 transition-all flex items-center space-x-1.5">
+              <i class="fa-solid fa-print"></i>
+              <span>Save & Print</span>
+            </button>
+            <button onclick="saveOrder('save-and-courier')" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center space-x-1.5">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Save & Courier Send</span>
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN 4: ORDER LIST VIEW                                                -->
+      <!-- ========================================================================= -->
+      <section id="view-orders" class="hidden space-y-6 max-w-7xl mx-auto">
+        
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Order List</h2>
+          </div>
+          <button onclick="navigateTo('orders-new')" class="inline-flex items-center px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all gap-1.5">
+            <i class="fa-solid fa-plus"></i> New Order
+          </button>
+        </div>
+
+        <!-- Status Filter Tabs -->
+        <div class="border-b border-slate-200 dark:border-slate-700 flex space-x-2 md:space-x-6 overflow-x-auto text-sm font-semibold select-none">
+          <button onclick="filterOrderListTab('Pending')" id="otab-Pending" class="pb-3 border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400 whitespace-nowrap flex items-center gap-1.5">
+            <span>Pending</span>
+            <span id="tab-count-pending" class="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button onclick="filterOrderListTab('RTS')" id="otab-RTS" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5">
+            <span>RTS</span>
+            <span id="tab-count-rts" class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button onclick="filterOrderListTab('Shipping')" id="otab-Shipping" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5">
+            <span>Shipping</span>
+            <span id="tab-count-shipping" class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button onclick="filterOrderListTab('Delivered')" id="otab-Delivered" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5">
+            <span>Delivered</span>
+            <span id="tab-count-delivered" class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button onclick="filterOrderListTab('Returned')" id="otab-Returned" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5">
+            <span>Returned</span>
+            <span id="tab-count-returned" class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button onclick="filterOrderListTab('Cancelled')" id="otab-Cancelled" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5">
+            <span>Cancelled</span>
+            <span id="tab-count-cancelled" class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button onclick="filterOrderListTab('All')" id="otab-All" class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5">
+            <span>All</span>
+            <span id="tab-count-all" class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+        </div>
+
+        <!-- Action Bar: Search, Date Filter, Bulk Print, Status Changer -->
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          
+          <div class="flex items-center space-x-2 flex-1 min-w-[240px] max-w-md">
+            <div class="relative w-full">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+              <input 
+                type="text" 
+                id="order-list-search-input" 
+                placeholder="খুঁজুন..." 
+                class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3.5 py-2 text-xs font-medium outline-none focus:border-indigo-500 transition-colors shadow-sm"
+                oninput="renderOrdersTable()"
+              >
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <!-- Sort Dropdown -->
+            <select id="order-sort-by" onchange="renderOrdersTable()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 outline-none shadow-sm">
+              <option value="newest">↑↓ Date: Newest First</option>
+              <option value="oldest">↑↓ Date: Oldest First</option>
+              <option value="amount-high">Amount: Highest First</option>
+              <option value="amount-low">Amount: Lowest First</option>
+            </select>
+
+            <!-- Bulk Print Button -->
+            <button onclick="handleBulkPrint()" class="flex items-center space-x-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-colors">
+              <i class="fa-solid fa-print text-slate-500"></i>
+              <span>Print</span>
+            </button>
+
+            <!-- Bulk Status Button -->
+            <button onclick="handleBulkStatusChangeModal()" class="flex items-center space-x-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-colors">
+              <i class="fa-solid fa-box text-amber-500"></i>
+              <span>Status</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Orders Table Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                <tr>
+                  <th class="p-3.5 w-10 text-center">
+                    <input type="checkbox" id="select-all-orders" onchange="toggleSelectAllOrders(this.checked)" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                  </th>
+                  <th class="p-3.5">Date</th>
+                  <th class="p-3.5">Invoice</th>
+                  <th class="p-3.5">Customer</th>
+                  <th class="p-3.5">Products</th>
+                  <th class="p-3.5">Shipping Note</th>
+                  <th class="p-3.5">Tracking Details</th>
+                  <th class="p-3.5">Courier</th>
+                  <th class="p-3.5 text-center">Print</th>
+                  <th class="p-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-tbody" class="divide-y divide-slate-100 dark:divide-slate-700 text-slate-700 dark:text-slate-300">
+                <!-- Rendered Dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State (Shown when no orders) -->
+          <div id="orders-empty-state" class="py-16 text-center text-slate-400 hidden">
+            <i class="fa-solid fa-box-open text-4xl mb-3 text-slate-300 dark:text-slate-600"></i>
+            <p class="text-sm font-semibold">No orders found</p>
+            <p class="text-xs text-slate-400 mt-0.5">Create your first order to get started</p>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="p-4 border-t border-slate-100 dark:border-slate-700 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+            <div id="orders-pagination-info">
+              Showing 0 orders
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="flex items-center space-x-1.5">
+                <span>Rows per page</span>
+                <select id="orders-rows-per-page" onchange="renderOrdersTable()" class="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg px-2 py-1 outline-none text-xs font-semibold">
+                  <option value="10">10</option>
+                  <option value="20" selected>20</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+              <button onclick="showToast('info', 'Page 1')" class="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-400 cursor-not-allowed">← Prev</button>
+              <span class="font-semibold text-slate-700 dark:text-slate-300">Page 1 of 1</span>
+              <button onclick="showToast('info', 'Page 1')" class="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-400 cursor-not-allowed">Next →</button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN 5: WEB ORDERS VIEW                                                -->
+      <!-- ========================================================================= -->
+      <section id="view-web-orders" class="hidden space-y-6 max-w-6xl mx-auto">
+        
+        <!-- Header & Sync Button -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="relative flex-1 max-w-md">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+            <input 
+              type="text" 
+              placeholder="Filter orders..." 
+              class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3.5 py-2 text-xs font-medium outline-none focus:border-indigo-500 shadow-sm"
+            >
+          </div>
+
+          <button onclick="syncWebOrdersMock()" class="flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md shadow-indigo-500/20 transition-all">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Sync New Orders</span>
+          </button>
+        </div>
+
+        <!-- Status Tabs (Processing, Incomplete, On Hold, Complete, Cancel, All) -->
+        <div class="border-b border-slate-200 dark:border-slate-700 flex space-x-4 md:space-x-8 overflow-x-auto text-sm font-semibold select-none">
+          <button class="pb-3 border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400 whitespace-nowrap flex items-center gap-1.5">
+            <span>Processing</span>
+            <span class="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 whitespace-nowrap flex items-center gap-1.5">
+            <span>Incomplete</span>
+            <span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 whitespace-nowrap flex items-center gap-1.5">
+            <span>On Hold</span>
+            <span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 whitespace-nowrap flex items-center gap-1.5">
+            <span>Complete</span>
+            <span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 whitespace-nowrap flex items-center gap-1.5">
+            <span>Cancel</span>
+            <span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <button class="pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 whitespace-nowrap flex items-center gap-1.5">
+            <span>All</span>
+            <span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+          </button>
+        </div>
+
+        <!-- Empty State Container (Exact Mailbox Match) -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm p-16 flex flex-col items-center justify-center text-center min-h-[350px]">
+          <div class="text-5xl mb-4">📫</div>
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-200">কোনো web order নেই</h3>
+          <p class="text-xs text-slate-400 mt-1">WooCommerce / Shopify / Landing page থেকে নতুন অর্ডার আসলে এখানে দেখাবে</p>
+        </div>
+
+        <!-- Pagination Footer -->
+        <div class="flex items-center justify-end space-x-3 text-xs text-slate-500">
+          <div class="flex items-center space-x-1.5">
+            <span>Rows per page</span>
+            <select class="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg px-2 py-1 outline-none text-xs font-semibold">
+              <option value="20">20</option>
+            </select>
+          </div>
+          <button class="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 cursor-not-allowed">← Prev</button>
+          <span class="font-semibold text-slate-700 dark:text-slate-300">Page 1 of 1</span>
+          <button class="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 cursor-not-allowed">Next →</button>
+        </div>
+
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN: PRODUCTS MANAGEMENT                                               -->
+      <!-- ========================================================================= -->
+      <section id="view-products" class="hidden space-y-6 max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Products</h2>
+            <p class="text-xs text-slate-400">Manage catalog, inventory and retail prices</p>
+          </div>
+          <button onclick="openCreateProductModal()" class="inline-flex items-center px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all gap-1.5">
+            <i class="fa-solid fa-plus"></i> Add Product
+          </button>
+        </div>
+
+        <!-- Products Grid Table -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                <tr>
+                  <th class="p-3.5">Product</th>
+                  <th class="p-3.5">SKU</th>
+                  <th class="p-3.5">Selling Price</th>
+                  <th class="p-3.5">Stock</th>
+                  <th class="p-3.5">Status</th>
+                  <th class="p-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-tbody" class="divide-y divide-slate-100 dark:divide-slate-700 text-slate-700 dark:text-slate-300">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN: ACCOUNTING & EXPENSES                                            -->
+      <!-- ========================================================================= -->
+      <section id="view-accounting" class="hidden space-y-6 max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Accounting & Expenses</h2>
+            <p class="text-xs text-slate-400">Track ad spend, courier delivery losses, and profit margins</p>
+          </div>
+          <button onclick="openAddExpenseModal()" class="inline-flex items-center px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-md shadow-amber-500/20 transition-all gap-1.5">
+            <i class="fa-solid fa-plus"></i> Add Expense
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+            <span class="text-xs font-bold text-slate-500">Total Recorded Expenses</span>
+            <div id="acc-total-expense" class="text-2xl font-bold text-amber-600 mt-1">৳5,000</div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+            <span class="text-xs font-bold text-slate-500">Collected Courier Cash</span>
+            <div id="acc-courier-cash" class="text-2xl font-bold text-emerald-600 mt-1">৳0</div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+            <span class="text-xs font-bold text-slate-500">Estimated Net P&L</span>
+            <div id="acc-net-pl" class="text-2xl font-bold text-rose-600 mt-1">-৳5,000</div>
+          </div>
+        </div>
+
+        <!-- Expenses List -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold text-sm">Recent Expenses</div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 dark:bg-slate-700/50 font-bold">
+                <tr>
+                  <th class="p-3.5">Date</th>
+                  <th class="p-3.5">Category</th>
+                  <th class="p-3.5">Description</th>
+                  <th class="p-3.5">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="expenses-table-tbody" class="divide-y divide-slate-100 dark:divide-slate-700">
+                <tr>
+                  <td class="p-3.5">2026-08-18</td>
+                  <td class="p-3.5"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-[10px]">Facebook Ads</span></td>
+                  <td class="p-3.5">Campaign Budget - Eid Collection</td>
+                  <td class="p-3.5 font-bold text-amber-600">৳5,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN: SETTINGS & COURIER APIS                                          -->
+      <!-- ========================================================================= -->
+      <section id="view-settings" class="hidden space-y-6 max-w-5xl mx-auto">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Settings</h2>
+          <p class="text-xs text-slate-400">Configure Courier API credentials, store info and notifications</p>
+        </div>
+
+        <!-- Tabs inside Settings -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+          
+          <h3 class="text-base font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
+            <span>🚚</span> Courier API Integrations
+          </h3>
+
+          <!-- Pathao API Setup -->
+          <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200">Pathao Courier API</h4>
+              </div>
+              <button onclick="syncLocationDataModal()" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold">
+                Sync Location Data
+              </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block font-semibold mb-1">Client ID</label>
+                <input type="text" value="rafin_pathao_live_9921" class="w-full bg-white dark:bg-slate-800 border rounded-lg px-3 py-2 font-mono">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Client Secret</label>
+                <input type="password" value="************************" class="w-full bg-white dark:bg-slate-800 border rounded-lg px-3 py-2 font-mono">
+              </div>
+            </div>
+          </div>
+
+          <!-- Steadfast API Setup -->
+          <div class="bg-slate-50 dark:bg-slate-700/30 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200">Steadfast Courier API</h4>
+              </div>
+              <span class="text-xs text-emerald-600 font-semibold">Connected</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block font-semibold mb-1">API Key</label>
+                <input type="password" value="************************" class="w-full bg-white dark:bg-slate-800 border rounded-lg px-3 py-2 font-mono">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Secret Key</label>
+                <input type="password" value="************************" class="w-full bg-white dark:bg-slate-800 border rounded-lg px-3 py-2 font-mono">
+              </div>
+            </div>
+          </div>
+
+          <!-- Store Info -->
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-700 space-y-4">
+            <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200">Store Profile</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block font-semibold mb-1">Store Name</label>
+                <input type="text" id="setting-store-name" value="Rafin ERP" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-lg px-3 py-2 font-semibold">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Support Phone</label>
+                <input type="text" id="setting-store-phone" value="+880 1700-000000" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-lg px-3 py-2">
+              </div>
+            </div>
+            <button onclick="showToast('success', 'Settings saved successfully')" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold">
+              Save Settings
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- SCREEN: OTHER SIDEBAR MODULES (Packaging, SMS, AI Call, Reports, Users)  -->
+      <!-- ========================================================================= -->
+      <section id="view-packaging" class="hidden space-y-6 max-w-5xl mx-auto">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold">Packaging & Barcodes</h2>
+          <button onclick="openScannerModal()" class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl">📷 Scan Package</button>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 text-center text-slate-400 border border-slate-200 dark:border-slate-700">
+          <i class="fa-solid fa-box text-4xl mb-2 text-amber-500"></i>
+          <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Ready for packaging scan</p>
+          <p class="text-xs mt-1">Scan order barcodes with your scanner or camera to mark Ready to Ship (RTS)</p>
+        </div>
+      </section>
+
+      <section id="view-sms" class="hidden space-y-6 max-w-5xl mx-auto">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold">SMS Gateway & Marketing</h2>
+          <button onclick="showToast('success', 'SMS sent!')" class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl">Send Bulk SMS</button>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 space-y-4">
+          <div class="text-xs font-semibold text-slate-500">SMS Balance: <span class="text-emerald-600 font-bold text-sm">1,450 SMS</span></div>
+          <div>
+            <label class="block text-xs font-bold mb-1">Message Template</label>
+            <textarea rows="3" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-xl p-3 text-xs" readonly>প্রিয় গ্রাহক, Rafin ERP থেকে আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। Invoice: {INVOICE}, Tracking: {TRACKING}</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-ai-call" class="hidden space-y-6 max-w-5xl mx-auto">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold">AI Call Voice Confirmation</h2>
+          <span class="bg-rose-100 text-rose-700 text-xs px-3 py-1 rounded-full font-bold">AI Voice Bot: Active</span>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 space-y-4">
+          <p class="text-xs text-slate-500">Automated Bengali voice calling to confirm orders before courier booking.</p>
+          <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl text-xs space-y-1">
+            <span class="font-bold text-slate-700 dark:text-slate-200">Bengali Prompt Voice:</span>
+            <p class="italic text-slate-600 dark:text-slate-300">"আসসালামু আলাইকুম, আমি Rafin ERP থেকে বলছি। আপনি কি ৳৩০০ টাকার অর্ডারটি কনফার্ম করতে চান? হ্যাঁ বলতে ১ চাপুন, না বলতে ২ চাপুন।"</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-reports" class="hidden space-y-6 max-w-6xl mx-auto">
+        <h2 class="text-2xl font-bold">Sales & Courier Reports</h2>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700">
+          <p class="text-xs text-slate-400">Detailed exportable report charts and district analysis.</p>
+        </div>
+      </section>
+
+      <section id="view-limits" class="hidden space-y-6 max-w-5xl mx-auto">
+        <h2 class="text-2xl font-bold">My Limits & Plan</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border">
+            <span class="text-xs font-bold text-slate-500">Monthly Orders</span>
+            <div class="text-xl font-bold text-indigo-600 mt-1">Unlimited</div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border">
+            <span class="text-xs font-bold text-purple-600 mt-1">1 / 50 Used</span>
+          </div>
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border">
+            <span class="text-xs font-bold text-slate-500">Staff Accounts</span>
+            <div class="text-xl font-bold text-emerald-600 mt-1">5 / 10</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-users" class="hidden space-y-6 max-w-5xl mx-auto">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold">Users & Roles</h2>
+          <button onclick="showToast('info', 'Add Staff modal')" class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl">+ Add User</button>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center justify-between p-3 border-b border-slate-100 dark:border-slate-700 text-xs">
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center">R</div>
+              <div>
+                <p class="font-bold">Rafin ERP (Admin)</p>
+                <p class="text-slate-400">admin@rafinerp.com</p>
+              </div>
+            </div>
+            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Super Admin</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-customers" class="hidden space-y-6 max-w-6xl mx-auto">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold">Customer Fraud & History Database</h2>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="p-4 border-b font-bold text-sm">Customers & Success Rates</div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 dark:bg-slate-700/50 font-bold">
+                <tr>
+                  <th class="p-3.5">Customer</th>
+                  <th class="p-3.5">Phone</th>
+                  <th class="p-3.5">Total Orders</th>
+                  <th class="p-3.5">Delivered</th>
+                  <th class="p-3.5">Returns</th>
+                  <th class="p-3.5">Trust Score</th>
+                </tr>
+              </thead>
+              <tbody id="customers-table-tbody" class="divide-y divide-slate-100 dark:divide-slate-700">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal 1: AI Auto-fill Modal -->
+  <div id="modal-ai-autofill" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <span>🤖</span> AI Order Auto-fill
+        </h3>
+        <button onclick="closeAIAutoFillModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500 dark:text-slate-400">
+        যে কোনো অগোছালো মেসেজ বা টেক্সট এখানে পেস্ট করুন। AI স্বয়ংক্রিয়ভাবে নাম, মোবাইল, ঠিকানা এবং প্রোডাক্ট সনাক্ত করবে।
+      </p>
+
+      <textarea 
+        id="ai-autofill-textarea" 
+        rows="5" 
+        placeholder="Example: Md. Rakib, 01711223344, House 12, Road 4, Dhanmondi, Dhaka, 2x House, delivery 60 tk" 
+        class="w-full bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl p-3.5 text-xs font-mono outline-none focus:border-purple-500"
+      ></textarea>
+
+      <div class="flex justify-end space-x-2">
+        <button onclick="closeAIAutoFillModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">Cancel</button>
+        <button onclick="processAIAutoFill()" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow-md shadow-purple-500/20">
+          Parse & Auto-fill
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Scanner Modal (Barcode / QR Camera) -->
+  <div id="modal-scanner" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4 text-center">
+      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <span>📷</span> Barcode & Order Scanner
+        </h3>
+        <button onclick="closeScannerModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="h-48 bg-slate-900 rounded-xl flex flex-col items-center justify-center text-slate-400 relative overflow-hidden">
+        <div class="w-40 h-28 border-2 border-indigo-500 rounded-lg relative">
+          <div class="absolute inset-x-0 top-0 h-0.5 bg-red-500 animate-pulse"></div>
+        </div>
+        <span class="text-[11px] text-slate-400 mt-3">Point camera at barcode or input below</span>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <input 
+          type="text" 
+          id="scanner-manual-input" 
+          placeholder="Enter Invoice or Tracking ID..." 
+          class="flex-1 bg-slate-50 dark:bg-slate-700 border rounded-xl px-3 py-2 text-xs font-mono"
+        >
+        <button onclick="processScannedCode(document.getElementById('scanner-manual-input').value)" class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl">
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Fast Search Modal (Top Bar) -->
+  <div id="modal-fast-search" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center pt-20 p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-xl w-full p-5 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-3">
+      <div class="flex items-center border-b border-slate-100 dark:border-slate-700 pb-2">
+        <i class="fa-solid fa-magnifying-glass text-indigo-500 mr-3"></i>
+        <input 
+          type="text" 
+          id="fast-search-input" 
+          placeholder="Type customer name, invoice (e.g. INV-1001) or phone..." 
+          class="w-full bg-transparent text-sm font-semibold outline-none"
+          oninput="handleFastSearch(this.value)"
+        >
+        <button onclick="closeFastSearchModal()" class="text-slate-400 text-xs">ESC</button>
+      </div>
+      <div id="fast-search-results" class="max-h-64 overflow-y-auto space-y-1 text-xs">
+        <div class="p-4 text-center text-slate-400">Start typing to search orders...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Thermal POS / Invoice Print Modal -->
+  <div id="print-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white text-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="no-print flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-sm">Invoice Preview</h3>
+        <button onclick="closePrintModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Printable Invoice Area (80mm Thermal Style) -->
+      <div id="printable-invoice-content" class="bg-white text-slate-900 p-4 font-mono text-xs border rounded-lg space-y-3">
+        <!-- Dynamic invoice rendered here -->
+      </div>
+
+      <div class="no-print flex justify-end space-x-2 pt-2">
+        <button onclick="closePrintModal()" class="px-4 py-2 border rounded-xl text-xs font-semibold">Close</button>
+        <button onclick="window.print()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-print"></i> Print Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Add / Edit Product Modal -->
+  <div id="modal-product" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white" id="product-modal-title">Add New Product</h3>
+        <button onclick="closeCreateProductModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold mb-1">Product Name <span class="text-rose-500">*</span></label>
+          <input type="text" id="new-prod-name" placeholder="e.g. House or Luxury Bag" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-xl px-3 py-2">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">SKU / Code <span class="text-rose-500">*</span></label>
+            <input type="text" id="new-prod-sku" placeholder="e.g. HOU-001" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-xl px-3 py-2 font-mono">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Stock Qty</label>
+            <input type="number" id="new-prod-stock" value="100" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-xl px-3 py-2 font-semibold">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Retail Price (৳) <span class="text-rose-500">*</span></label>
+          <input type="number" id="new-prod-price" value="300" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-xl px-3 py-2 font-bold text-indigo-600">
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-2 pt-2">
+        <button onclick="closeCreateProductModal()" class="px-4 py-2 text-xs font-semibold hover:bg-slate-100 rounded-xl">Cancel</button>
+        <button onclick="saveNewProduct()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: Add Expense Modal -->
+  <div id="modal-expense" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl border space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-sm">Add Expense</h3>
+        <button onclick="document.getElementById('modal-expense').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold mb-1">Category</label>
+          <select id="expense-cat" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-xl p-2 font-semibold">
+            <option value="Facebook Ads">Facebook / Meta Ads</option>
+            <option value="Packaging & Bags">Packaging & Poly Bags</option>
+            <option value="Courier Return Loss">Courier Return Loss</option>
+            <option value="Office Rent">Office Rent & Utilities</option>
+            <option value="Staff Salary">Staff Salary</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Amount (৳)</label>
+          <input type="number" id="expense-amount" placeholder="5000" class="w-full bg-slate-50 dark:bg-slate-700 border rounded-xl p-2 font-bold text-amber-600">
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Note / Description</label>
+          <input type="text" id="expense-desc" placeholder="Details..." class="w-full bg-slate-50 dark:bg-slate-700 border rounded-xl p-2">
+        </div>
+      </div>
+      <div class="flex justify-end space-x-2">
+        <button onclick="document.getElementById('modal-expense').classList.add('hidden')" class="px-4 py-2 text-xs">Cancel</button>
+        <button onclick="saveExpense()" class="px-5 py-2 bg-amber-600 text-white text-xs font-bold rounded-xl">Save Expense</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden File Input for Data Import -->
+  <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="handleImportBackup(event)">
+
+  <!-- ==================== JAVASCRIPT APPLICATION LOGIC ==================== -->
+  <script>
+    // Global State
+    let currentView = 'dashboard';
+    let currentSearchFilter = 'all';
+    let currentDashboardRange = '30days';
+    let currentOrderTab = 'Pending';
+    let selectedOrderIds = new Set();
+    let cartItems = [];
+    let dailyChart = null;
+
+    // Default Products Seed Data
+    const DEFAULT_PRODUCTS = [
+      { id: 'p1', name: 'House', sku: 'HOU-001', price: 300, stock: 100, isStarred: true, image: '🏠' },
+      { id: 'p2', name: 'Wireless Earbuds Pro', sku: 'EAR-002', price: 1250, stock: 45, isStarred: false, image: '🎧' },
+      { id: 'p3', name: 'Smart Watch Ultra', sku: 'WAT-003', price: 1850, stock: 30, isStarred: false, image: '⌚' },
+      { id: 'p4', name: 'Premium Cotton T-Shirt', sku: 'TSH-004', price: 450, stock: 80, isStarred: false, image: '👕' }
+    ];
+
+    // Initialize State from LocalStorage
+    let products = JSON.parse(localStorage.getItem('rafin_erp_products')) || DEFAULT_PRODUCTS;
+    let orders = JSON.parse(localStorage.getItem('rafin_erp_orders')) || [];
+    let expenses = JSON.parse(localStorage.getItem('rafin_erp_expenses')) || [
+      { id: 'exp-1', date: '2026-08-18', category: 'Facebook Ads', desc: 'Campaign Budget - Eid Collection', amount: 5000 }
+    ];
+
+    // Seed Sample Orders if empty to show full realism
+    if (orders.length === 0) {
+      orders = [
+        {
+          id: 'ord-1001',
+          invoice: 'INV-1001',
+          date: '2026-08-19',
+          customerName: 'Md. Rahim Uddin',
+          phone: '01711223344',
+          address: 'House 14, Road 5, Sector 3, Uttara, Dhaka',
+          note: 'Call before delivery',
+          courier: 'Pathao',
+          tracking: 'PT-998241',
+          items: [{ id: 'p1', name: 'House', price: 300, qty: 1 }],
+          discount: 0,
+          advance: 0,
+          deliveryCharge: 60,
+          grandTotal: 360,
+          status: 'Pending'
+        },
+        {
+          id: 'ord-1002',
+          invoice: 'INV-1002',
+          date: '2026-08-19',
+          customerName: 'Tanvir Hossain',
+          phone: '01822334455',
+          address: 'GEC Circle, Chittagong',
+          note: 'Urgent delivery needed',
+          courier: 'Steadfast',
+          tracking: 'ST-55421',
+          items: [{ id: 'p2', name: 'Wireless Earbuds Pro', price: 1250, qty: 1 }],
+          discount: 50,
+          advance: 0,
+          deliveryCharge: 120,
+          grandTotal: 1320,
+          status: 'RTS'
+        }
+      ];
+      localStorage.setItem('rafin_erp_orders', JSON.stringify(orders));
+    }
+
+    // Save functions
+    function persistOrders() {
+      localStorage.setItem('rafin_erp_orders', JSON.stringify(orders));
+      updateGlobalCounters();
+    }
+    function persistProducts() {
+      localStorage.setItem('rafin_erp_products', JSON.stringify(products));
+      renderAvailableProducts();
+      renderProductsTable();
+      updateGlobalCounters();
+    }
+    function persistExpenses() {
+      localStorage.setItem('rafin_erp_expenses', JSON.stringify(expenses));
+      renderExpensesTable();
+      updateDashboardFinancialKPIs();
+    }
+
+    // SweetAlert Toast Notification Helper
+    function showToast(icon, title) {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
+    }
+
+    // Navigation Router
+    function navigateTo(viewId) {
+      currentView = viewId;
+      
+      // Hide all views
+      const views = ['dashboard', 'search', 'orders-new', 'orders', 'web-orders', 'products', 'packaging', 'accounting', 'sms', 'ai-call', 'reports', 'limits', 'users', 'customers', 'settings'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) el.classList.add('hidden');
+      });
+
+      // Show selected view
+      const target = document.getElementById(`view-${viewId}`);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      // Update active sidebar state
+      document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+      const activeLink = document.getElementById(`nav-${viewId}`);
+      if (activeLink) activeLink.classList.add('active');
+
+      // Specific view init actions
+      if (viewId === 'dashboard') {
+        updateDashboardFinancialKPIs();
+        renderDailyChart();
+      } else if (viewId === 'orders') {
+        renderOrdersTable();
+      } else if (viewId === 'products') {
+        renderProductsTable();
+      } else if (viewId === 'orders-new') {
+        renderAvailableProducts();
+        renderCartItems();
+      } else if (viewId === 'search') {
+        document.getElementById('main-search-input').focus();
+      } else if (viewId === 'accounting') {
+        renderExpensesTable();
+      } else if (viewId === 'customers') {
+        renderCustomersTable();
+      }
+
+      // Close mobile sidebar if open
+      if (window.innerWidth < 1024) {
+        document.getElementById('sidebar').classList.add('-translate-x-full');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Sidebar Collapsible Submenus
+    function toggleSubmenu(id) {
+      const el = document.getElementById(id);
+      const iconId = id.replace('submenu-', 'icon-');
+      const icon = document.getElementById(iconId);
+      if (el) {
+        el.classList.toggle('hidden');
+        if (icon) {
+          icon.classList.toggle('rotate-180');
+        }
+      }
+    }
+
+    // Mobile Sidebar Toggle
+    function toggleSidebarCollapse() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('-translate-x-full');
+    }
+
+    // Dark Mode Switcher
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('rafin_erp_theme', isDark ? 'dark' : 'light');
+      const icon = document.getElementById('theme-icon');
+      if (icon) {
+        icon.className = isDark ? 'fa-regular fa-sun text-amber-400' : 'fa-regular fa-moon text-amber-500';
+      }
+      if (dailyChart) {
+        dailyChart.destroy();
+        renderDailyChart();
+      }
+    }
+
+    // User Dropdown
+    function toggleUserDropdown() {
+      document.getElementById('user-dropdown').classList.toggle('hidden');
+    }
+    function closeUserDropdown() {
+      document.getElementById('user-dropdown').classList.add('hidden');
+    }
+
+    // ==================== DASHBOARD LOGIC ====================
+    function setDashboardRange(range) {
+      currentDashboardRange = range;
+      const buttons = ['today', '7days', '30days', 'custom', 'all'];
+      buttons.forEach(b => {
+        const btn = document.getElementById(`dash-btn-${b}`);
+        if (btn) {
+          if (b === range) {
+            btn.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition-all';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition-all';
+          }
+        }
+      });
+
+      const dateText = document.getElementById('dashboard-date-range-text');
+      if (range === 'today') dateText.innerText = 'Financial summary: Today (2026-08-19)';
+      else if (range === '7days') dateText.innerText = 'Financial summary: 2026-08-12 → 2026-08-19';
+      else if (range === '30days') dateText.innerText = 'Financial summary: 2026-07-21 → 2026-08-19';
+      else if (range === 'all') dateText.innerText = 'Financial summary: All Time Records';
+
+      updateDashboardFinancialKPIs();
+      renderDailyChart();
+    }
+
+    function updateDashboardFinancialKPIs() {
+      // Calculate Metrics from orders & expenses
+      const totalSales = orders.reduce((sum, o) => sum + (o.status !== 'Cancelled' ? o.grandTotal : 0), 0);
+      const todaySales = orders.filter(o => o.date === '2026-08-19' && o.status !== 'Cancelled').reduce((sum, o) => sum + o.grandTotal, 0);
+      const totalExp = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+      const netProfit = totalSales - totalExp;
+
+      document.getElementById('dash-stat-total-sales').innerText = `৳${totalSales.toLocaleString()}`;
+      document.getElementById('dash-stat-today-sales').innerText = `৳${todaySales.toLocaleString()}`;
+      document.getElementById('dash-stat-total-expense').innerText = `৳${totalExp.toLocaleString()}`;
+      document.getElementById('dash-stat-net-profit').innerText = `৳${netProfit.toLocaleString()}`;
+
+      // Status pill counters
+      const pendingCount = orders.filter(o => o.status === 'Pending').length;
+      const rtsCount = orders.filter(o => o.status === 'RTS').length;
+      const shippingCount = orders.filter(o => o.status === 'Shipping').length;
+      const deliveredCount = orders.filter(o => o.status === 'Delivered').length;
+      const returnedCount = orders.filter(o => o.status === 'Returned').length;
+      const cancelledCount = orders.filter(o => o.status === 'Cancelled').length;
+      const totalCount = orders.length;
+
+      document.getElementById('stat-count-total').innerText = totalCount;
+      document.getElementById('stat-count-pending').innerText = pendingCount;
+      document.getElementById('stat-count-rts').innerText = rtsCount;
+      document.getElementById('stat-count-shipping').innerText = shippingCount;
+      document.getElementById('stat-count-delivered').innerText = deliveredCount;
+      document.getElementById('stat-count-returned').innerText = returnedCount;
+      document.getElementById('stat-count-cancelled').innerText = cancelledCount;
+
+      document.getElementById('side-stat-created').innerText = totalCount;
+      document.getElementById('side-stat-courier').innerText = rtsCount + shippingCount;
+
+      updateGlobalCounters();
+    }
+
+    function updateGlobalCounters() {
+      const totalOrders = orders.length;
+      const pendingCount = orders.filter(o => o.status === 'Pending').length;
+      const rtsCount = orders.filter(o => o.status === 'RTS').length;
+      const shippingCount = orders.filter(o => o.status === 'Shipping').length;
+      const deliveredCount = orders.filter(o => o.status === 'Delivered').length;
+      const returnedCount = orders.filter(o => o.status === 'Returned').length;
+      const cancelledCount = orders.filter(o => o.status === 'Cancelled').length;
+
+      // Sidebar badges
+      document.getElementById('sidebar-order-count').innerText = totalOrders;
+      document.getElementById('sidebar-product-count').innerText = products.length;
+
+      // Order List tab badges
+      document.getElementById('tab-count-pending').innerText = pendingCount;
+      document.getElementById('tab-count-rts').innerText = rtsCount;
+      document.getElementById('tab-count-shipping').innerText = shippingCount;
+      document.getElementById('tab-count-delivered').innerText = deliveredCount;
+      document.getElementById('tab-count-returned').innerText = returnedCount;
+      document.getElementById('tab-count-cancelled').innerText = cancelledCount;
+      document.getElementById('tab-count-all').innerText = totalOrders;
+    }
+
+    function renderDailyChart() {
+      const ctx = document.getElementById('dailyOrdersChart');
+      if (!ctx) return;
+
+      if (dailyChart) {
+        dailyChart.destroy();
+      }
+
+      const isDark = document.documentElement.classList.contains('dark');
+      const labels = ['08/13', '08/14', '08/15', '08/16', '08/17', '08/18', '08/19'];
+      const dataPoints = [2, 4, 3, 5, 8, 6, orders.length];
+
+      dailyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Orders',
+            data: dataPoints,
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+            borderWidth: 2.5,
+            tension: 0.35,
+            fill: true,
+            pointBackgroundColor: '#4f46e5',
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: isDark ? '#1e293b' : '#0f172a',
+              titleColor: '#fff',
+              bodyColor: '#cbd5e1',
+              padding: 10,
+              displayColors: false
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } }
+            },
+            y: {
+              beginAtZero: true,
+              grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
+              ticks: { color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 }, stepSize: 2 }
+            }
+          }
+        }
+      });
+    }
+
+    // ==================== SEARCH ORDERS VIEW ====================
+    function setSearchFilter(filter) {
+      currentSearchFilter = filter;
+      const filters = ['all', 'name', 'invoice', 'mobile'];
+      filters.forEach(f => {
+        const btn = document.getElementById(`sfilter-${f}`);
+        if (btn) {
+          if (f === filter) {
+            btn.className = 'px-4 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold shadow-sm transition-all';
+          } else {
+            btn.className = 'px-4 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs font-semibold transition-all';
+          }
+        }
+      });
+      handleSearchQuery(document.getElementById('main-search-input').value);
+    }
+
+    function handleSearchQuery(query) {
+      const clean = query.trim().toLowerCase();
+      const contentArea = document.getElementById('search-content-area');
+      const tableWrapper = document.getElementById('search-results-table-wrapper');
+      const tbody = document.getElementById('search-results-tbody');
+      const header = document.getElementById('search-results-header');
+
+      if (!clean) {
+        contentArea.classList.remove('hidden');
+        tableWrapper.classList.add('hidden');
+        return;
+      }
+
+      contentArea.classList.add('hidden');
+      tableWrapper.classList.remove('hidden');
+
+      const filtered = orders.filter(o => {
+        if (currentSearchFilter === 'name') return o.customerName.toLowerCase().includes(clean);
+        if (currentSearchFilter === 'invoice') return o.invoice.toLowerCase().includes(clean);
+        if (currentSearchFilter === 'mobile') return o.phone.includes(clean);
+        return o.customerName.toLowerCase().includes(clean) || o.invoice.toLowerCase().includes(clean) || o.phone.includes(clean);
+      });
+
+      header.innerText = `Search Results (${filtered.length})`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-400">কোনো অর্ডার পাওয়া যায়নি ("${query}")</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(o => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+          <td class="p-3.5 font-bold font-mono text-indigo-600">${o.invoice}</td>
+          <td class="p-3.5 text-slate-500">${o.date}</td>
+          <td class="p-3.5">
+            <p class="font-bold text-slate-800 dark:text-slate-200">${o.customerName}</p>
+            <p class="text-[11px] text-slate-400">${o.phone}</p>
+          </td>
+          <td class="p-3.5">${o.items.map(i => `${i.name} (x${i.qty})`).join(', ')}</td>
+          <td class="p-3.5 font-bold text-slate-900 dark:text-white">৳${o.grandTotal}</td>
+          <td class="p-3.5"><span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full text-[10px] font-bold">${o.courier}</span></td>
+          <td class="p-3.5"><span class="${getStatusBadgeClass(o.status)} text-[10px] font-bold px-2 py-0.5 rounded-full">${o.status}</span></td>
+          <td class="p-3.5 text-right space-x-1">
+            <button onclick="openThermalInvoiceModal('${o.id}')" class="p-1 text-slate-400 hover:text-indigo-600"><i class="fa-solid fa-print"></i></button>
+            <button onclick="editOrderStatusQuick('${o.id}')" class="p-1 text-slate-400 hover:text-emerald-600"><i class="fa-solid fa-pen-to-square"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function clearSearchInput() {
+      const input = document.getElementById('main-search-input');
+      input.value = '';
+      handleSearchQuery('');
+      input.focus();
+    }
+
+    // ==================== NEW ORDER LOGIC ====================
+    function renderAvailableProducts() {
+      const container = document.getElementById('available-products-container');
+      if (!container) return;
+
+      container.innerHTML = products.map(p => `
+        <div onclick="addProductToCart('${p.id}')" class="p-3 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 bg-slate-50/70 dark:bg-slate-700/40 hover:bg-indigo-50/30 dark:hover:bg-slate-700 cursor-pointer flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-xl shadow-sm">
+              ${p.image || '📦'}
+            </div>
+            <div>
+              <p class="font-bold text-xs text-slate-800 dark:text-slate-200 group-hover:text-indigo-600">${p.name}</p>
+              <div class="flex items-center space-x-2 text-[11px] text-slate-500 mt-0.5">
+                <span class="font-bold text-emerald-600 dark:text-emerald-400">৳${p.price}</span>
+                <span>•</span>
+                <span class="text-slate-400">Stock: ${p.stock}</span>
+              </div>
+            </div>
+          </div>
+          <button class="text-slate-300 group-hover:text-amber-400 text-sm">
+            <i class="fa-${p.isStarred ? 'solid text-amber-400' : 'regular'} fa-star"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function filterAddProductsList() {
+      const skuQuery = (document.getElementById('product-search-sku')?.value || '').trim().toLowerCase();
+      const nameQuery = (document.getElementById('product-search-name')?.value || '').trim().toLowerCase();
+      const container = document.getElementById('available-products-container');
+
+      const filtered = products.filter(p => {
+        const matchesSku = skuQuery ? p.sku.toLowerCase().includes(skuQuery) : true;
+        const matchesName = nameQuery ? p.name.toLowerCase().includes(nameQuery) : true;
+        return matchesSku && matchesName;
+      });
+
+      container.innerHTML = filtered.map(p => `
+        <div onclick="addProductToCart('${p.id}')" class="p-3 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 bg-slate-50/70 dark:bg-slate-700/40 hover:bg-indigo-50/30 dark:hover:bg-slate-700 cursor-pointer flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-xl shadow-sm">
+              ${p.image || '📦'}
+            </div>
+            <div>
+              <p class="font-bold text-xs text-slate-800 dark:text-slate-200 group-hover:text-indigo-600">${p.name}</p>
+              <div class="flex items-center space-x-2 text-[11px] text-slate-500 mt-0.5">
+                <span class="font-bold text-emerald-600 dark:text-emerald-400">৳${p.price}</span>
+                <span>•</span>
+                <span class="text-slate-400">Stock: ${p.stock}</span>
+              </div>
+            </div>
+          </div>
+          <button class="text-slate-300 group-hover:text-amber-400 text-sm">
+            <i class="fa-${p.isStarred ? 'solid text-amber-400' : 'regular'} fa-star"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function addProductToCart(productId) {
+      const prod = products.find(p => p.id === productId);
+      if (!prod) return;
+
+      const existing = cartItems.find(item => item.id === productId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cartItems.push({
+          id: prod.id,
+          name: prod.name,
+          price: prod.price,
+          qty: 1
+        });
+      }
+
+      renderCartItems();
+      calculateOrderGrandTotal();
+      showToast('success', `Added ${prod.name}`);
+    }
+
+    function updateCartItemQty(productId, delta) {
+      const item = cartItems.find(i => i.id === productId);
+      if (!item) return;
+
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cartItems = cartItems.filter(i => i.id !== productId);
+      }
+
+      renderCartItems();
+      calculateOrderGrandTotal();
+    }
+
+    function removeCartItem(productId) {
+      cartItems = cartItems.filter(i => i.id !== productId);
+      renderCartItems();
+      calculateOrderGrandTotal();
+    }
+
+    function renderCartItems() {
+      const container = document.getElementById('cart-items-container');
+      const countBadge = document.getElementById('cart-item-count');
+
+      countBadge.innerText = `${cartItems.length} Items`;
+
+      if (cartItems.length === 0) {
+        container.innerHTML = `
+          <div id="cart-empty-placeholder" class="py-12 text-center text-slate-400">
+            <p class="text-sm font-semibold">No products added yet</p>
+            <p class="text-xs mt-1 text-slate-400">Click a product on the right to add</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = cartItems.map(item => `
+        <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200 dark:border-slate-600 flex items-center justify-between">
+          <div class="flex-1">
+            <p class="font-bold text-xs text-slate-800 dark:text-slate-200">${item.name}</p>
+            <p class="text-[11px] text-slate-400">৳${item.price} each</p>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <div class="flex items-center border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800">
+              <button onclick="updateCartItemQty('${item.id}', -1)" class="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-slate-800 font-bold">-</button>
+              <span class="px-2 text-xs font-bold">${item.qty}</span>
+              <button onclick="updateCartItemQty('${item.id}', 1)" class="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-slate-800 font-bold">+</button>
+            </div>
+            <span class="font-bold text-xs text-slate-900 dark:text-white w-14 text-right">৳${item.price * item.qty}</span>
+            <button onclick="removeCartItem('${item.id}')" class="text-slate-400 hover:text-rose-500 p-1">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function calculateOrderGrandTotal() {
+      const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const discount = Number(document.getElementById('pricing-discount')?.value || 0);
+      const advance = Number(document.getElementById('pricing-advance')?.value || 0);
+      const delivery = Number(document.getElementById('pricing-delivery')?.value || 0);
+
+      const grandTotal = Math.max(0, subtotal + delivery - discount - advance);
+
+      document.getElementById('cart-subtotal-text').innerText = `৳${subtotal.toFixed(2)}`;
+      document.getElementById('pricing-subtotal').innerText = subtotal.toFixed(2);
+      document.getElementById('pricing-grandtotal').innerText = `৳${grandTotal.toLocaleString()}`;
+    }
+
+    function handleCourierMethodChange(courier) {
+      const deliveryInput = document.getElementById('pricing-delivery');
+      if (courier === 'Pathao' || courier === 'Steadfast') {
+        deliveryInput.value = '60';
+      } else if (courier === 'RedX' || courier === 'Carrybee') {
+        deliveryInput.value = '70';
+      } else {
+        deliveryInput.value = '120';
+      }
+      calculateOrderGrandTotal();
+    }
+
+    function handleCustomerPhoneLookup(phone) {
+      const cleanPhone = phone.trim();
+      const ourRecordEl = document.getElementById('risk-our-record');
+      const pathaoEl = document.getElementById('risk-pathao');
+      const steadfastEl = document.getElementById('risk-steadfast');
+      const redxEl = document.getElementById('risk-redx');
+      const carrybeeEl = document.getElementById('risk-carrybee');
+      const overallEl = document.getElementById('risk-overall');
+
+      if (cleanPhone.length >= 11) {
+        const prevOrders = orders.filter(o => o.phone.includes(cleanPhone));
+        ourRecordEl.innerText = `${prevOrders.length} Orders`;
+        ourRecordEl.className = 'text-base font-bold text-indigo-600 dark:text-indigo-400 my-1';
+
+        pathaoEl.innerText = '94%';
+        pathaoEl.className = 'text-base font-bold text-emerald-600 dark:text-emerald-400 my-1';
+
+        steadfastEl.innerText = '89%';
+        steadfastEl.className = 'text-base font-bold text-emerald-600 dark:text-emerald-400 my-1';
+
+        redxEl.innerText = '92%';
+        redxEl.className = 'text-base font-bold text-emerald-600 dark:text-emerald-400 my-1';
+
+        carrybeeEl.innerText = '90%';
+        carrybeeEl.className = 'text-base font-bold text-emerald-600 dark:text-emerald-400 my-1';
+
+        overallEl.innerText = '92% (Safe)';
+        overallEl.className = 'text-base font-bold text-emerald-600 dark:text-emerald-400 my-1';
+      } else {
+        ourRecordEl.innerText = '—';
+        pathaoEl.innerText = '—';
+        steadfastEl.innerText = '—';
+        redxEl.innerText = '—';
+        carrybeeEl.innerText = '—';
+        overallEl.innerText = '—';
+      }
+    }
+
+    function saveOrder(actionType) {
+      const name = document.getElementById('order-form-name').value.trim();
+      const phone = document.getElementById('order-form-phone').value.trim();
+      const address = document.getElementById('order-form-address').value.trim();
+      const courier = document.getElementById('order-form-courier').value;
+      const note = document.getElementById('order-form-note').value.trim();
+      const discount = Number(document.getElementById('pricing-discount').value || 0);
+      const advance = Number(document.getElementById('pricing-advance').value || 0);
+      const delivery = Number(document.getElementById('pricing-delivery').value || 0);
+
+      if (!name || !phone || !address) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Missing Required Fields',
+          text: 'Please enter Customer Name, Mobile Number, and Address.',
+          confirmButtonColor: '#4f46e5'
+        });
+        return;
+      }
+
+      if (cartItems.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'No Products Selected',
+          text: 'Please add at least one product to the order.',
+          confirmButtonColor: '#4f46e5'
+        });
+        return;
+      }
+
+      const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const grandTotal = Math.max(0, subtotal + delivery - discount - advance);
+      const invoiceNumber = `INV-${1000 + orders.length + 1}`;
+      const trackingCode = `${courier.substring(0, 2).toUpperCase()}-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      const newOrder = {
+        id: `ord-${Date.now()}`,
+        invoice: invoiceNumber,
+        date: new Date().toISOString().split('T')[0],
+        customerName: name,
+        phone: phone,
+        address: address,
+        note: note,
+        courier: courier,
+        tracking: trackingCode,
+        items: [...cartItems],
+        discount: discount,
+        advance: advance,
+        deliveryCharge: delivery,
+        grandTotal: grandTotal,
+        status: actionType === 'save-and-courier' ? 'RTS' : 'Pending'
+      };
+
+      orders.unshift(newOrder);
+      persistOrders();
+
+      if (actionType === 'save-and-print') {
+        openThermalInvoiceModal(newOrder.id);
+      } else if (actionType === 'save-and-courier') {
+        showToast('success', `Order Booked with ${courier}! Tracking: ${trackingCode}`);
+      } else {
+        showToast('success', `Order ${invoiceNumber} created successfully!`);
+      }
+
+      resetNewOrderForm();
+      navigateTo('orders');
+    }
+
+    function resetNewOrderForm() {
+      document.getElementById('order-form-name').value = '';
+      document.getElementById('order-form-phone').value = '';
+      document.getElementById('order-form-address').value = '';
+      document.getElementById('order-form-note').value = '';
+      document.getElementById('pricing-discount').value = '0';
+      document.getElementById('pricing-advance').value = '0';
+      document.getElementById('pricing-delivery').value = '60';
+      cartItems = [];
+      renderCartItems();
+      calculateOrderGrandTotal();
+      handleCustomerPhoneLookup('');
+    }
+
+    // ==================== ORDER LIST VIEW ====================
+    function filterOrderListTab(tabName) {
+      currentOrderTab = tabName;
+      const tabs = ['Pending', 'RTS', 'Shipping', 'Delivered', 'Returned', 'Cancelled', 'All'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`otab-${t}`);
+        if (btn) {
+          if (t === tabName) {
+            btn.className = 'pb-3 border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400 whitespace-nowrap flex items-center gap-1.5';
+          } else {
+            btn.className = 'pb-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5';
+          }
+        }
+      });
+      renderOrdersTable();
+    }
+
+    function filterOrdersByStatus(status) {
+      navigateTo('orders');
+      filterOrderListTab(status);
+    }
+
+    function editOrderStatusQuick(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return;
+      Swal.fire({
+        title: `Order Status: ${order.invoice}`,
+        input: 'select',
+        inputOptions: {
+          'Pending': 'Pending',
+          'RTS': 'RTS',
+          'Shipping': 'Shipping',
+          'Delivered': 'Delivered',
+          'Returned': 'Returned',
+          'Cancelled': 'Cancelled'
+        },
+        inputValue: order.status,
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5'
+      }).then((result) => {
+        if (result.isConfirmed && result.value) {
+          updateOrderStatus(orderId, result.value);
+          if (currentView === 'search') {
+            handleSearchQuery(document.getElementById('main-search-input').value);
+          }
+        }
+      });
+    }
+
+    function getStatusBadgeClass(status) {
+      switch (status) {
+        case 'Pending': return 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300';
+        case 'RTS': return 'bg-orange-100 text-orange-800 dark:bg-orange-950/40 dark:text-orange-300';
+        case 'Shipping': return 'bg-sky-100 text-sky-800 dark:bg-sky-950/40 dark:text-sky-300';
+        case 'Delivered': return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300';
+        case 'Returned': return 'bg-pink-100 text-pink-800 dark:bg-pink-950/40 dark:text-pink-300';
+        case 'Cancelled': return 'bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300';
+        default: return 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300';
+      }
+    }
+
+    function renderOrdersTable() {
+      const tbody = document.getElementById('orders-table-tbody');
+      const emptyState = document.getElementById('orders-empty-state');
+      const paginationInfo = document.getElementById('orders-pagination-info');
+      const searchQuery = (document.getElementById('order-list-search-input')?.value || '').trim().toLowerCase();
+      const sortBy = document.getElementById('order-sort-by')?.value || 'newest';
+
+      let filtered = orders.filter(o => {
+        const matchesTab = (currentOrderTab === 'All') || (o.status === currentOrderTab);
+        const matchesSearch = searchQuery ? (
+          o.customerName.toLowerCase().includes(searchQuery) ||
+          o.invoice.toLowerCase().includes(searchQuery) ||
+          o.phone.includes(searchQuery) ||
+          o.courier.toLowerCase().includes(searchQuery)
+        ) : true;
+        return matchesTab && matchesSearch;
+      });
+
+      // Sorting
+      if (sortBy === 'newest') filtered.sort((a, b) => b.id.localeCompare(a.id));
+      else if (sortBy === 'oldest') filtered.sort((a, b) => a.id.localeCompare(b.id));
+      else if (sortBy === 'amount-high') filtered.sort((a, b) => b.grandTotal - a.grandTotal);
+      else if (sortBy === 'amount-low') filtered.sort((a, b) => a.grandTotal - b.grandTotal);
+
+      paginationInfo.innerText = `Showing ${filtered.length} orders`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      tbody.innerHTML = filtered.map(o => `
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/40 transition-colors">
+          <td class="p-3.5 text-center">
+            <input type="checkbox" onchange="toggleOrderSelection('${o.id}', this.checked)" ${selectedOrderIds.has(o.id) ? 'checked' : ''} class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+          </td>
+          <td class="p-3.5 text-slate-500 whitespace-nowrap">${o.date}</td>
+          <td class="p-3.5 font-bold font-mono text-indigo-600 dark:text-indigo-400 whitespace-nowrap">${o.invoice}</td>
+          <td class="p-3.5">
+            <p class="font-bold text-slate-800 dark:text-slate-200">${o.customerName}</p>
+            <p class="text-[11px] text-slate-400">${o.phone}</p>
+            <p class="text-[10px] text-slate-400 truncate max-w-[160px]">${o.address}</p>
+          </td>
+          <td class="p-3.5 max-w-xs">
+            ${o.items.map(i => `<span class="inline-block bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-[10px] mr-1 mb-1">${i.name} x${i.qty}</span>`).join('')}
+            <div class="font-bold text-slate-900 dark:text-white mt-0.5">৳${o.grandTotal}</div>
+          </td>
+          <td class="p-3.5 text-slate-500 text-[11px] max-w-[120px] truncate">${o.note || '—'}</td>
+          <td class="p-3.5 font-mono text-[11px] text-indigo-600">
+            <span class="cursor-pointer hover:underline" onclick="showToast('info', 'Tracking: ${o.tracking}')">${o.tracking}</span>
+          </td>
+          <td class="p-3.5 whitespace-nowrap">
+            <span class="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full text-[10px] font-bold">${o.courier}</span>
+          </td>
+          <td class="p-3.5 text-center">
+            <button onclick="openThermalInvoiceModal('${o.id}')" class="p-1.5 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700" title="Print POS Thermal Invoice">
+              <i class="fa-solid fa-print text-sm"></i>
+            </button>
+          </td>
+          <td class="p-3.5 text-right whitespace-nowrap space-x-1">
+            <select onchange="updateOrderStatus('${o.id}', this.value)" class="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-[10px] font-bold px-2 py-1 outline-none ${getStatusBadgeClass(o.status)}">
+              <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="RTS" ${o.status === 'RTS' ? 'selected' : ''}>RTS</option>
+              <option value="Shipping" ${o.status === 'Shipping' ? 'selected' : ''}>Shipping</option>
+              <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+              <option value="Returned" ${o.status === 'Returned' ? 'selected' : ''}>Returned</option>
+              <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+            <button onclick="deleteOrder('${o.id}')" class="p-1.5 text-slate-400 hover:text-rose-500" title="Delete Order">
+              <i class="fa-solid fa-trash-can text-xs"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function toggleOrderSelection(id, checked) {
+      if (checked) selectedOrderIds.add(id);
+      else selectedOrderIds.delete(id);
+    }
+
+    function toggleSelectAllOrders(checked) {
+      orders.forEach(o => {
+        if (checked) selectedOrderIds.add(o.id);
+        else selectedOrderIds.delete(o.id);
+      });
+      renderOrdersTable();
+    }
+
+    function updateOrderStatus(id, newStatus) {
+      const order = orders.find(o => o.id === id);
+      if (order) {
+        order.status = newStatus;
+        persistOrders();
+        renderOrdersTable();
+        showToast('success', `Status updated to ${newStatus}`);
+      }
+    }
+
+    function deleteOrder(id) {
+      Swal.fire({
+        title: 'Delete Order?',
+        text: 'Are you sure you want to permanently delete this order?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, delete'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          orders = orders.filter(o => o.id !== id);
+          persistOrders();
+          renderOrdersTable();
+          showToast('success', 'Order deleted');
+        }
+      });
+    }
+
+    function handleBulkStatusChangeModal() {
+      if (selectedOrderIds.size === 0) {
+        showToast('warning', 'Please select at least one order');
+        return;
+      }
+
+      Swal.fire({
+        title: `Change Status for ${selectedOrderIds.size} Orders`,
+        input: 'select',
+        inputOptions: {
+          'Pending': 'Pending',
+          'RTS': 'RTS',
+          'Shipping': 'Shipping',
+          'Delivered': 'Delivered',
+          'Returned': 'Returned',
+          'Cancelled': 'Cancelled'
+        },
+        inputPlaceholder: 'Select status',
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5'
+      }).then((result) => {
+        if (result.isConfirmed && result.value) {
+          orders.forEach(o => {
+            if (selectedOrderIds.has(o.id)) {
+              o.status = result.value;
+            }
+          });
+          selectedOrderIds.clear();
+          persistOrders();
+          renderOrdersTable();
+          showToast('success', `Updated to ${result.value}`);
+        }
+      });
+    }
+
+    function handleBulkPrint() {
+      if (selectedOrderIds.size === 0) {
+        showToast('warning', 'Please select orders to print');
+        return;
+      }
+      showToast('info', `Printing invoices for ${selectedOrderIds.size} orders...`);
+      window.print();
+    }
+
+    // ==================== THERMAL & POS INVOICE PRINTING ====================
+    function openThermalInvoiceModal(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return;
+
+      const modal = document.getElementById('print-modal');
+      const container = document.getElementById('printable-invoice-content');
+
+      container.innerHTML = `
+        <div class="text-center space-y-1 pb-3 border-b border-dashed border-slate-300">
+          <h2 class="text-base font-extrabold tracking-wider">RAFIN ERP</h2>
+          <p class="text-[10px] text-slate-500">Online Store & Fashion Express</p>
+          <p class="text-[10px]">Hotline: +880 1700-000000</p>
+          <p class="text-[9px] text-slate-400">Dhaka, Bangladesh</p>
+        </div>
+
+        <div class="py-2 border-b border-dashed border-slate-300 space-y-1 text-[11px]">
+          <div class="flex justify-between font-bold">
+            <span>Invoice: ${order.invoice}</span>
+            <span>Date: ${order.date}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Courier: ${order.courier}</span>
+            <span>Tracking: ${order.tracking}</span>
+          </div>
+        </div>
+
+        <div class="py-2 border-b border-dashed border-slate-300 text-[11px] space-y-0.5">
+          <p class="font-bold">Customer: ${order.customerName}</p>
+          <p>Phone: ${order.phone}</p>
+          <p class="text-[10px] text-slate-600">Address: ${order.address}</p>
+          ${order.note ? `<p class="text-[10px] italic text-slate-500">Note: ${order.note}</p>` : ''}
+        </div>
+
+        <div class="py-2 border-b border-dashed border-slate-300">
+          <table class="w-full text-left text-[10px]">
+            <thead>
+              <tr class="border-b border-slate-200">
+                <th class="pb-1">Item</th>
+                <th class="pb-1 text-center">Qty</th>
+                <th class="pb-1 text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${order.items.map(i => `
+                <tr>
+                  <td class="py-1">${i.name}</td>
+                  <td class="py-1 text-center">${i.qty}</td>
+                  <td class="py-1 text-right">৳${i.price * i.qty}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="py-2 border-b border-dashed border-slate-300 space-y-1 text-[11px]">
+          <div class="flex justify-between">
+            <span>Sub Total:</span>
+            <span>৳${order.items.reduce((s, i) => s + (i.price * i.qty), 0)}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Delivery Charge:</span>
+            <span>৳${order.deliveryCharge}</span>
+          </div>
+          ${order.discount ? `<div class="flex justify-between text-rose-600"><span>Discount:</span><span>-৳${order.discount}</span></div>` : ''}
+          ${order.advance ? `<div class="flex justify-between text-emerald-600"><span>Advance:</span><span>-৳${order.advance}</span></div>` : ''}
+          <div class="flex justify-between font-bold text-sm pt-1 border-t border-slate-200">
+            <span>Payable Amount:</span>
+            <span>৳${order.grandTotal}</span>
+          </div>
+        </div>
+
+        <div class="pt-2 text-center flex flex-col items-center space-y-2">
+          <svg id="invoice-barcode-svg" class="w-full h-12"></svg>
+          <p class="text-[9px] text-slate-400">Thank you for shopping with Rafin ERP!</p>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+
+      // Generate Barcode
+      setTimeout(() => {
+        try {
+          JsBarcode("#invoice-barcode-svg", order.invoice, {
+            format: "CODE128",
+            height: 35,
+            displayValue: true,
+            fontSize: 10,
+            margin: 0
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }, 50);
+    }
+
+    function closePrintModal() {
+      document.getElementById('print-modal').classList.add('hidden');
+    }
+
+    // ==================== PRODUCTS MANAGEMENT ====================
+    function renderProductsTable() {
+      const tbody = document.getElementById('products-table-tbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = products.map(p => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+          <td class="p-3.5 flex items-center space-x-3">
+            <span class="text-2xl">${p.image || '📦'}</span>
+            <div>
+              <p class="font-bold text-slate-800 dark:text-slate-200">${p.name}</p>
+              <p class="text-[10px] text-slate-400">Rafin ERP Exclusive</p>
+            </div>
+          </td>
+          <td class="p-3.5 font-mono text-indigo-600">${p.sku}</td>
+          <td class="p-3.5 font-bold text-emerald-600">৳${p.price}</td>
+          <td class="p-3.5 font-semibold">${p.stock} units</td>
+          <td class="p-3.5">
+            <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-bold">In Stock</span>
+          </td>
+          <td class="p-3.5 text-right space-x-1">
+            <button onclick="deleteProduct('${p.id}')" class="p-1 text-slate-400 hover:text-rose-500">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openCreateProductModal() {
+      document.getElementById('modal-product').classList.remove('hidden');
+    }
+    function closeCreateProductModal() {
+      document.getElementById('modal-product').classList.add('hidden');
+    }
+
+    function saveNewProduct() {
+      const name = document.getElementById('new-prod-name').value.trim();
+      const sku = document.getElementById('new-prod-sku').value.trim();
+      const price = Number(document.getElementById('new-prod-price').value || 0);
+      const stock = Number(document.getElementById('new-prod-stock').value || 100);
+
+      if (!name || !sku || price <= 0) {
+        showToast('warning', 'Please fill product name, SKU and price');
+        return;
+      }
+
+      products.push({
+        id: `p-${Date.now()}`,
+        name: name,
+        sku: sku,
+        price: price,
+        stock: stock,
+        isStarred: false,
+        image: '🛍️'
+      });
+
+      persistProducts();
+      closeCreateProductModal();
+      showToast('success', `Product ${name} created!`);
+    }
+
+    function deleteProduct(id) {
+      products = products.filter(p => p.id !== id);
+      persistProducts();
+      showToast('success', 'Product deleted');
+    }
+
+    // ==================== AI AUTO-FILL LOGIC ====================
+    function openAIAutoFillModal() {
+      document.getElementById('modal-ai-autofill').classList.remove('hidden');
+      document.getElementById('ai-autofill-textarea').focus();
+    }
+    function closeAIAutoFillModal() {
+      document.getElementById('modal-ai-autofill').classList.add('hidden');
+    }
+
+    function processAIAutoFill() {
+      const text = document.getElementById('ai-autofill-textarea').value.trim();
+      if (!text) {
+        showToast('warning', 'Please paste some text');
+        return;
+      }
+
+      // 1. Phone number (11 digits starting with 01)
+      const phoneMatch = text.match(/01[3-9]\d{8}/);
+      if (phoneMatch) {
+        document.getElementById('order-form-phone').value = phoneMatch[0];
+        handleCustomerPhoneLookup(phoneMatch[0]);
+      }
+
+      // 2. Name
+      const lines = text.split(/[\n,]/).map(l => l.trim()).filter(Boolean);
+      if (lines.length > 0) {
+        const potentialName = lines[0].replace(/name[:=]/i, '').trim();
+        if (potentialName && !potentialName.match(/\d{5}/)) {
+          document.getElementById('order-form-name').value = potentialName;
+        }
+      }
+
+      // 3. Address
+      const addressLines = lines.filter(l => !l.match(/01[3-9]\d{8}/) && l.length > 5 && !l.toLowerCase().includes('delivery'));
+      if (addressLines.length > 1) {
+        document.getElementById('order-form-address').value = addressLines.slice(1).join(', ');
+      } else if (addressLines.length === 1) {
+        document.getElementById('order-form-address').value = addressLines[0];
+      }
+
+      // 4. Products matching
+      products.forEach(p => {
+        if (text.toLowerCase().includes(p.name.toLowerCase()) || text.toLowerCase().includes(p.sku.toLowerCase())) {
+          addProductToCart(p.id);
+        }
+      });
+
+      // Default product if none matched
+      if (cartItems.length === 0 && products.length > 0) {
+        addProductToCart(products[0].id);
+      }
+
+      closeAIAutoFillModal();
+      showToast('success', 'AI parsed details into order form!');
+    }
+
+    // ==================== BARCODE / SCANNER LOGIC ====================
+    function openScannerModal() {
+      document.getElementById('modal-scanner').classList.remove('hidden');
+      document.getElementById('scanner-manual-input').focus();
+    }
+    function closeScannerModal() {
+      document.getElementById('modal-scanner').classList.add('hidden');
+    }
+
+    function processScannedCode(code) {
+      const clean = code.trim().toLowerCase();
+      if (!clean) return;
+
+      const order = orders.find(o => o.invoice.toLowerCase() === clean || o.tracking.toLowerCase() === clean);
+      if (order) {
+        closeScannerModal();
+        openThermalInvoiceModal(order.id);
+        showToast('success', `Found Order ${order.invoice}`);
+      } else {
+        showToast('error', `No order found for code "${code}"`);
+      }
+    }
+
+    // ==================== FAST SEARCH MODAL ====================
+    function openFastSearchModal() {
+      document.getElementById('modal-fast-search').classList.remove('hidden');
+      document.getElementById('fast-search-input').focus();
+    }
+    function closeFastSearchModal() {
+      document.getElementById('modal-fast-search').classList.add('hidden');
+    }
+
+    function handleFastSearch(query) {
+      const clean = query.trim().toLowerCase();
+      const resultsContainer = document.getElementById('fast-search-results');
+
+      if (!clean) {
+        resultsContainer.innerHTML = '<div class="p-4 text-center text-slate-400">Start typing to search orders...</div>';
+        return;
+      }
+
+      const filtered = orders.filter(o => 
+        o.customerName.toLowerCase().includes(clean) || 
+        o.invoice.toLowerCase().includes(clean) || 
+        o.phone.includes(clean)
+      );
+
+      if (filtered.length === 0) {
+        resultsContainer.innerHTML = `<div class="p-4 text-center text-slate-400">No results found for "${query}"</div>`;
+        return;
+      }
+
+      resultsContainer.innerHTML = filtered.map(o => `
+        <div onclick="closeFastSearchModal(); openThermalInvoiceModal('${o.id}')" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer flex justify-between items-center transition-colors">
+          <div>
+            <span class="font-bold text-indigo-600">${o.invoice}</span>
+            <span class="font-semibold text-slate-800 dark:text-slate-200 ml-2">${o.customerName}</span>
+            <span class="text-slate-400 ml-2">(${o.phone})</span>
+          </div>
+          <span class="font-bold text-slate-900 dark:text-white">৳${o.grandTotal}</span>
+        </div>
+      `).join('');
+    }
+
+    // ==================== ACCOUNTING & EXPENSES ====================
+    function openAddExpenseModal() {
+      document.getElementById('modal-expense').classList.remove('hidden');
+    }
+
+    function saveExpense() {
+      const cat = document.getElementById('expense-cat').value;
+      const amount = Number(document.getElementById('expense-amount').value || 0);
+      const desc = document.getElementById('expense-desc').value.trim();
+
+      if (amount <= 0) {
+        showToast('warning', 'Please enter a valid amount');
+        return;
+      }
+
+      expenses.unshift({
+        id: `exp-${Date.now()}`,
+        date: new Date().toISOString().split('T')[0],
+        category: cat,
+        desc: desc || cat,
+        amount: amount
+      });
+
+      persistExpenses();
+      document.getElementById('modal-expense').classList.add('hidden');
+      showToast('success', 'Expense recorded');
+    }
+
+    function renderExpensesTable() {
+      const tbody = document.getElementById('expenses-table-tbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = expenses.map(e => `
+        <tr>
+          <td class="p-3.5">${e.date}</td>
+          <td class="p-3.5"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-[10px] font-semibold">${e.category}</span></td>
+          <td class="p-3.5">${e.desc}</td>
+          <td class="p-3.5 font-bold text-amber-600">৳${Number(e.amount).toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ==================== CUSTOMERS TABLE ====================
+    function renderCustomersTable() {
+      const tbody = document.getElementById('customers-table-tbody');
+      if (!tbody) return;
+
+      const customerMap = {};
+      orders.forEach(o => {
+        if (!customerMap[o.phone]) {
+          customerMap[o.phone] = {
+            name: o.customerName,
+            phone: o.phone,
+            totalOrders: 0,
+            delivered: 0,
+            returns: 0
+          };
+        }
+        customerMap[o.phone].totalOrders += 1;
+        if (o.status === 'Delivered') customerMap[o.phone].delivered += 1;
+        if (o.status === 'Returned') customerMap[o.phone].returns += 1;
+      });
+
+      const list = Object.values(customerMap);
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-400">No customers found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = list.map(c => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+          <td class="p-3.5 font-bold">${c.name}</td>
+          <td class="p-3.5 font-mono text-slate-500">${c.phone}</td>
+          <td class="p-3.5 font-bold">${c.totalOrders}</td>
+          <td class="p-3.5 text-emerald-600 font-bold">${c.delivered}</td>
+          <td class="p-3.5 text-rose-600 font-bold">${c.returns}</td>
+          <td class="p-3.5"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold text-[10px]">98% (High Trust)</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // ==================== DATA EXPORT & IMPORT BACKUP ====================
+    function exportDataToJSON() {
+      const backupData = {
+        app: 'Rafin ERP',
+        exportedAt: new Date().toISOString(),
+        products: products,
+        orders: orders,
+        expenses: expenses
+      };
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Rafin_ERP_Backup_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      showToast('success', 'Backup exported successfully!');
+    }
+
+    function handleImportBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = JSON.parse(evt.target.result);
+          if (data.orders) orders = data.orders;
+          if (data.products) products = data.products;
+          if (data.expenses) expenses = data.expenses;
+
+          persistOrders();
+          persistProducts();
+          persistExpenses();
+          updateDashboardFinancialKPIs();
+          showToast('success', 'Backup restored successfully!');
+        } catch (err) {
+          showToast('error', 'Invalid backup file format');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function syncLocationDataModal() {
+      showToast('info', 'Syncing Pathao location database...');
+      setTimeout(() => {
+        showToast('success', 'Pathao City & Zone list synced 100%!');
+      }, 1200);
+    }
+
+    function syncWebOrdersMock() {
+      showToast('info', 'Connecting to WooCommerce / Shopify...');
+      setTimeout(() => {
+        showToast('success', 'All web orders are currently up to date!');
+      }, 1000);
+    }
+
+    // Keyboard Shortcuts (ESC to close modals)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAIAutoFillModal();
+        closeScannerModal();
+        closeFastSearchModal();
+        closePrintModal();
+        closeCreateProductModal();
+        closeUserDropdown();
+      }
+    });
+
+    // Initial App Bootstrapping
+    window.addEventListener('DOMContentLoaded', () => {
+      // Restore Theme
+      const savedTheme = localStorage.getItem('rafin_erp_theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        const icon = document.getElementById('theme-icon');
+        if (icon) icon.className = 'fa-regular fa-sun text-amber-400';
+      }
+
+      // Check hash route or default to dashboard
+      const hash = window.location.hash.replace('#', '') || 'dashboard';
+      navigateTo(hash);
+      updateGlobalCounters();
+    });
+  </script>
+</body>
+</html>
+```
