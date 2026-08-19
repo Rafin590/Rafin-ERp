@@ -1050,7 +1050,7 @@ async function submitWebOrder() {
               </span>
             </div>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-              <input id="gsheet-web-app-url" type="url" placeholder="https://script.google.com/macros/s/AKfycbx.../exec" value="https://script.google.com/macros/s/AKfycbz_omnistore_live_backend_demo/exec" class="flex-1 px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-mono font-bold text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
+              <input id="gsheet-web-app-url" type="url" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec" class="flex-1 px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-mono font-bold text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
               <div class="flex gap-2">
                 <button onclick="saveGoogleSheetSettings()" class="px-4 py-2.5 bg-slate-900 dark:bg-slate-800 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5">
                   <i class="fa-solid fa-floppy-disk"></i> সেভ করুন
@@ -2469,7 +2469,9 @@ function jsonResponse(data) {
         email: "info@fashionhubbd.com",
         address: "House 14, Road 7, Dhanmondi, Dhaka-1205",
         currency: "৳",
-        activePackage: "Growth (৳1,490/mo)"
+        activePackage: "Growth (৳1,490/mo)",
+        googleSheetUrl: "https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec",
+        googleSheetAutoSync: true
       },
       orders: [
         { id: "ORD-1001", date: "2026-08-19", customerName: "Tanvir Hasan", phone: "01712345678", address: "House 4, Road 2, Banani, Dhaka", items: [{ name: "Premium Cotton Panjabi", qty: 1, price: 1850 }], totalAmount: 1920, deliveryFee: 70, advance: 0, codAmount: 1920, status: "In Courier", courier: "Steadfast", trackingId: "CID-98421", channel: "Website API" },
@@ -2514,6 +2516,10 @@ function jsonResponse(data) {
 
     // Load from LocalStorage or initialize default
     let AppState = JSON.parse(localStorage.getItem('omnistore_erp_data')) || DEFAULT_STORE_DATA;
+    if (AppState && AppState.storeProfile) {
+      AppState.storeProfile.googleSheetUrl = "https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec";
+      AppState.storeProfile.googleSheetAutoSync = true;
+    }
     let CurrentUser = JSON.parse(localStorage.getItem('omnistore_current_user')) || null;
     let CurrentLang = 'bn';
     let SelectedOrderIds = new Set();
