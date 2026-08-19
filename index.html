@@ -497,7 +497,19 @@
           <!-- Google Sheets Live Sync Button -->
           <button onclick="switchPage('google-sheets')" id="header-gsheet-btn" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition">
             <i class="fa-solid fa-table text-xs"></i>
-            <span class="hidden md:inline">Google Sheet Sync</span>
+            <span class="hidden md:inline">Google Sheet</span>
+          </button>
+
+          <!-- Clean Store / 0 Data Button -->
+          <button onclick="clearAllStoreData()" title="সকল ডেমো অর্ডার মুছে ফ্রেশ স্টোর শুরু করুন" class="px-2.5 py-2 bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-bold border border-rose-200 dark:border-rose-900 flex items-center gap-1 transition">
+            <i class="fa-solid fa-trash-can text-xs"></i>
+            <span class="hidden xl:inline">ক্লিন স্টোর (০ ডাটা)</span>
+          </button>
+
+          <!-- Load Demo Data Button -->
+          <button onclick="resetToDemoData()" title="পরীক্ষা করার জন্য ডেমো ডাটা লোড করুন" class="px-2.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 flex items-center gap-1 transition">
+            <i class="fa-solid fa-rotate text-xs"></i>
+            <span class="hidden xl:inline">ডেমো লোড</span>
           </button>
 
           <!-- Language Switcher (BN/EN) -->
@@ -2574,7 +2586,11 @@ function jsonResponse(data) {
       AppState.storeProfile.googleSheetUrl = "https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec";
       AppState.storeProfile.googleSheetAutoSync = true;
     }
-    let CurrentUser = JSON.parse(localStorage.getItem('omnistore_current_user')) || null;
+    let CurrentUser = JSON.parse(localStorage.getItem('omnistore_current_user')) || {
+      email: 'admin@omnistore.com',
+      role: 'Super Admin',
+      name: 'Admin Manager'
+    };
     let CurrentLang = 'bn';
     let SelectedOrderIds = new Set();
     let ActiveOrderItemsInModal = [];
@@ -3310,6 +3326,11 @@ function jsonResponse(data) {
       const tbody = document.getElementById('dash-recent-orders-body');
       if (!tbody) return;
       
+      if (AppState.orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 font-medium">কোনো সাম্প্রতিক অর্ডার নেই। নতুন অর্ডার তৈরি করতে "+ নতুন অর্ডার" চাপুন।</td></tr>`;
+        return;
+      }
+
       const recent = AppState.orders.slice(0, 5);
       tbody.innerHTML = recent.map(o => `
         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
@@ -3368,6 +3389,23 @@ function jsonResponse(data) {
         const matchesChannel = channelFilter === 'ALL' || o.channel === channelFilter;
         return matchesSearch && matchesCourier && matchesChannel;
       });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-10">
+              <div class="flex flex-col items-center justify-center text-slate-400 space-y-2">
+                <i class="fa-solid fa-box-open text-3xl text-slate-300 dark:text-slate-600"></i>
+                <div class="text-xs font-bold text-slate-600 dark:text-slate-300">কোনো অর্ডার পাওয়া যায়নি</div>
+                <p class="text-[11px] text-slate-400">নতুন অর্ডার তৈরি করতে উপরের <b>"+ নতুন অর্ডার"</b> বাটনে চাপ দিন বা গুগল শিট থেকে সিঙ্ক করুন।</p>
+                <button onclick="openCreateOrderModal()" class="mt-2 px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white rounded-lg text-xs font-bold shadow">+ প্রথম অর্ডার তৈরি করুন</button>
+              </div>
+            </td>
+          </tr>
+        `;
+        updateGlobalCounters();
+        return;
+      }
 
       tbody.innerHTML = filtered.map(o => `
         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
@@ -4047,10 +4085,34 @@ function jsonResponse(data) {
       showToast('success', 'সম্পূর্ণ ডাটাবেজ ব্যাকআপ ডাউনলোড হয়েছে');
     };
 
+    window.clearAllStoreData = function() {
+      Swal.fire({
+        title: 'সকল ডেমো ডাটা মুছবেন?',
+        text: 'অর্ডার, কাস্টমার ও খরচের ডেমো তালিকা মুছে সম্পূর্ণ ক্লিন (০ ডাটা) স্টোর শুরু হবে।',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        confirmButtonText: 'হ্যাঁ, সম্পূর্ণ ক্লিন করুন',
+        cancelButtonText: 'বাতিল'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          AppState.orders = [];
+          AppState.customers = [];
+          AppState.expenses = [];
+          saveState();
+          showToast('success', 'সকল ডেমো ডাটা মুছে ফ্রেশ স্টোর তৈরি হয়েছে!');
+          updateGlobalCounters();
+          switchPage('dashboard');
+        }
+      });
+    };
+
     window.resetToDemoData = function() {
       AppState = JSON.parse(JSON.stringify(DEFAULT_STORE_DATA));
+      AppState.storeProfile.googleSheetUrl = "https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec";
+      AppState.storeProfile.googleSheetAutoSync = true;
       saveState();
-      showToast('success', 'সকল ডেমো ডাটা রিসেট হয়েছে!');
+      showToast('success', 'সকল ডেমো ডাটা রিলোড হয়েছে!');
       initAppInterface();
     };
 
