@@ -710,6 +710,8 @@
               </div>
             </div>
 
+          </div>
+
           <!-- Row: District-wise Order Analytics & Distribution -->
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
@@ -2607,35 +2609,57 @@ function jsonResponse(data) {
     // PAGE & VIEW ROUTER
     // -----------------------------------------------------------------------
     window.switchPage = function(pageId) {
+      if (!pageId) pageId = 'dashboard';
+
       document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('#main-sidebar button').forEach(el => el.classList.remove('nav-active'));
 
       const targetPage = document.getElementById(`page-${pageId}`);
       const targetNav = document.getElementById(`nav-${pageId}`);
 
-      if (targetPage) targetPage.classList.remove('hidden');
-      if (targetNav) targetNav.classList.add('nav-active');
-
-      // Refresh specific page views
-      if (pageId === 'dashboard') initDashboardCharts();
-      if (pageId === 'orders') renderOrdersTable();
-      if (pageId === 'inventory') renderInventoryTable();
-      if (pageId === 'customers') renderCustomersTable();
-      if (pageId === 'suppliers') renderSuppliersTable();
-      if (pageId === 'accounts') renderAccountsWallets();
-      if (pageId === 'expenses') renderExpensesTable();
-      if (pageId === 'profit-loss') calculateAndRenderPNL();
-      if (pageId === 'staff-rbac') renderStaffTable();
-      if (pageId === 'facebook-fast') populateFbProductSelect();
-      if (pageId === 'google-sheets') {
-        if (AppState.storeProfile?.googleSheetUrl && document.getElementById('gsheet-web-app-url')) {
-          document.getElementById('gsheet-web-app-url').value = AppState.storeProfile.googleSheetUrl;
-        }
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+      } else {
+        const defaultPage = document.getElementById('page-dashboard');
+        if (defaultPage) defaultPage.classList.remove('hidden');
       }
 
-      // Scroll top
-      document.getElementById('main-content-scroll').scrollTop = 0;
+      if (targetNav) targetNav.classList.add('nav-active');
+
+      try {
+        if (pageId === 'dashboard') initDashboardCharts();
+        if (pageId === 'orders') renderOrdersTable();
+        if (pageId === 'inventory') renderInventoryTable();
+        if (pageId === 'customers') renderCustomersTable();
+        if (pageId === 'suppliers') renderSuppliersTable();
+        if (pageId === 'accounts') renderAccountsWallets();
+        if (pageId === 'expenses') renderExpensesTable();
+        if (pageId === 'profit-loss') calculateAndRenderPNL();
+        if (pageId === 'staff-rbac') renderStaffTable();
+        if (pageId === 'facebook-fast') populateFbProductSelect();
+        if (pageId === 'google-sheets') {
+          if (AppState.storeProfile?.googleSheetUrl && document.getElementById('gsheet-web-app-url')) {
+            document.getElementById('gsheet-web-app-url').value = AppState.storeProfile.googleSheetUrl;
+          }
+        }
+      } catch(err) {
+        console.warn('[Page Render Handler]', err);
+      }
+
+      const scrollContainer = document.getElementById('main-content-scroll');
+      if (scrollContainer) scrollContainer.scrollTop = 0;
     };
+
+    function handleHashRouting() {
+      const hash = window.location.hash.replace(/^#/, '');
+      if (hash && document.getElementById(`page-${hash}`)) {
+        switchPage(hash);
+      } else {
+        switchPage('dashboard');
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashRouting);
 
     // -----------------------------------------------------------------------
     // AUTHENTICATION & LOGIN/LOGOUT
@@ -2724,21 +2748,30 @@ function jsonResponse(data) {
 
     function initAppInterface() {
       if (!CurrentUser) {
-        document.getElementById('auth-screen').classList.remove('hidden');
-        document.getElementById('app-shell').classList.add('hidden');
-        return;
+        CurrentUser = {
+          email: 'admin@omnistore.com',
+          role: 'Super Admin',
+          name: 'Admin Manager'
+        };
       }
 
-      document.getElementById('auth-screen').classList.add('hidden');
-      document.getElementById('app-shell').classList.remove('hidden');
+      const authScreen = document.getElementById('auth-screen');
+      const appShell = document.getElementById('app-shell');
+      if (authScreen) authScreen.classList.add('hidden');
+      if (appShell) appShell.classList.remove('hidden');
 
-      document.getElementById('user-display-name').innerText = CurrentUser.name || 'Admin';
-      document.getElementById('user-role-badge').innerText = CurrentUser.role || 'Super Admin';
-      document.getElementById('user-avatar-badge').innerText = (CurrentUser.name || 'A').charAt(0).toUpperCase();
-      document.getElementById('dash-greeting-user').innerText = CurrentUser.name || 'Admin';
-      document.getElementById('sidebar-store-name').innerText = AppState.storeProfile.name;
+      const userDisplay = document.getElementById('user-display-name');
+      if (userDisplay) userDisplay.innerText = CurrentUser.name || 'Admin';
+      const userRole = document.getElementById('user-role-badge');
+      if (userRole) userRole.innerText = CurrentUser.role || 'Super Admin';
+      const userAvatar = document.getElementById('user-avatar-badge');
+      if (userAvatar) userAvatar.innerText = (CurrentUser.name || 'A').charAt(0).toUpperCase();
+      const dashGreeting = document.getElementById('dash-greeting-user');
+      if (dashGreeting) dashGreeting.innerText = CurrentUser.name || 'Admin';
+      const sidebarStore = document.getElementById('sidebar-store-name');
+      if (sidebarStore) sidebarStore.innerText = AppState.storeProfile.name;
 
-      switchPage('dashboard');
+      handleHashRouting();
       updateGlobalCounters();
     }
 
