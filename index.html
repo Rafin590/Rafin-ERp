@@ -44,17 +44,19 @@
       <div>
         <p class="text-[11px] font-bold tracking-wider text-slate-500 uppercase px-2 mb-1.5">Core Operations</p>
         <nav class="space-y-0.5 text-xs font-medium">
-          <div onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+          <!-- 1. Dashboard -->
+          <div onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer sidebar-active">
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-gauge-high text-indigo-400 w-4"></i><span>Admin Dashboard</span></div>
             <span class="bg-emerald-950 text-emerald-400 text-[9px] px-1.5 py-0.5 rounded border border-emerald-800">Live</span>
           </div>
 
+          <!-- 2. Order Management -->
           <div onclick="switchTab('orders')" id="btn-orders" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-clipboard-list text-amber-400 w-4"></i><span>Order Management</span></div>
             <span class="bg-slate-800 text-slate-300 text-[10px] px-1.5 py-0.2 rounded-full font-bold" id="sidebar-order-count">3</span>
           </div>
 
-          <!-- WEB ORDERS DROPDOWN -->
+          <!-- 3. Web Orders Dropdown -->
           <div class="space-y-1">
             <div onclick="toggleWebDropdown()" id="btn-weborders-parent" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
               <div class="flex items-center gap-2.5"><i class="fa-solid fa-globe text-emerald-400 w-4"></i><span>Web Orders</span></div>
@@ -65,7 +67,7 @@
             </div>
 
             <div id="webDropdownList" class="hidden pl-6 pr-1 space-y-0.5 text-[11px] font-normal">
-              <div onclick="switchWebTab('listweb')" id="sub-listweb" class="sub-item p-1.5 hover:text-white cursor-pointer flex items-center gap-2">
+              <div onclick="switchWebTab('listweb')" id="sub-listweb" class="sub-item p-1.5 hover:text-white cursor-pointer flex items-center gap-2 sub-item-active">
                 <i class="fa-solid fa-list-check w-3"></i><span>ListWeb</span>
               </div>
               <div onclick="switchWebTab('analysis')" id="sub-analysis" class="sub-item p-1.5 text-slate-400 hover:text-white cursor-pointer flex items-center gap-2">
@@ -83,18 +85,20 @@
             </div>
           </div>
 
+          <!-- 4. Manual Order -->
           <div onclick="switchTab('manualentry')" id="btn-manualentry" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-wand-magic-sparkles text-purple-400 w-4"></i><span>Manual Order (AI Auto-fill)</span></div>
             <span class="bg-purple-950 text-purple-300 text-[9px] px-1.5 py-0.5 rounded border border-purple-800">AI</span>
           </div>
 
+          <!-- 5. Inventory & Packaging -->
           <div onclick="switchTab('inventory')" id="btn-inventory" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-boxes-stacked text-sky-400 w-4"></i><span>Inventory & Packaging</span></div>
-            <span class="bg-rose-950 text-rose-400 text-[9px] px-1.5 py-0.5 rounded">2 Low</span>
+            <span class="bg-rose-950 text-rose-400 text-[9px] px-1.5 py-0.5 rounded" id="sidebar-lowstock-badge">2 Low</span>
           </div>
 
-          <!-- SCAN TO RETURN (ACTIVE) -->
-          <div onclick="switchTab('scantoreturn')" id="btn-scantoreturn" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer sidebar-active">
+          <!-- 6. Scan to Return -->
+          <div onclick="switchTab('scantoreturn')" id="btn-scantoreturn" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-barcode text-cyan-400 w-4"></i><span>Scan to Return</span></div>
             <span class="bg-cyan-950 text-cyan-300 text-[9px] px-1.5 py-0.5 rounded border border-cyan-800">Scanner</span>
           </div>
@@ -167,7 +171,7 @@
         <i class="fa-solid fa-bars text-slate-500 cursor-pointer text-base"></i>
         <div class="relative w-full max-w-md">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
-          <input type="text" id="globalSearchInput" placeholder="অর্ডার আইডি, ফোন বা ট্র্যাকিং দিয়ে খুঁজুন..." class="w-full pl-10 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-indigo-500 transition">
+          <input type="text" id="globalSearchInput" oninput="handleUniversalSearch(this.value)" placeholder="অর্ডার আইডি, ফোন বা পণ্য দিয়ে খুঁজুন..." class="w-full pl-10 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-indigo-500 transition">
         </div>
       </div>
       <div class="flex items-center gap-2.5">
@@ -180,12 +184,85 @@
     <main class="flex-1 p-6 overflow-y-auto custom-scrollbar" id="content-container"></main>
   </div>
 
+  <!-- MODALS -->
+  <!-- Product Modal -->
+  <div id="productModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-2xl p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <h3 class="text-lg font-bold text-slate-800">নতুন পণ্য যোগ করুন</h3>
+        <button onclick="closeProductModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="font-semibold text-slate-600 block mb-1">প্রোডাক্টের নাম *</label>
+          <input type="text" id="newPName" placeholder="যেমন: Executive Cotton Panjabi" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-semibold text-slate-600 block mb-1">SKU কোড *</label>
+            <input type="text" id="newPSKU" placeholder="PAN-COT-05" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none font-mono focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="font-semibold text-slate-600 block mb-1">ক্যাটাগরি</label>
+            <select id="newPCat" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none">
+              <option value="Clothing">Clothing & Apparel</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div><label class="font-semibold text-slate-600 block mb-1">ক্রয়মূল্য (৳)</label><input type="number" id="newPBuy" placeholder="950" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none font-bold"></div>
+          <div><label class="font-semibold text-slate-600 block mb-1">বিক্রয়মূল্য (৳)</label><input type="number" id="newPSell" placeholder="1850" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none font-bold text-emerald-600"></div>
+          <div><label class="font-semibold text-slate-600 block mb-1">প্রাথমিক স্টক</label><input type="number" id="newPStock" placeholder="20" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none font-bold"></div>
+        </div>
+      </div>
+      <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+        <button onclick="closeProductModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 rounded-lg">বাতিল</button>
+        <button onclick="saveNewProduct()" class="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow">প্রোডাক্ট সেভ করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Adjust Modal -->
+  <div id="stockAdjustModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <h3 class="text-base font-bold text-slate-800" id="stockAdjustTitle">স্টক অ্যাডজাস্টমেন্ট</h3>
+        <button onclick="closeStockModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <input type="hidden" id="stockAdjustProductId">
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="font-semibold text-slate-600 block mb-1">অ্যাকশন টাইপ</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setStockAction('IN')" id="btnStockIn" class="py-2 font-bold rounded-lg border border-emerald-500 bg-emerald-50 text-emerald-600">+ স্টক ইন</button>
+            <button onclick="setStockAction('OUT')" id="btnStockOut" class="py-2 font-bold rounded-lg border border-slate-200 bg-slate-50 text-slate-600">- স্টক আউট</button>
+          </div>
+        </div>
+        <div>
+          <label class="font-semibold text-slate-600 block mb-1">পরিমাণ (Quantity) *</label>
+          <input type="number" id="stockAdjustQty" placeholder="কত পিস?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none font-bold text-sm">
+        </div>
+      </div>
+      <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+        <button onclick="closeStockModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 rounded-lg">বাতিল</button>
+        <button onclick="confirmStockAdjustment()" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow">আপডেট কনফার্ম</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Global In-Memory Database
+    // Global Databases
     let ordersList = [
       { id: "ORD-9021", date: "19 Aug, 2026", customer: "Tanvir Hasan", phone: "01712345678", address: "House 12, Road 4, Banani", city: "Dhaka", product: "Premium Cotton Panjabi", qty: 1, cod: 1850, status: "Processing", courier: "Steadfast", tracking: "ST-88911" },
-      { id: "ORD-9022", date: "19 Aug, 2026", customer: "Kamrul Islam", phone: "01521443322", address: "Kandirpar, Main Road", city: "Cumilla", product: "Silk Designer Saree", qty: 1, cod: 3200, status: "In-Transit", courier: "Pathao", tracking: "PT-44210" },
+      { id: "ORD-9022", date: "19 Aug, 2026", customer: "Kamrul Islam", phone: "01521443322", address: "Kandirpar, Main Road", city: "Cumilla", product: "Silk Designer Saree", qty: 1, cod: 3200, status: "Pending", courier: "Pathao", tracking: "PT-44210" },
       { id: "ORD-9023", date: "18 Aug, 2026", customer: "Sadia Afrin", phone: "01819876543", address: "GEC Circle, Nasirabad", city: "Chattogram", product: "Slim Fit Polo Shirt", qty: 2, cod: 1300, status: "Delivered", courier: "Steadfast", tracking: "ST-88912" }
+    ];
+
+    let webOrdersList = [
+      { id: "WEB-1048", platform: "WooCommerce", date: "20 Aug, 2026 (10:45 AM)", customer: "Rakib Chowdhury", phone: "01755667788", address: "Sector 7, Uttara", city: "Dhaka", product: "Executive Formal Shirt (L)", total: 1450, payment: "Cash on Delivery", status: "Unfulfilled", syncStatus: "Synced" },
+      { id: "SHO-5821", platform: "Shopify", date: "20 Aug, 2026 (09:20 AM)", customer: "Nusrat Jahan", phone: "01911223344", address: "Zindabazar", city: "Sylhet", product: "Embroidered Lawn Three Piece", total: 3800, payment: "bKash Online", status: "Unfulfilled", syncStatus: "Synced" }
     ];
 
     let productsList = [
@@ -195,136 +272,174 @@
       { id: "PRD-4", name: "Casual Denim Jeans", sku: "JNS-CAS-04", category: "Clothing", buyPrice: 700, sellPrice: 1200, stock: 2, alertLimit: 8, icon: "J" }
     ];
 
+    let packagingList = [
+      { id: "PKG-1", name: "Delivery Cardboard Box (Medium)", type: "Box", stock: 185, alertLimit: 50, cost: 22 },
+      { id: "PKG-2", name: "Waterproof Security Poly Bag", type: "Poly Bag", stock: 420, alertLimit: 100, cost: 4 },
+      { id: "PKG-3", name: "Bubble Wrap Roll (100m)", type: "Protection", stock: 6, alertLimit: 2, cost: 450 },
+      { id: "PKG-4", name: "Fragile Printed Tape (Roll)", type: "Tape", stock: 14, alertLimit: 5, cost: 85 }
+    ];
+
     let returnHistory = [
       { id: "RET-101", orderId: "ORD-9018", tracking: "ST-77123", customer: "Arif Ahmed", product: "Premium Cotton Panjabi", qty: 1, reason: "Customer Not Available", condition: "Intact (Restocked)", date: "20 Aug 2026", status: "Restocked" },
       { id: "RET-102", orderId: "ORD-9015", tracking: "PT-33890", customer: "Farhana Akter", product: "Silk Designer Saree", qty: 1, reason: "Color mismatch", condition: "Damaged Box (Claimed)", date: "19 Aug 2026", status: "Disputed" }
     ];
 
+    let activeFilterStatus = 'All';
+    let activeWebTab = 'listweb';
+    let activeWebPlatform = 'All';
+    let activeInvCategory = 'All';
+    let currentStockAction = 'IN';
     let currentScannedOrder = null;
 
+    // TEMPLATES
     const Views = {
-      dashboard: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Admin Dashboard Active</h2></div>`,
-      orders: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Order Management Active</h2></div>`,
-      weborders: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Web Orders Active</h2></div>`,
-      manualentry: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Manual Order Entry Active</h2></div>`,
-      inventory: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Inventory & Packaging Active</h2></div>`,
+      // 1. ADMIN DASHBOARD WITH DISTRICT BREAKDOWN
+      dashboard: `
+        <div class="space-y-6 max-w-7xl mx-auto pb-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs text-slate-500 font-semibold">চলতি মাসে মোট সেলস</span><h3 class="text-3xl font-bold text-slate-800 mt-2">৳ ১,৮৪,২০০</h3></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs text-slate-500 font-semibold">মোট প্রাপ্ত অর্ডার</span><h3 class="text-3xl font-bold text-slate-800 mt-2">১৪২ টি</h3></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs text-slate-500 font-semibold">ডেলিভারি সাকসেস রেট</span><h3 class="text-3xl font-bold text-emerald-600 mt-2">৮৮.৪%</h3></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><span class="text-xs text-slate-500 font-semibold">নিট প্রফিট</span><h3 class="text-3xl font-bold text-indigo-600 mt-2">৳ ৪১,২০০</h3></div>
+          </div>
 
-      // 6. SCAN TO RETURN HUB (FULL ENGINE)
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">অর্ডার স্ট্যাটাস পাইপলাইন (LIVE STATUS PIPELINE)</h4>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-center">
+              <div class="p-3 bg-amber-50/60 border border-amber-200 rounded-xl"><p class="text-xs font-semibold text-amber-700">অপেক্ষারত</p><h5 class="text-2xl font-bold text-amber-800 mt-1">১</h5></div>
+              <div class="p-3 bg-blue-50/60 border border-blue-200 rounded-xl"><p class="text-xs font-semibold text-blue-700">নিশ্চিত</p><h5 class="text-2xl font-bold text-blue-800 mt-1">০</h5></div>
+              <div class="p-3 bg-purple-50/60 border border-purple-200 rounded-xl"><p class="text-xs font-semibold text-purple-700">প্যাকিং</p><h5 class="text-2xl font-bold text-purple-800 mt-1">১</h5></div>
+              <div class="p-3 bg-sky-50/60 border border-sky-200 rounded-xl"><p class="text-xs font-semibold text-sky-700">কুরিয়ারে</p><h5 class="text-2xl font-bold text-sky-800 mt-1">০</h5></div>
+              <div class="p-3 bg-emerald-50/60 border border-emerald-200 rounded-xl"><p class="text-xs font-semibold text-emerald-700">ডেলিভার্ড</p><h5 class="text-2xl font-bold text-emerald-800 mt-1">১</h5></div>
+              <div class="p-3 bg-rose-50/60 border border-rose-200 rounded-xl"><p class="text-xs font-semibold text-rose-700">রিটার্ন</p><h5 class="text-2xl font-bold text-rose-800 mt-1">০</h5></div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 class="font-bold text-slate-800 text-base mb-1">দৈনিক বিক্রয় ও অর্ডার গ্রাফ</h4>
+            <div class="h-72 w-full"><canvas id="salesChart"></canvas></div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+              <h4 class="font-bold text-slate-800 text-base">জেলা ভিত্তিক অর্ডার সামারি (District Distribution)</h4>
+              <div class="space-y-4">
+                <div><div class="flex justify-between text-xs font-semibold mb-1"><span>Dhaka (ঢাকা)</span><span class="text-indigo-600 font-bold">৬৮ টি (৪৭.৯%)</span></div><div class="w-full bg-slate-100 h-2.5 rounded-full"><div class="bg-indigo-600 h-full rounded-full" style="width: 47.9%"></div></div></div>
+                <div><div class="flex justify-between text-xs font-semibold mb-1"><span>Chattogram (চট্টগ্রাম)</span><span class="text-emerald-600 font-bold">২৪ টি (১৬.৯%)</span></div><div class="w-full bg-slate-100 h-2.5 rounded-full"><div class="bg-emerald-500 h-full rounded-full" style="width: 16.9%"></div></div></div>
+              </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <h4 class="font-bold text-slate-800 text-base mb-2">অর্ডার পার্সেন্টেজ শেয়ার</h4>
+              <div class="h-56"><canvas id="districtRatioChart"></canvas></div>
+            </div>
+          </div>
+        </div>
+      `,
+
+      // 2. ORDER MANAGEMENT
+      orders: `
+        <div class="space-y-6 max-w-7xl mx-auto pb-10">
+          <div class="flex justify-between items-center">
+            <div><h2 class="text-2xl font-bold text-slate-800">Order Management</h2><p class="text-xs text-slate-500 mt-0.5">সব চ্যানেলের অর্ডার এক ড্যাশবোর্ডে ম্যানেজ ও ১-ক্লিকে কুরিয়ার বুকিং করুন</p></div>
+            <button onclick="switchTab('manualentry')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-sm transition"><i class="fa-solid fa-plus"></i> নতুন অর্ডার যোগ করুন</button>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <table class="w-full text-left text-xs text-slate-600">
+              <thead class="bg-slate-50/80 border-b border-slate-200 font-bold text-slate-400 uppercase tracking-wider">
+                <tr><th class="p-4">অর্ডার ID</th><th class="p-4">কাস্টমার</th><th class="p-4">পণ্য</th><th class="p-4">COD</th><th class="p-4">স্ট্যাটাস</th><th class="p-4 text-center">কুরিয়ার বুকিং</th></tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100" id="ordersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      `,
+
+      // 3. WEB ORDERS
+      weborders: `
+        <div class="space-y-6 max-w-7xl mx-auto pb-10">
+          <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-1.5 text-xs font-semibold">
+            <button onclick="switchWebTab('listweb')" id="tab-listweb" class="px-4 py-2 rounded-xl bg-indigo-600 text-white shadow-sm">ListWeb</button>
+            <button onclick="switchWebTab('analysis')" id="tab-analysis" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100">Analysis</button>
+            <button onclick="switchWebTab('product')" id="tab-product" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100">Product</button>
+            <button onclick="switchWebTab('syncweb')" id="tab-syncweb" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100">SyncWeb</button>
+            <button onclick="switchWebTab('setup')" id="tab-setup" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100">Setup</button>
+          </div>
+          <div id="web-sub-container"></div>
+        </div>
+      `,
+
+      // 4. MANUAL ORDER ENTRY (AI ENGINE)
+      manualentry: `
+        <div class="space-y-6 max-w-7xl mx-auto pb-12">
+          <div class="flex justify-between items-center">
+            <div><h2 class="text-2xl font-bold text-slate-800">Manual Order Entry (AI Auto-fill)</h2><p class="text-xs text-slate-500 mt-1">অগোছালো চ্যাট পেস্ট করলেই AI নাম, ফোন ও ঠিকানা অটো-ফিল করবে।</p></div>
+            <button onclick="loadSampleChat()" class="bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs px-3.5 py-2 rounded-xl border border-purple-200"><i class="fa-regular fa-clipboard"></i> ডেমো মেসেজ লোড</button>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+              <textarea id="rawMessageInput" rows="10" placeholder="কাস্টমারের মেসেজ পেস্ট করুন..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:border-purple-500"></textarea>
+              <button onclick="runAIExtractor()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xs py-3 rounded-xl shadow-md"><i class="fa-solid fa-wand-magic-sparkles"></i> AI দিয়ে অটো ফিল করুন</button>
+            </div>
+            <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3 text-xs">
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="font-bold text-slate-600">কাস্টমার নাম</label><input type="text" id="aiName" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 mt-1"></div>
+                <div><label class="font-bold text-slate-600">মোবাইল নম্বর</label><input type="text" id="aiPhone" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 mt-1"></div>
+              </div>
+              <div><label class="font-bold text-slate-600">ডেলিভারি ঠিকানা</label><input type="text" id="aiAddress" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 mt-1"></div>
+              <div class="grid grid-cols-3 gap-3">
+                <div class="col-span-2"><label class="font-bold text-slate-600">পণ্য</label><input type="text" id="aiProduct" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 mt-1"></div>
+                <div><label class="font-bold text-slate-600">মূল্য (৳)</label><input type="number" id="aiPrice" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 mt-1 font-bold"></div>
+              </div>
+              <button onclick="submitManualOrder()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl shadow-md mt-4">কনফার্ম ও সেভ করুন</button>
+            </div>
+          </div>
+        </div>
+      `,
+
+      // 5. INVENTORY & PACKAGING
+      inventory: `
+        <div class="space-y-6 max-w-7xl mx-auto pb-12">
+          <div class="flex justify-between items-center">
+            <div><h2 class="text-2xl font-bold text-slate-800">প্রোডাক্ট ও ইনভেন্টরি ক্যাটালগ</h2><p class="text-xs text-slate-500">স্টক লেভেল ও প্যাকেজিং ম্যাটেরিয়াল হিসাব</p></div>
+            <button onclick="openNewProductModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-sm">+ নতুন পণ্য</button>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <table class="w-full text-left text-xs text-slate-600">
+              <thead class="bg-slate-50/80 border-b border-slate-200 font-bold text-slate-400 uppercase tracking-wider">
+                <tr><th class="p-4">পণ্য</th><th class="p-4">SKU</th><th class="p-4">ক্রয়মূল্য</th><th class="p-4">বিক্রয়মূল্য</th><th class="p-4">স্টক</th><th class="p-4">স্ট্যাটাস</th><th class="p-4 text-center">স্টক ইন/আউট</th></tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100" id="inventoryTableBody"></tbody>
+            </table>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-100 bg-slate-50/50"><h3 class="text-sm font-bold text-slate-800">প্যাকেজিং ম্যাটেরিয়াল মজুদ</h3></div>
+            <table class="w-full text-left text-xs text-slate-600">
+              <tbody class="divide-y divide-slate-100" id="packagingTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      `,
+
+      // 6. SCAN TO RETURN HUB
       scantoreturn: `
         <div class="space-y-6 max-w-7xl mx-auto pb-12">
-          
-          <!-- Top Header -->
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-              <div class="flex items-center gap-2.5">
-                <h2 class="text-2xl font-bold text-slate-800">Scan to Return Hub</h2>
-                <span class="bg-cyan-50 text-cyan-600 border border-cyan-200 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1.5">
-                  <i class="fa-solid fa-barcode"></i> Auto Stock Restock Engine
-                </span>
-              </div>
-              <p class="text-xs text-slate-500 mt-1">USB স্ক্যানার বা ট্র্যাকিং কোড দিয়ে রিটার্ন পার্সেল স্ক্যান করুন — পণ্য স্বয়ংক্রিয়ভাবে ইনভেন্টরিতে রিস্টক হবে।</p>
-            </div>
-            
-            <div class="flex items-center gap-2.5">
-              <button onclick="loadSampleReturnScan()" class="bg-cyan-50 hover:bg-cyan-100 text-cyan-700 font-bold text-xs px-3.5 py-2 rounded-xl border border-cyan-200 flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-barcode"></i> ডেমো বারকোড স্ক্যান
-              </button>
-            </div>
+          <div class="flex justify-between items-center">
+            <div><h2 class="text-2xl font-bold text-slate-800">Scan to Return Hub</h2><p class="text-xs text-slate-500">USB স্ক্যানার দিয়ে স্ক্যান করুন — পণ্য অটো ইনভেন্টরিতে রিস্টক হবে।</p></div>
+            <button onclick="loadSampleReturnScan()" class="bg-cyan-50 hover:bg-cyan-100 text-cyan-700 font-bold text-xs px-3.5 py-2 rounded-xl border border-cyan-200">ডেমো স্ক্যান</button>
           </div>
-
-          <!-- Return KPIs -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-              <p class="text-xs font-semibold text-slate-400 uppercase">আজকের রিটার্ন স্ক্যান</p>
-              <h3 class="text-2xl font-bold text-slate-800 mt-1" id="kpi-ret-today">১ টি পার্সেল</h3>
-            </div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-              <p class="text-xs font-semibold text-slate-400 uppercase">অটো রিস্টকড (Restocked)</p>
-              <h3 class="text-2xl font-bold text-emerald-600 mt-1" id="kpi-ret-restocked">১ টি পণ্য</h3>
-            </div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-              <p class="text-xs font-semibold text-slate-400 uppercase">ড্যামেজ / ক্লেম আইটেম</p>
-              <h3 class="text-2xl font-bold text-rose-500 mt-1" id="kpi-ret-damaged">১ টি পণ্য</h3>
-            </div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-              <p class="text-xs font-semibold text-slate-400 uppercase">কুরিয়ার রিটার্ন রেশিও</p>
-              <h3 class="text-2xl font-bold text-indigo-600 mt-1">১১.৬%</h3>
-            </div>
-          </div>
-
-          <!-- SCANNER & RETURN PROCESSOR WORKBENCH -->
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <!-- Left Scanner Input Card (5 Columns) -->
-            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
-              <div class="space-y-4">
-                <div class="flex justify-between items-center">
-                  <label class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                    <i class="fa-solid fa-barcode text-cyan-600 text-base"></i> বারকোড / ট্র্যাকিং স্ক্যানার ইনপুট:
-                  </label>
-                  <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Scanner Ready</span>
-                </div>
-
-                <!-- Barcode Gun Focused Input -->
-                <div class="relative">
-                  <input type="text" id="scanBarcodeInput" onkeydown="handleBarcodeKeyDown(event)" placeholder="USB স্ক্যানার দিয়ে স্ক্যান করুন বা ORD/Tracking কোড লিখুন..." autofocus class="w-full bg-slate-50 border-2 border-indigo-500 rounded-xl p-3.5 text-xs text-slate-800 outline-none scan-glow font-mono font-bold transition">
-                  <button onclick="processReturnScan()" class="absolute right-2 top-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm">Search</button>
-                </div>
-
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500 space-y-1.5">
-                  <p class="font-bold text-slate-700 flex items-center gap-1"><i class="fa-solid fa-circle-info text-indigo-500"></i> স্ক্যান করার নিয়মাবলী:</p>
-                  <p class="text-[11px]">১. পার্সেলের গায়ের ইনভয়েস বারকোড বা কুরিয়ার ট্র্যাকিং নম্বর স্ক্যান করুন।</p>
-                  <p class="text-[11px]">২. তথ্য যাচাই করে "Receive & Restock" এ ক্লিক করলেই ইনভেন্টরি স্টক নিজে থেকেই আপডেট হয়ে যাবে।</p>
-                </div>
-              </div>
-
-              <div class="border-t border-slate-100 pt-3">
-                <p class="text-[11px] text-slate-400">সাপোর্টেড কুরিয়ার: Steadfast (ST-xxxx), Pathao (PT-xxxx), RedX</p>
-              </div>
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+              <input type="text" id="scanBarcodeInput" onkeydown="if(event.key==='Enter')processReturnScan()" placeholder="স্ক্যান করুন বা ট্র্যাকিং কোড লিখুন..." autofocus class="w-full bg-slate-50 border-2 border-indigo-500 rounded-xl p-3.5 text-xs outline-none scan-glow font-mono font-bold">
+              <button onclick="processReturnScan()" class="w-full bg-indigo-600 text-white font-bold text-xs py-2.5 rounded-lg shadow-sm">Search Order</button>
             </div>
-
-            <!-- Right Verification & Restock Card (7 Columns) -->
             <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-              <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3 flex items-center justify-between">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-box-open text-cyan-600"></i> স্ক্যানকৃত পার্সেলের তথ্য ও রিস্টক ভেরিফিকেশন</span>
-                <span id="scanMatchBadge" class="text-[10px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full font-bold">No Active Scan</span>
-              </h3>
-
-              <!-- Scanned Order Details Container -->
-              <div id="scannedOrderDetails" class="space-y-4 text-xs">
-                <div class="p-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-xl">
-                  <i class="fa-solid fa-barcode text-4xl text-slate-300 mb-2"></i>
-                  <p>বারকোড স্ক্যান করার পর অর্ডারের বিস্তারিত তথ্য এখানে প্রদর্শিত হবে।</p>
-                </div>
-              </div>
+              <div id="scannedOrderDetails" class="text-xs text-slate-400 p-8 text-center border border-dashed border-slate-200 rounded-xl">পার্সেল স্ক্যান করার পর তথ্য এখানে প্রদর্শিত হবে।</div>
             </div>
-
           </div>
-
-          <!-- RETURN PARCEL HISTORY TABLE -->
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-              <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-indigo-600"></i> সাম্প্রতিক রিসিভকৃত রিটার্ন লগ</h3>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-xs text-slate-600">
-                <thead class="bg-slate-50/80 border-b border-slate-200 font-bold text-slate-400 uppercase tracking-wider">
-                  <tr>
-                    <th class="p-4">রিটার্ন ID ও তারিখ</th>
-                    <th class="p-4">অর্ডার ও ট্র্যাকিং</th>
-                    <th class="p-4">গ্রাহক</th>
-                    <th class="p-4">পণ্য ও পরিমাণ</th>
-                    <th class="p-4">রিটার্ন কারণ ও কন্ডিশন</th>
-                    <th class="p-4">স্টক স্ট্যাটাস</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100" id="returnHistoryTableBody">
-                  <!-- Injected via JavaScript -->
-                </tbody>
-              </table>
-            </div>
+            <div class="p-4 border-b border-slate-100 bg-slate-50/50"><h3 class="text-sm font-bold text-slate-800">সাম্প্রতিক রিসিভকৃত রিটার্ন হিস্টোরি</h3></div>
+            <table class="w-full text-left text-xs text-slate-600"><tbody class="divide-y divide-slate-100" id="returnHistoryTableBody"></tbody></table>
           </div>
-
         </div>
       `,
 
@@ -340,6 +455,15 @@
       team: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Team Management</h2></div>`
     };
 
+    const WebSubViews = {
+      listweb: `<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"><table class="w-full text-left text-xs text-slate-600"><tbody class="divide-y divide-slate-100" id="webOrdersTableBody"></tbody></table></div>`,
+      analysis: `<div class="p-6 bg-white rounded-2xl border border-slate-200"><h3 class="font-bold mb-3">Analysis View</h3><div class="h-64"><canvas id="webAnalysisChart"></canvas></div></div>`,
+      product: `<div class="p-6 bg-white rounded-2xl border border-slate-200"><h3 class="font-bold mb-3">Product Stock Sync Active</h3></div>`,
+      syncweb: `<div class="p-6 bg-white rounded-2xl border border-slate-200"><h3 class="font-bold mb-3">SyncWeb History Logs (200 OK)</h3></div>`,
+      setup: `<div class="p-6 bg-white rounded-2xl border border-slate-200"><h3 class="font-bold mb-3">Store API Setup Active</h3></div>`
+    };
+
+    // TAB SWITCHER
     function switchTab(tabKey) {
       document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('sidebar-active'));
       const activeBtn = document.getElementById(`btn-${tabKey}`) || document.getElementById(`btn-${tabKey}-parent`);
@@ -348,204 +472,243 @@
       const container = document.getElementById('content-container');
       container.innerHTML = Views[tabKey] || '<div class="p-8 text-center text-slate-400">শীঘ্রই আসছে...</div>';
 
+      if (tabKey === 'dashboard') initChart();
+      if (tabKey === 'orders') renderOrdersTable();
+      if (tabKey === 'weborders') switchWebTab(activeWebTab);
+      if (tabKey === 'inventory') renderInventoryModule();
       if (tabKey === 'scantoreturn') renderReturnHub();
     }
 
-    // SCAN TO RETURN ENGINE
-    function renderReturnHub() {
-      renderReturnHistoryTable();
-      updateReturnKPIs();
-      setTimeout(() => {
-        const input = document.getElementById('scanBarcodeInput');
-        if (input) input.focus();
-      }, 100);
+    function switchWebTab(subTabKey) {
+      activeWebTab = subTabKey;
+      document.querySelectorAll('.sub-item').forEach(el => el.classList.remove('sub-item-active'));
+      const activeSub = document.getElementById(`sub-${subTabKey}`);
+      if (activeSub) activeSub.classList.add('sub-item-active');
+
+      const container = document.getElementById('web-sub-container');
+      if (container) {
+        container.innerHTML = WebSubViews[subTabKey] || '';
+        if (subTabKey === 'listweb') renderWebOrdersTable();
+        if (subTabKey === 'analysis') renderWebAnalysisChart();
+      }
     }
 
-    function updateReturnKPIs() {
-      const kpiToday = document.getElementById('kpi-ret-today');
-      if (kpiToday) kpiToday.innerText = `${returnHistory.length} টি পার্সেল`;
-
-      const restockedCount = returnHistory.filter(r => r.status === 'Restocked').length;
-      const kpiRestocked = document.getElementById('kpi-ret-restocked');
-      if (kpiRestocked) kpiRestocked.innerText = `${restockedCount} টি পণ্য`;
-
-      const damagedCount = returnHistory.filter(r => r.status === 'Disputed').length;
-      const kpiDamaged = document.getElementById('kpi-ret-damaged');
-      if (kpiDamaged) kpiDamaged.innerText = `${damagedCount} টি পণ্য`;
-    }
-
-    function renderReturnHistoryTable() {
-      const tbody = document.getElementById('returnHistoryTableBody');
+    // FUNCTIONALITIES
+    function renderOrdersTable() {
+      const tbody = document.getElementById('ordersTableBody');
       if (!tbody) return;
-
-      tbody.innerHTML = returnHistory.map(r => `
+      tbody.innerHTML = ordersList.map(o => `
         <tr class="hover:bg-slate-50 transition">
-          <td class="p-4 font-bold text-slate-800">${r.id}<p class="text-[10px] text-slate-400 font-normal">${r.date}</p></td>
-          <td class="p-4 font-mono"><span class="font-bold text-indigo-600">${r.orderId}</span><p class="text-[10px] text-slate-400">${r.tracking}</p></td>
-          <td class="p-4 font-medium text-slate-800">${r.customer}</td>
-          <td class="p-4 font-semibold text-slate-700">${r.product} <span class="text-[10px] text-slate-400">(${r.qty} পিস)</span></td>
-          <td class="p-4"><span class="font-medium text-slate-700">${r.reason}</span><p class="text-[10px] text-slate-400">${r.condition}</p></td>
-          <td class="p-4">
-            ${r.status === 'Restocked' 
-              ? '<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-full font-bold flex items-center gap-1 w-max"><i class="fa-solid fa-check"></i> Stock Restored</span>'
-              : '<span class="bg-rose-50 text-rose-600 border border-rose-200 text-[10px] px-2 py-0.5 rounded-full font-bold flex items-center gap-1 w-max"><i class="fa-solid fa-triangle-exclamation"></i> Damaged / Claim</span>'
-            }
-          </td>
+          <td class="p-4 font-bold text-indigo-600">${o.id}</td>
+          <td class="p-4 font-bold text-slate-800">${o.customer}<br><span class="text-slate-400 text-[11px] font-normal">${o.phone}</span></td>
+          <td class="p-4">${o.product}</td>
+          <td class="p-4 font-bold">৳ ${o.cod}</td>
+          <td class="p-4"><span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full font-bold">${o.status}</span></td>
+          <td class="p-4 text-center"><button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg">Book ${o.courier}</button></td>
         </tr>
       `).join('');
     }
 
-    function handleBarcodeKeyDown(e) {
-      if (e.key === 'Enter') {
-        processReturnScan();
+    function renderWebOrdersTable() {
+      const tbody = document.getElementById('webOrdersTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = webOrdersList.map(w => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="p-4 font-bold text-indigo-600">${w.id}<br><span class="text-slate-400 font-normal">${w.platform}</span></td>
+          <td class="p-4 font-bold text-slate-800">${w.customer}<br><span class="text-slate-400 font-normal">${w.phone}</span></td>
+          <td class="p-4">${w.product}</td>
+          <td class="p-4 font-bold">৳ ${w.total}</td>
+          <td class="p-4"><span class="bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full font-bold">Synced</span></td>
+          <td class="p-4 text-center"><button onclick="transferToCoreOrders('${w.id}')" class="bg-indigo-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg">ERP-তে যুক্ত করুন</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function transferToCoreOrders(webOrderId) {
+      const target = webOrdersList.find(o => o.id === webOrderId);
+      if (target) {
+        ordersList.unshift({ id: "ORD-" + Math.floor(9040 + Math.random() * 500), date: "20 Aug, 2026", customer: target.customer, phone: target.phone, address: target.address, city: target.city, product: target.product, qty: 1, cod: target.total, status: "Pending", courier: "Steadfast", tracking: "" });
+        alert("অর্ডারটি সফলভাবে Order Management-এ ট্রান্সফার করা হয়েছে!");
+        switchTab('orders');
+      }
+    }
+
+    function runAIExtractor() {
+      const raw = document.getElementById('rawMessageInput').value;
+      const phoneMatch = raw.match(/(?:\+?880|0)?1[3-9]\d{8}/g);
+      if (phoneMatch) document.getElementById('aiPhone').value = phoneMatch[0];
+      const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      if (lines.length > 0) document.getElementById('aiName').value = lines[0].replace(/^(নাম|name)\s*[:=-]?\s*/i, '');
+      if (lines.length > 2) document.getElementById('aiAddress').value = lines[2].replace(/^(ঠিকানা|address)\s*[:=-]?\s*/i, '');
+      document.getElementById('aiProduct').value = "Premium Cotton Panjabi";
+      document.getElementById('aiPrice').value = "1850";
+    }
+
+    function submitManualOrder() {
+      const name = document.getElementById('aiName').value;
+      const phone = document.getElementById('aiPhone').value;
+      const address = document.getElementById('aiAddress').value;
+      const product = document.getElementById('aiProduct').value;
+      const price = Number(document.getElementById('aiPrice').value) || 0;
+      if (!name || !phone) return alert("দয়া করে নাম ও ফোন নম্বর দিন।");
+
+      ordersList.unshift({ id: "ORD-" + Math.floor(9040 + Math.random() * 500), date: "20 Aug, 2026", customer: name, phone: phone, address: address, city: "Dhaka", product: product, qty: 1, cod: price, status: "Pending", courier: "Steadfast", tracking: "" });
+      alert("অর্ডার সফলভাবে সেভ হয়েছে!");
+      switchTab('orders');
+    }
+
+    function renderInventoryModule() {
+      const tbody = document.getElementById('inventoryTableBody');
+      if (tbody) {
+        tbody.innerHTML = productsList.map(p => `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-4 font-bold text-slate-800">${p.name}</td>
+            <td class="p-4 font-mono">${p.sku}</td>
+            <td class="p-4">৳ ${p.buyPrice}</td>
+            <td class="p-4 font-bold text-emerald-600">৳ ${p.sellPrice}</td>
+            <td class="p-4 font-bold">${p.stock} পিস</td>
+            <td class="p-4"><span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-bold">In Stock</span></td>
+            <td class="p-4 text-center"><button onclick="openStockAdjustModal('${p.id}', '${p.name}')" class="bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 font-bold px-3 py-1.5 rounded-lg border border-slate-200">স্টক ইন/আউট</button></td>
+          </tr>
+        `).join('');
+      }
+      const pkgBody = document.getElementById('packagingTableBody');
+      if (pkgBody) {
+        pkgBody.innerHTML = packagingList.map(pkg => `
+          <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">${pkg.name}</td><td class="p-4 font-bold">${pkg.stock} পিস</td><td class="p-4"><span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-bold">Available</span></td></tr>
+        `).join('');
+      }
+    }
+
+    function renderReturnHub() {
+      const tbody = document.getElementById('returnHistoryTableBody');
+      if (tbody) {
+        tbody.innerHTML = returnHistory.map(r => `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-4 font-bold text-slate-800">${r.id}</td>
+            <td class="p-4 font-mono font-bold text-indigo-600">${r.orderId}</td>
+            <td class="p-4">${r.customer}</td>
+            <td class="p-4">${r.product}</td>
+            <td class="p-4">${r.reason}</td>
+            <td class="p-4"><span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-bold">Restocked</span></td>
+          </tr>
+        `).join('');
       }
     }
 
     function processReturnScan() {
       const code = document.getElementById('scanBarcodeInput').value.trim();
-      if (!code) return;
-
-      // Find in orders list by Order ID or Tracking Number
       const match = ordersList.find(o => o.id.toLowerCase() === code.toLowerCase() || (o.tracking && o.tracking.toLowerCase() === code.toLowerCase()));
-
-      const detailsContainer = document.getElementById('scannedOrderDetails');
-      const badge = document.getElementById('scanMatchBadge');
-
+      const details = document.getElementById('scannedOrderDetails');
       if (match) {
         currentScannedOrder = match;
-        badge.className = 'text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold';
-        badge.innerText = 'Order Found';
-
-        detailsContainer.innerHTML = `
-          <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-            <div class="flex justify-between items-start border-b border-slate-200 pb-3">
-              <div>
-                <span class="font-bold text-indigo-600 text-sm font-mono">${match.id}</span>
-                <p class="text-[11px] text-slate-500 font-bold mt-0.5">কুরিয়ার ট্র্যাকিং: ${match.tracking || 'N/A'}</p>
-              </div>
-              <span class="bg-amber-50 text-amber-700 font-bold px-2.5 py-1 rounded-md text-[10px] border border-amber-200">Current Status: ${match.status}</span>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 text-xs">
-              <div><span class="text-slate-400">কাস্টমার:</span> <strong class="text-slate-700">${match.customer}</strong> (${match.phone})</div>
-              <div><span class="text-slate-400">লোকেশন:</span> <strong class="text-slate-700">${match.city}</strong></div>
-              <div><span class="text-slate-400">প্রোডাক্ট:</span> <strong class="text-slate-700">${match.product}</strong></div>
-              <div><span class="text-slate-400">COD অ্যামাউন্ট:</span> <strong class="text-slate-700 font-mono">৳ ${match.cod}</strong></div>
-            </div>
-
-            <!-- Return Action Controls -->
-            <div class="pt-3 border-t border-slate-200 space-y-3">
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="font-bold text-slate-600 block mb-1">রিটার্ন কারণ</label>
-                  <select id="returnReasonSelect" class="w-full bg-white border border-slate-200 rounded-lg p-2 outline-none font-semibold text-slate-700">
-                    <option value="Customer Rejected / Cancelled">Customer Rejected / Cancelled</option>
-                    <option value="Customer Phone Switched Off">Customer Phone Switched Off</option>
-                    <option value="Wrong Address / Location">Wrong Address / Location</option>
-                    <option value="Delay Delivery by Courier">Delay Delivery by Courier</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="font-bold text-slate-600 block mb-1">প্রোডাক্ট কন্ডিশন</label>
-                  <select id="productConditionSelect" class="w-full bg-white border border-slate-200 rounded-lg p-2 outline-none font-semibold text-slate-700">
-                    <option value="Fresh">ইনট্যাক্ট / ফ্রেশ (স্টকে যোগ হবে)</option>
-                    <option value="Damaged">ড্যামেজড (কুরিয়ার ক্লেম লগ)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="flex justify-end gap-2 pt-2">
-                <button onclick="confirmReturnReceive()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md flex items-center justify-center gap-2 transition">
-                  <i class="fa-solid fa-box-archive"></i> Receive & Restock in Inventory
-                </button>
-              </div>
-            </div>
+        details.innerHTML = `
+          <div class="p-4 bg-slate-50 rounded-xl space-y-3 text-left">
+            <div class="flex justify-between font-bold text-indigo-600"><span>${match.id}</span><span>Tracking: ${match.tracking}</span></div>
+            <p><strong>Customer:</strong> ${match.customer} (${match.phone})</p>
+            <p><strong>Product:</strong> ${match.product}</p>
+            <button onclick="confirmReturnReceive()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl shadow mt-2">Receive & Restock in Inventory</button>
           </div>
         `;
       } else {
-        badge.className = 'text-[10px] bg-rose-50 text-rose-600 border border-rose-200 px-2.5 py-0.5 rounded-full font-bold';
-        badge.innerText = 'Not Found';
-        detailsContainer.innerHTML = `
-          <div class="p-6 text-center text-rose-500 bg-rose-50/50 border border-rose-100 rounded-xl space-y-2">
-            <i class="fa-solid fa-circle-xmark text-2xl"></i>
-            <p class="font-bold text-xs">"${code}" নম্বরের কোনো অর্ডার ডাটাবেজে পাওয়া যায়নি!</p>
-            <p class="text-[11px] text-slate-400">সঠিক অর্ডার আইডি (যেমন: ORD-9021) বা ট্র্যাকিং কোড (যেমন: ST-88911) দিয়ে চেষ্টা করুন।</p>
-          </div>
-        `;
+        details.innerHTML = `<p class="text-rose-500 font-bold text-center">"${code}" নম্বরের কোনো পার্সেল পাওয়া যায়নি!</p>`;
       }
     }
 
     function confirmReturnReceive() {
-      if (!currentScannedOrder) return;
-
-      const reason = document.getElementById('returnReasonSelect').value;
-      const condition = document.getElementById('productConditionSelect').value;
-      const isDamaged = condition === 'Damaged';
-
-      // 1. Update Order Status
-      currentScannedOrder.status = 'Returned';
-
-      // 2. Restock Product in Inventory
-      if (!isDamaged) {
-        const prod = productsList.find(p => p.name === currentScannedOrder.product);
-        if (prod) {
-          prod.stock += (currentScannedOrder.qty || 1);
-        }
+      if (currentScannedOrder) {
+        currentScannedOrder.status = 'Returned';
+        const p = productsList.find(pr => pr.name === currentScannedOrder.product);
+        if (p) p.stock += 1;
+        returnHistory.unshift({ id: "RET-" + (returnHistory.length + 101), orderId: currentScannedOrder.id, tracking: currentScannedOrder.tracking, customer: currentScannedOrder.customer, product: currentScannedOrder.product, qty: 1, reason: "Customer Cancelled", condition: "Intact", date: "20 Aug 2026", status: "Restocked" });
+        alert(`পার্সেল (${currentScannedOrder.id}) রিসিভড ও স্টক রিস্টোর হয়েছে!`);
+        renderReturnHub();
       }
+    }
 
-      // 3. Add to Return History
-      const newRetId = "RET-" + (returnHistory.length + 101);
-      returnHistory.unshift({
-        id: newRetId,
-        orderId: currentScannedOrder.id,
-        tracking: currentScannedOrder.tracking || "N/A",
-        customer: currentScannedOrder.customer,
-        product: currentScannedOrder.product,
-        qty: currentScannedOrder.qty || 1,
-        reason: reason,
-        condition: isDamaged ? 'Damaged (Disputed)' : 'Intact (Restocked)',
-        date: "20 Aug 2026",
-        status: isDamaged ? 'Disputed' : 'Restocked'
-      });
-
-      alert(`পার্সেল (${currentScannedOrder.id}) সফলভাবে রিসিভ করা হয়েছে এবং ইনভেন্টরিতে স্টক আপডেট হয়েছে!`);
-
-      // Reset
-      currentScannedOrder = null;
-      document.getElementById('scanBarcodeInput').value = '';
-      document.getElementById('scanMatchBadge').innerText = 'No Active Scan';
-      document.getElementById('scanMatchBadge').className = 'text-[10px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full font-bold';
-      document.getElementById('scannedOrderDetails').innerHTML = `
-        <div class="p-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-xl">
-          <i class="fa-solid fa-barcode text-4xl text-slate-300 mb-2"></i>
-          <p>পরবর্তী পার্সেল স্ক্যান করার জন্য প্রস্তুত।</p>
-        </div>
-      `;
-
-      renderReturnHub();
+    function loadSampleChat() {
+      document.getElementById('rawMessageInput').value = "তানভীর হাসান\n01712345678\nবাড়ি ১২, রোড ৪, বনানী, ঢাকা";
+      runAIExtractor();
     }
 
     function loadSampleReturnScan() {
-      const input = document.getElementById('scanBarcodeInput');
-      input.value = "ST-88911";
+      document.getElementById('scanBarcodeInput').value = "ST-88911";
       processReturnScan();
     }
 
     function toggleWebDropdown() {
-      const dropList = document.getElementById('webDropdownList');
-      const icon = document.getElementById('webDropIcon');
-      if (dropList.classList.contains('hidden')) {
-        dropList.classList.remove('hidden');
-        icon.style.transform = 'rotate(0deg)';
-      } else {
-        dropList.classList.add('hidden');
-        icon.style.transform = 'rotate(-90deg)';
-      }
+      document.getElementById('webDropdownList').classList.toggle('hidden');
       switchTab('weborders');
     }
 
-    // Default Load: Scan to Return View
-    switchTab('scantoreturn');
+    function openNewProductModal() { document.getElementById('productModal').classList.remove('hidden'); }
+    function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); }
+    function saveNewProduct() {
+      const name = document.getElementById('newPName').value;
+      const sku = document.getElementById('newPSKU').value;
+      const buy = Number(document.getElementById('newPBuy').value) || 0;
+      const sell = Number(document.getElementById('newPSell').value) || 0;
+      const stock = Number(document.getElementById('newPStock').value) || 0;
+      if (!name || !sku) return alert("নাম ও SKU কোড দিন।");
+      productsList.unshift({ id: "PRD-" + (productsList.length + 1), name, sku, category: "Clothing", buyPrice: buy, sellPrice: sell, stock, alertLimit: 5, icon: name.charAt(0).toUpperCase() });
+      closeProductModal();
+      renderInventoryModule();
+    }
+
+    function openStockAdjustModal(id, name) {
+      document.getElementById('stockAdjustProductId').value = id;
+      document.getElementById('stockAdjustTitle').innerText = `${name} - স্টক আপডেট`;
+      document.getElementById('stockAdjustModal').classList.remove('hidden');
+    }
+    function closeStockModal() { document.getElementById('stockAdjustModal').classList.add('hidden'); }
+    function setStockAction(act) { currentStockAction = act; }
+    function confirmStockAdjustment() {
+      const pId = document.getElementById('stockAdjustProductId').value;
+      const qty = Number(document.getElementById('stockAdjustQty').value) || 0;
+      const p = productsList.find(pr => pr.id === pId);
+      if (p) {
+        if (currentStockAction === 'IN') p.stock += qty;
+        else p.stock = Math.max(0, p.stock - qty);
+        closeStockModal();
+        renderInventoryModule();
+      }
+    }
+
+    function handleUniversalSearch(val) {
+      if (document.getElementById('ordersTableBody')) renderOrdersTable();
+      if (document.getElementById('inventoryTableBody')) renderInventoryModule();
+    }
+
+    function initChart() {
+      const ctx = document.getElementById('salesChart');
+      if (ctx) {
+        new Chart(ctx.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: ['১৪ আগস্ট', '১৫ আগস্ট', '১৬ আগস্ট', '১৭ আগস্ট', '১৮ আগস্ট', '১৯ আগস্ট (আজ)'],
+            datasets: [
+              { type: 'line', label: 'অর্ডার', data: [10, 14, 9, 17, 15, 18], borderColor: '#10b981', borderWidth: 3, yAxisID: 'y1' },
+              { type: 'bar', label: 'সেলস (৳)', data: [18000, 24000, 16500, 31000, 28500, 35000], backgroundColor: 'rgba(99, 102, 241, 0.75)', borderRadius: 8, yAxisID: 'y' }
+            ]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+      const dCtx = document.getElementById('districtRatioChart');
+      if (dCtx) {
+        new Chart(dCtx.getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: ['Dhaka', 'Chattogram', 'Others'],
+            datasets: [{ data: [47.9, 16.9, 35.2], backgroundColor: ['#4f46e5', '#10b981', '#94a3b8'] }]
+          },
+          options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
+        });
+      }
+    }
+
+    // Default View: Dashboard
+    switchTab('dashboard');
   </script>
 </body>
 </html>
