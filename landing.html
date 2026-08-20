@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>প্রিমিয়াম স্মার্ট ওয়াচ আল্ট্রা ২ - অফিশিয়াল লঞ্চ অফার | OmniStore BD</title>
+  <meta name="description" content="বাংলাদেশের সেরা কোয়ালিটির স্মার্ট ওয়াচ আল্ট্রা ২। ক্যাশ অন ডেলিভারি, ৩ দিনের রিপ্লেসমেন্ট গ্যারান্টি সহ সারা বাংলাদেশে হোম ডেলিভারি।">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            accent: {
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          },
+          fontFamily: {
+            sans: ['"Hind Siliguri"', '"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          animation: {
+            'pulse-fast': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'bounce-soft': 'bounce 2s infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- SweetAlert2 & Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Hind Siliguri', 'Plus Jakarta Sans', sans-serif;
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .bg-gradient-hero {
+      background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.12), transparent 50%),
+                  radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.08), transparent 50%),
+                  #ffffff;
+    }
+    .order-card-shadow {
+      box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- 1. TOP NOTICE & URGENCY COUNTDOWN BAR -->
+  <!-- ========================================================================= -->
+  <div class="bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 text-white text-xs font-semibold py-2 px-4 sticky top-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500 text-white animate-pulse">
+          🔥 ফ্ল্যাশ সেল ৫০% ছাড়
+        </span>
+        <span class="text-slate-200">আজকের অর্ডারে পাচ্ছেন নিশ্চিত ক্যাশ অন ডেলিভারি সুবিধা!</span>
+      </div>
+      
+      <!-- Countdown Timer -->
+      <div class="flex items-center gap-1.5 font-mono text-[11px] bg-black/40 px-3 py-1 rounded-full border border-brand-500/30">
+        <i class="fa-regular fa-clock text-accent-500 text-xs"></i>
+        <span class="text-slate-300 font-sans text-xs">অফার শেষ হতে বাকি:</span>
+        <span id="timer-hours" class="bg-slate-800 px-1.5 py-0.5 rounded font-bold text-white">05</span> :
+        <span id="timer-mins" class="bg-slate-800 px-1.5 py-0.5 rounded font-bold text-white">42</span> :
+        <span id="timer-secs" class="bg-slate-800 px-1.5 py-0.5 rounded font-bold text-emerald-400">19</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. NAVBAR / BRAND HEADER -->
+  <!-- ========================================================================= -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-9 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white text-lg shadow-md shadow-brand-500/20">
+          <i class="fa-solid fa-cube"></i>
+        </div>
+        <div>
+          <h1 id="brand-header-title" class="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight leading-none">OmniStore <span class="text-brand-600">BD</span></h1>
+          <p class="text-[10px] text-slate-500 font-medium">১০০% আসল পণ্যের বিশ্বস্ত প্রতিষ্ঠান</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Hotline Button -->
+        <a id="header-phone-link" href="tel:01700000000" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition">
+          <i class="fa-solid fa-phone text-brand-600 text-xs"></i>
+          <span id="header-phone-display">01700-000000</span>
+        </a>
+
+        <!-- Admin Portal Switch Button -->
+        <a href="index.html" title="অ্যাডমিন প্যানেলে প্রবেশ করুন" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-xs font-bold border border-indigo-200 transition">
+          <i class="fa-solid fa-lock text-[10px]"></i>
+          <span>Admin Portal</span>
+        </a>
+
+        <!-- Direct CTA to Order Section -->
+        <a href="#order-form-section" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-md shadow-brand-600/30 flex items-center gap-1.5 transition hover:scale-105">
+          <i class="fa-solid fa-bag-shopping text-xs"></i>
+          <span>অর্ডার করুন</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 3. HERO SECTION (PRODUCT SHOWCASE & QUICK HIGHLIGHTS) -->
+  <!-- ========================================================================= -->
+  <section class="bg-gradient-hero pt-8 pb-14 px-4 border-b border-slate-100">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <!-- Left: Product Image Gallery -->
+      <div class="lg:col-span-6 space-y-4">
+        <div class="relative rounded-3xl overflow-hidden bg-white border border-slate-200/80 shadow-xl p-3 group">
+          <img id="main-product-image" src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&auto=format&fit=crop&q=80" alt="Ultra Smartwatch 2" class="w-full h-80 sm:h-96 object-cover rounded-2xl transition duration-300 group-hover:scale-105">
+          
+          <!-- Discount Tag Badge -->
+          <div class="absolute top-6 left-6 bg-rose-600 text-white text-xs font-black px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
+            <i class="fa-solid fa-bolt text-yellow-300"></i> ৫০% স্পেশাল ডিসকাউন্ট
+          </div>
+
+          <div class="absolute bottom-6 right-6 bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full">
+            <i class="fa-solid fa-shield-check text-emerald-400 mr-1"></i> ১ বছরের রিপ্লেসমেন্ট ওয়ারেন্টি
+          </div>
+        </div>
+
+        <!-- Thumbnail Switcher -->
+        <div class="grid grid-cols-4 gap-2 sm:gap-3">
+          <button onclick="switchProductImage('https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&auto=format&fit=crop&q=80', this)" class="thumb-btn border-2 border-brand-500 rounded-xl overflow-hidden p-0.5 bg-white transition hover:opacity-90">
+            <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=200&auto=format&fit=crop&q=60" class="w-full h-16 object-cover rounded-lg">
+          </button>
+          <button onclick="switchProductImage('https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=800&auto=format&fit=crop&q=80', this)" class="thumb-btn border-2 border-transparent rounded-xl overflow-hidden p-0.5 bg-white transition hover:opacity-90">
+            <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=200&auto=format&fit=crop&q=60" class="w-full h-16 object-cover rounded-lg">
+          </button>
+          <button onclick="switchProductImage('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80', this)" class="thumb-btn border-2 border-transparent rounded-xl overflow-hidden p-0.5 bg-white transition hover:opacity-90">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop&q=60" class="w-full h-16 object-cover rounded-lg">
+          </button>
+          <button onclick="switchProductImage('https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=800&auto=format&fit=crop&q=80', this)" class="thumb-btn border-2 border-transparent rounded-xl overflow-hidden p-0.5 bg-white transition hover:opacity-90">
+            <img src="https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=200&auto=format&fit=crop&q=60" class="w-full h-16 object-cover rounded-lg">
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Headline, Price & Instant Benefit Bullets -->
+      <div class="lg:col-span-6 space-y-6">
+        
+        <!-- Ratings & Stock alert -->
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex items-center gap-1 text-amber-400 text-xs font-bold bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+            <span class="text-slate-800 ml-1">৪.৯ (৪৮০+ রিভিউ)</span>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-600 text-xs font-extrabold border border-rose-200 animate-pulse">
+            ⚠️ স্টকে মাত্র ১৭ পিস বাকি!
+          </span>
+        </div>
+
+        <!-- Main Product Title -->
+        <div>
+          <h2 id="product-display-title" class="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+            প্রিমিয়াম আল্ট্রা স্মার্ট ওয়াচ ২.০ <span class="text-brand-600">(HD অ্যামোলেড ডিসপ্লে ও ব্লুটুথ কলিং)</span>
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base mt-2 leading-relaxed">
+            স্টাইলিশ মেটাল বডি, ৭ দিনের লং-ব্যাটারি লাইফ, ফুল ওয়াটারপ্রুফ এবং সকল হেলথ ট্র্যাকিং ফিচারসহ অরিজিনাল স্মার্টওয়াচ। সরাসরি দেখে নেওয়ার সুবিধা!
+          </p>
+        </div>
+
+        <!-- Pricing Card -->
+        <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-brand-500/10 border-2 border-emerald-500/30 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 line-through">পূর্বমূল্য: ৳২,৯৯০</span>
+            <div class="flex items-baseline gap-2 mt-0.5">
+              <span id="hero-sale-price" class="text-3xl sm:text-4xl font-black text-slate-900">৳১,৪৯০</span>
+              <span class="text-xs font-extrabold px-2 py-0.5 rounded bg-emerald-600 text-white">৳১,৫০০ সাশ্রয়</span>
+            </div>
+            <span class="text-[11px] text-emerald-800 font-bold block mt-1"><i class="fa-solid fa-truck-fast mr-1"></i> ডেলিভারি ম্যানের সামনে চেক করে নেওয়ার সুবিধা</span>
+          </div>
+          <a href="#order-form-section" class="px-5 py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-sm shadow-lg shadow-brand-600/30 text-center transition hover:scale-105">
+            অর্ডার ফর্ম <i class="fa-solid fa-arrow-down ml-1"></i>
+          </a>
+        </div>
+
+        <!-- Key Feature Highlights -->
+        <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm font-bold text-slate-700">
+          <div class="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80 shadow-sm">
+            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-mobile-screen"></i></span>
+            <span>২.০২ ইঞ্চি HD সুপার ডিসপ্লে</span>
+          </div>
+          <div class="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80 shadow-sm">
+            <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-phone-volume"></i></span>
+            <span>ক্লিয়ার ব্লুটুথ কলিং ও মাইক</span>
+          </div>
+          <div class="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80 shadow-sm">
+            <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-battery-full"></i></span>
+            <span>৭ দিনের লং ব্যাকআপ ব্যাটারি</span>
+          </div>
+          <div class="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80 shadow-sm">
+            <span class="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-heart-pulse"></i></span>
+            <span>হার্ট রেট, SpO2 ও স্লিপ মনিটর</span>
+          </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200 text-slate-600 text-xs font-semibold">
+          <div class="flex items-center gap-1.5"><i class="fa-solid fa-hand-holding-dollar text-brand-600"></i> ক্যাশ অন ডেলিভারি</div>
+          <div class="flex items-center gap-1.5"><i class="fa-solid fa-rotate-left text-brand-600"></i> ৩ দিনের রিপ্লেসমেন্ট</div>
+          <div class="flex items-center gap-1.5"><i class="fa-solid fa-certificate text-brand-600"></i> ১০০% অরিজিনাল গ্যারান্টি</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. WHY BUY THIS PRODUCT (BENEFITS & VISUALS) -->
+  <!-- ========================================================================= -->
+  <section class="py-14 px-4 bg-white">
+    <div class="max-w-5xl mx-auto space-y-10">
+      
+      <div class="text-center space-y-2">
+        <span class="text-xs font-extrabold uppercase tracking-wider text-brand-600 px-3 py-1 rounded-full bg-brand-50 border border-brand-200">কেন এই স্মার্টওয়াচটি সেরা?</span>
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900">আপনার দৈনন্দিন জীবনের সেরা পারফেক্ট সঙ্গী</h3>
+        <p class="text-slate-500 text-sm max-w-xl mx-auto">অফিস, ট্রাভেল, জিম বা ক্যাজুয়াল আউটফিট—সব কিছুর সাথেই মানিয়ে যাবে আকর্ষণীয় এই স্মার্টওয়াচ।</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Card 1 -->
+        <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-brand-500 transition duration-300 space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-brand-100 text-brand-700 flex items-center justify-center text-xl font-black">
+            <i class="fa-solid fa-droplet"></i>
+          </div>
+          <h4 class="font-bold text-lg text-slate-900">IP68 ওয়াটার রেজিস্ট্যান্ট</h4>
+          <p class="text-slate-600 text-xs leading-relaxed">বৃষ্টির পানি, হাত ধোয়া বা ঘামে কোনো ক্ষতি হবে না। প্রতিদিনের ব্যবহারে নিশ্চিন্ত থাকুন।</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-brand-500 transition duration-300 space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-black">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <h4 class="font-bold text-lg text-slate-900">স্মার্ট নোটিফিকেশন অ্যালার্ট</h4>
+          <p class="text-slate-600 text-xs leading-relaxed">ফোন পকেট থেকে বের না করেই ফেসবুক, হোয়াটসঅ্যাপ ও কলের নোটিফিকেশন সরাসরি ঘড়িতে দেখুন।</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-brand-500 transition duration-300 space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-black">
+            <i class="fa-solid fa-person-running"></i>
+          </div>
+          <h4 class="font-bold text-lg text-slate-900">১০০+ স্পোর্টস মোড</h4>
+          <p class="text-slate-600 text-xs leading-relaxed">হাঁটা, দৌড়ানো, সাইক্লিং কিংবা ওয়ার্কআউটের ক্যালোরি বার্ন নিখুঁতভাবে পরিমাপ করুন।</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 5. 1-PAGE HIGH-CONVERTING CASH ON DELIVERY (COD) ORDER FORM -->
+  <!-- ========================================================================= -->
+  <section id="order-form-section" class="py-14 px-4 bg-gradient-to-b from-slate-50 via-emerald-50/40 to-slate-50 border-t border-slate-200">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-3 mb-8">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-600 text-white text-xs font-extrabold shadow-sm animate-bounce-soft">
+          <i class="fa-solid fa-truck-ramp-box"></i> ক্যাশ অন ডেলিভারি (পণ্য হাতে পেয়ে মূল্য পরিশোধ)
+        </span>
+        <h3 class="text-2xl sm:text-4xl font-extrabold text-slate-900">
+          অর্ডারটি কনফার্ম করতে নিচের ফর্মটি পূরণ করুন
+        </h3>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-md mx-auto">
+          কোনো অগ্রিম টাকা দিতে হবে না! ডেলিভারি ম্যানের কাছ থেকে পার্সেল চেক করে বুঝে নিয়ে টাকা দেবেন।
+        </p>
+      </div>
+
+      <!-- Main Order Container Card -->
+      <div class="bg-white rounded-3xl border-2 border-emerald-500/30 p-6 sm:p-10 order-card-shadow">
+        
+        <form id="cod-order-form" onsubmit="event.preventDefault(); handleLandingOrderSubmit();" class="space-y-8">
+          
+          <!-- Step 1: Package / Quantity Deal Selector -->
+          <div>
+            <label class="block text-sm font-extrabold text-slate-900 mb-3 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-brand-600 text-white text-xs flex items-center justify-center font-bold">১</span>
+              <span>প্যাকেজ ও পরিমাণ নির্বাচন করুন (Select Deal):</span>
+            </label>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              
+              <!-- Option 1: 1 Pcs Standard -->
+              <label class="relative flex flex-col p-4 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-brand-500 transition has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50/50">
+                <input type="radio" name="order_deal" value="1" data-price="1490" data-discount="0" data-qty="1" data-name="১টি স্মার্টওয়াচ (স্ট্যান্ডার্ড প্যাক)" checked onchange="calculateLandingTotals()" class="sr-only">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="font-extrabold text-slate-900 text-sm">১ টি ওয়াচ</span>
+                  <span class="text-xs font-bold text-slate-400 line-through">৳২,৯৯০</span>
+                </div>
+                <div class="text-lg font-black text-brand-600">৳১,৪৯০</div>
+                <div class="text-[11px] text-slate-500 mt-1">জনপ্রিয় স্ট্যান্ডার্ড প্যাক</div>
+              </label>
+
+              <!-- Option 2: 2 Pcs Duo Combo (Best Value) -->
+              <label class="relative flex flex-col p-4 rounded-2xl border-2 border-brand-500 bg-brand-50/30 cursor-pointer hover:border-brand-600 transition has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50">
+                <span class="absolute -top-3 right-4 px-2 py-0.5 rounded-full bg-amber-500 text-white font-black text-[10px] shadow-sm uppercase tracking-wider">
+                  🔥 বেস্ট সেলার ডিল
+                </span>
+                <input type="radio" name="order_deal" value="2" data-price="2790" data-discount="190" data-qty="2" data-name="২টি স্মার্টওয়াচ (ডুও কম্বো অফার)" onchange="calculateLandingTotals()" class="sr-only">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="font-extrabold text-slate-900 text-sm">২ টি ওয়াচ (কম্বো)</span>
+                  <span class="text-xs font-bold text-slate-400 line-through">৳৫,৯৮০</span>
+                </div>
+                <div class="text-lg font-black text-emerald-700">৳২,৭৯০</div>
+                <div class="text-[11px] text-emerald-800 font-bold mt-1">অতিরিক্ত ৳১৯০ ছাড়!</div>
+              </label>
+
+              <!-- Option 3: 3 Pcs Family Pack (Free Delivery) -->
+              <label class="relative flex flex-col p-4 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-brand-500 transition has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50/50">
+                <span class="absolute -top-3 right-4 px-2 py-0.5 rounded-full bg-rose-600 text-white font-black text-[10px] shadow-sm uppercase tracking-wider">
+                  🎉 ফ্রি ডেলিভারি!
+                </span>
+                <input type="radio" name="order_deal" value="3" data-price="3990" data-discount="480" data-qty="3" data-name="৩টি স্মার্টওয়াচ (মেগা ফ্যামিলি প্যাক)" onchange="calculateLandingTotals()" class="sr-only">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="font-extrabold text-slate-900 text-sm">৩ টি ওয়াচ (মেগা প্যাক)</span>
+                  <span class="text-xs font-bold text-slate-400 line-through">৳৮,৯৭০</span>
+                </div>
+                <div class="text-lg font-black text-brand-600">৳৩,৯৯০</div>
+                <div class="text-[11px] text-rose-600 font-bold mt-1">ফ্রি হোম ডেলিভারি</div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- Step 2: Customer Address & Details -->
+          <div class="space-y-4">
+            <label class="block text-sm font-extrabold text-slate-900 mb-2 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-brand-600 text-white text-xs flex items-center justify-center font-bold">২</span>
+              <span>আপনার ডেলিভারি তথ্য দিন (Shipping Info):</span>
+            </label>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              <!-- Customer Name -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">আপনার নাম <span class="text-rose-500">*</span></label>
+                <div class="relative">
+                  <i class="fa-regular fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                  <input id="landing-cust-name" type="text" required placeholder="আপনার পুরো নাম লিখুন" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none transition">
+                </div>
+              </div>
+
+              <!-- Customer Mobile Number -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">১১ ডিজিটের মোবাইল নম্বর <span class="text-rose-500">*</span></label>
+                <div class="relative">
+                  <i class="fa-solid fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                  <input id="landing-cust-phone" type="tel" required maxlength="11" pattern="01[3-9][0-9]{8}" placeholder="017XXXXXXXX" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none transition">
+                </div>
+                <p class="text-[10px] text-slate-500 mt-1">ডেলিভারির জন্য এই নম্বরে কল করা হবে।</p>
+              </div>
+
+            </div>
+
+            <!-- Full Address -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">সম্পূর্ণ ঠিকানা (বাসা/রোড/এলাকা/উপজেলা/জেলা) <span class="text-rose-500">*</span></label>
+              <div class="relative">
+                <i class="fa-solid fa-location-dot absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                <textarea id="landing-cust-address" required rows="2" placeholder="উদাহরণ: বাসা নং ১২, রোড নং ৪, সেক্টর ৭, উত্তরা, ঢাকা" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none transition"></textarea>
+              </div>
+            </div>
+
+            <!-- Delivery Zone Selector -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">ডেলিভারি লোকেশন নির্বাচন করুন <span class="text-rose-500">*</span></label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-brand-500 transition has-[:checked]:border-brand-600 has-[:checked]:bg-emerald-50/50">
+                  <input type="radio" name="delivery_zone" value="60" data-zone="Dhaka City" checked onchange="calculateLandingTotals()" class="text-brand-600 focus:ring-brand-500">
+                  <div>
+                    <div class="text-xs font-bold text-slate-900">ঢাকা সিটির ভেতরে</div>
+                    <div class="text-[11px] font-extrabold text-brand-600">চার্জ: ৳৬০ (২৪ ঘণ্টা)</div>
+                  </div>
+                </label>
+
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-brand-500 transition has-[:checked]:border-brand-600 has-[:checked]:bg-emerald-50/50">
+                  <input type="radio" name="delivery_zone" value="100" data-zone="Dhaka Suburb" onchange="calculateLandingTotals()" class="text-brand-600 focus:ring-brand-500">
+                  <div>
+                    <div class="text-xs font-bold text-slate-900">ঢাকা সাব-এরিয়া (সাভার/টঙ্গী)</div>
+                    <div class="text-[11px] font-extrabold text-brand-600">চার্জ: ৳১০০</div>
+                  </div>
+                </label>
+
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-brand-500 transition has-[:checked]:border-brand-600 has-[:checked]:bg-emerald-50/50">
+                  <input type="radio" name="delivery_zone" value="120" data-zone="Outside Dhaka" onchange="calculateLandingTotals()" class="text-brand-600 focus:ring-brand-500">
+                  <div>
+                    <div class="text-xs font-bold text-slate-900">ঢাকার বাইরের যে কোনো জেলা</div>
+                    <div class="text-[11px] font-extrabold text-brand-600">চার্জ: ৳১২০ (২-৩ দিন)</div>
+                  </div>
+                </label>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Step 3: Order Summary & Real-Time Calculation -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <h4 class="text-xs font-extrabold text-slate-600 uppercase tracking-wider">অর্ডার বিবরণী (Order Summary)</h4>
+            
+            <div class="space-y-2 text-xs font-bold">
+              <div class="flex justify-between text-slate-600">
+                <span id="summary-deal-title">১টি স্মার্টওয়াচ (স্ট্যান্ডার্ড প্যাক)</span>
+                <span id="summary-item-price" class="text-slate-900 font-extrabold">৳১,৪৯০</span>
+              </div>
+
+              <div class="flex justify-between text-slate-600">
+                <span>হোম ডেলিভারি চার্জ:</span>
+                <span id="summary-delivery-charge" class="text-slate-900 font-extrabold">৳৬০</span>
+              </div>
+
+              <div id="summary-discount-row" class="flex justify-between text-emerald-600 hidden">
+                <span>স্পেশাল অফার ছাড়:</span>
+                <span id="summary-discount-amount">- ৳০</span>
+              </div>
+
+              <div class="flex justify-between items-baseline pt-3 border-t border-slate-200 text-base sm:text-lg font-black text-slate-900">
+                <span>সর্বমোট প্রদেয় মূল্য (ক্যাশ অন ডেলিভারি):</span>
+                <span id="summary-final-total" class="text-2xl font-black text-brand-600">৳১,৫৫০</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Order Button with Animated Loading State -->
+          <div>
+            <button type="submit" id="btn-submit-landing-order" class="w-full py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-emerald-600 hover:from-brand-700 hover:to-emerald-700 text-white font-black text-base sm:text-lg shadow-xl shadow-brand-600/30 flex items-center justify-center gap-3 transition transform hover:scale-[1.01] active:scale-[0.99]">
+              <i class="fa-solid fa-lock text-sm"></i>
+              <span id="submit-btn-text">অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)</span>
+              <i class="fa-solid fa-arrow-right text-sm"></i>
+            </button>
+            <p class="text-center text-[11px] text-slate-500 mt-2 font-medium">
+              🔒 আপনার তথ্য সম্পূর্ণ নিরাপদ। অর্ডারের পর আমাদের প্রতিনিধি আপনাকে কল করে নিশ্চিত করবেন।
+            </p>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 6. VERIFIED CUSTOMER REVIEWS (SOCIAL PROOF) -->
+  <!-- ========================================================================= -->
+  <section class="py-14 px-4 bg-white border-t border-slate-100">
+    <div class="max-w-5xl mx-auto space-y-8">
+      
+      <div class="text-center space-y-2">
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900">গ্রাহকদের বাস্তব অভিজ্ঞতা ও রিভিউ</h3>
+        <p class="text-slate-500 text-xs sm:text-sm">গত মাসে ৫০০+ কাস্টমার আমাদের থেকে এই পণ্যটি কিনেছেন।</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        
+        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">তা</div>
+              <div>
+                <div class="font-bold text-xs text-slate-900">তানভীর আহমেদ</div>
+                <div class="text-[10px] text-slate-400">মিরপুর, ঢাকা</div>
+              </div>
+            </div>
+            <span class="text-emerald-600 text-[10px] font-bold bg-emerald-100 px-2 py-0.5 rounded-full"><i class="fa-solid fa-badge-check"></i> ভেরিফাইড বায়ার</span>
+          </div>
+          <div class="text-amber-400 text-xs">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            "গতকাল হাতে পেয়েছি। ডিসপ্লে কোয়ালিটি এবং ব্লুটুথ কলিং অসাধারণ ক্লিয়ার। ডেলিভারি মাত্র ২৪ ঘণ্টার মধ্যে পেয়েছি। ধন্যবাদ অমনিস্টোর!"
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">রা</div>
+              <div>
+                <div class="font-bold text-xs text-slate-900">রাকিবুল হাসান</div>
+                <div class="text-[10px] text-slate-400">চট্টগ্রাম সদর</div>
+              </div>
+            </div>
+            <span class="text-emerald-600 text-[10px] font-bold bg-emerald-100 px-2 py-0.5 rounded-full"><i class="fa-solid fa-badge-check"></i> ভেরিফাইড বায়ার</span>
+          </div>
+          <div class="text-amber-400 text-xs">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            "২টি কম্বো অফারে নিয়েছিলাম ভাইয়ার সাথে। দেখতে প্রিমিয়াম লাগে, ব্যাটারি ৫ দিন পরও ৫০% চার্জ আছে। ফুল পয়সা উসুল প্রোডাক্ট।"
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-purple-600 text-white font-bold text-xs flex items-center justify-center">ম</div>
+              <div>
+                <div class="font-bold text-xs text-slate-900">মাহমুদুল করিম</div>
+                <div class="text-[10px] text-slate-400">সিলেট</div>
+              </div>
+            </div>
+            <span class="text-emerald-600 text-[10px] font-bold bg-emerald-100 px-2 py-0.5 rounded-full"><i class="fa-solid fa-badge-check"></i> ভেরিফাইড বায়ার</span>
+          </div>
+          <div class="text-amber-400 text-xs">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            "ডেলিভারি ম্যানের সামনে প্যাকেট খুলে চেক করে তারপর টাকা দিয়েছি। অরিজিনাল কোয়ালিটি নিশ্চিত পেয়ে ভালো লাগলো।"
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 7. FREQUENTLY ASKED QUESTIONS (FAQ) -->
+  <!-- ========================================================================= -->
+  <section class="py-14 px-4 bg-slate-50 border-t border-slate-100">
+    <div class="max-w-3xl mx-auto space-y-6">
+      
+      <div class="text-center space-y-2">
+        <h3 class="text-2xl font-extrabold text-slate-900">সাধারণ কিছু প্রশ্নের উত্তর (FAQ)</h3>
+        <p class="text-slate-500 text-xs">আপনার কোনো প্রশ্ন থাকলে নিচে দেখে নিন।</p>
+      </div>
+
+      <div class="space-y-3">
+        
+        <details class="group bg-white p-4 rounded-2xl border border-slate-200 cursor-pointer">
+          <summary class="flex justify-between items-center font-bold text-sm text-slate-800 list-none">
+            <span>১. আমি কি পণ্য হাতে পেয়ে চেক করে টাকা দিতে পারব?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 pt-2 border-t border-slate-100 leading-relaxed">
+            হ্যাঁ, অবশ্যই! ডেলিভারি ম্যান থাকা অবস্থায় পার্সেল খুলে চেক করে নেবেন এবং সম্পূর্ণ সন্তুষ্ট হয়ে টাকা পরিশোধ করবেন।
+          </p>
+        </details>
+
+        <details class="group bg-white p-4 rounded-2xl border border-slate-200 cursor-pointer">
+          <summary class="flex justify-between items-center font-bold text-sm text-slate-800 list-none">
+            <span>২. ডেলিভারি পেতে কত দিন সময় লাগবে?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 pt-2 border-t border-slate-100 leading-relaxed">
+            ঢাকা সিটির ভেতর মাত্র ২৪ ঘণ্টার মধ্যে এবং ঢাকার বাইরে ২ থেকে ৩ দিনের মধ্যে আপনার ঠিকানায় সরাসরি হোম ডেলিভারি পৌঁছে দেওয়া হবে।
+          </p>
+        </details>
+
+        <details class="group bg-white p-4 rounded-2xl border border-slate-200 cursor-pointer">
+          <summary class="flex justify-between items-center font-bold text-sm text-slate-800 list-none">
+            <span>৩. কোনো সমস্যা হলে কীভাবে রিপ্লেসমেন্ট পাব?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 group-open:rotate-180 transition"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 pt-2 border-t border-slate-100 leading-relaxed">
+            আমরা দিচ্ছি ৩ দিনের ইনস্ট্যান্ট রিপ্লেসমেন্ট গ্যারান্টি। কোনো টেকনিক্যাল সমস্যা হলে আমাদের হটলাইনে কল করলেই নতুন পণ্য পাঠিয়ে দেওয়া হবে।
+          </p>
+        </details>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 8. FOOTER -->
+  <!-- ========================================================================= -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-8 px-4 border-t border-slate-800">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div>
+        <div class="font-extrabold text-white text-sm">OmniStore Bangladesh</div>
+        <p class="text-[11px] text-slate-500 mt-0.5">অফিস: লেভেল ৪, ধানমন্ডি ২৭, ঢাকা | হটলাইন: 01700-000000</p>
+      </div>
+      <div class="flex items-center gap-4 text-sm text-slate-400">
+        <a href="index.html" class="hover:text-white transition">ERP Admin Panel</a>
+        <a href="#order-form-section" class="hover:text-white transition">Order Form</a>
+      </div>
+      <p class="text-[10px] text-slate-500">© 2026 OmniStore ERP. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- 9. FLOATING MOBILE STICKY ORDER BUTTON -->
+  <!-- ========================================================================= -->
+  <div class="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-2xl z-40 flex items-center justify-between gap-3">
+    <div>
+      <span class="text-[10px] text-slate-500 font-bold block">অফার মূল্য:</span>
+      <span id="sticky-price-display" class="text-lg font-black text-brand-600 leading-none">৳১,৪৯০</span>
+    </div>
+    <a href="#order-form-section" class="flex-1 py-3 bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-sm rounded-xl text-center shadow-lg shadow-brand-600/30 flex items-center justify-center gap-1.5">
+      <i class="fa-solid fa-bag-shopping text-xs"></i>
+      <span>অর্ডার করুন (COD)</span>
+    </a>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 10. SUCCESS CONFIRMATION MODAL WITH PRINTABLE INVOICE RECEIPT -->
+  <!-- ========================================================================= -->
+  <div id="modal-order-success" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm hidden">
+    <div class="w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 space-y-5 animate-fade-in">
+      
+      <!-- Top Celebration Icon -->
+      <div class="text-center space-y-2">
+        <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 text-3xl flex items-center justify-center mx-auto shadow-inner">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 class="text-xl sm:text-2xl font-black text-slate-900">অভিনন্দন! আপনার অর্ডারটি সফল হয়েছে 🎉</h3>
+        <p class="text-xs text-slate-500">আমাদের প্রতিনিধি শীঘ্রই আপনার নম্বরে কল করে অর্ডারটি নিশ্চিত করবেন।</p>
+      </div>
+
+      <!-- Order Receipt Details -->
+      <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-2">
+        <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+          <span class="text-slate-500 font-semibold">অর্ডার ট্র্যাকিং আইডি:</span>
+          <span id="modal-order-id" class="font-mono font-bold text-brand-600 text-sm">ORD-12345</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-500 font-semibold">গ্রাহকের নাম:</span>
+          <span id="modal-cust-name" class="font-bold text-slate-800">রাহিম আহমেদ</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-500 font-semibold">মোবাইল নম্বর:</span>
+          <span id="modal-cust-phone" class="font-mono font-bold text-slate-800">01700000000</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-500 font-semibold">পণ্য ও পরিমাণ:</span>
+          <span id="modal-items-desc" class="font-bold text-slate-800">১টি স্মার্টওয়াচ</span>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t border-slate-200 text-sm font-black text-slate-900">
+          <span>ক্যাশ অন ডেলিভারি প্রদেয়:</span>
+          <span id="modal-total-amount" class="text-emerald-700 text-base font-black">৳১,৫৫০</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="space-y-2">
+        <button onclick="window.print()" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-print"></i>
+          <span>রশিদ প্রিন্ট বা ডাউনলোড করুন</span>
+        </button>
+
+        <a id="modal-whatsapp-btn" href="#" target="_blank" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>হোয়াটসঅ্যাপে আপডেট পান</span>
+        </a>
+
+        <button onclick="closeSuccessModal()" class="w-full py-2.5 text-slate-500 hover:text-slate-800 text-xs font-semibold">
+          বন্ধ করুন (Close)
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 11. JAVASCRIPT LOGIC & GOOGLE SHEETS LIVE SYNC ENGINE -->
+  <!-- ========================================================================= -->
+  <script>
+    // Config: Default Google Sheets Web App Endpoint
+    const DEFAULT_GSHEET_URL = "https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec";
+
+    // Get Active GSheet URL from localStorage if configured in Admin ERP
+    function getActiveGSheetUrl() {
+      try {
+        const erpData = localStorage.getItem('OMNISTORE_APP_STATE_V1');
+        if (erpData) {
+          const parsed = JSON.parse(erpData);
+          if (parsed.storeProfile && parsed.storeProfile.googleSheetUrl) {
+            return parsed.storeProfile.googleSheetUrl;
+          }
+        }
+      } catch (e) {}
+      return DEFAULT_GSHEET_URL;
+    }
+
+    // Switch Main Product Image
+    function switchProductImage(src, btn) {
+      document.getElementById('main-product-image').src = src;
+      document.querySelectorAll('.thumb-btn').forEach(b => {
+        b.classList.remove('border-brand-500');
+        b.classList.add('border-transparent');
+      });
+      btn.classList.add('border-brand-500');
+      btn.classList.remove('border-transparent');
+    }
+
+    // Real-Time Total Calculation for Order Form
+    function calculateLandingTotals() {
+      const selectedDeal = document.querySelector('input[name="order_deal"]:checked');
+      const selectedZone = document.querySelector('input[name="delivery_zone"]:checked');
+
+      if (!selectedDeal || !selectedZone) return;
+
+      const itemPrice = parseFloat(selectedDeal.getAttribute('data-price')) || 1490;
+      const discount = parseFloat(selectedDeal.getAttribute('data-discount')) || 0;
+      let deliveryFee = parseFloat(selectedZone.value) || 60;
+      const dealQty = parseInt(selectedDeal.getAttribute('data-qty')) || 1;
+      const dealName = selectedDeal.getAttribute('data-name') || '১টি স্মার্টওয়াচ';
+
+      // 3 Pcs Combo includes Free Delivery
+      if (dealQty >= 3) {
+        deliveryFee = 0;
+      }
+
+      const totalAmount = itemPrice + deliveryFee;
+
+      // Update UI elements
+      document.getElementById('summary-deal-title').innerText = dealName;
+      document.getElementById('summary-item-price').innerText = `৳${itemPrice.toLocaleString()}`;
+      document.getElementById('summary-delivery-charge').innerText = deliveryFee === 0 ? 'ফ্রি (৳০)' : `৳${deliveryFee}`;
+      document.getElementById('summary-final-total').innerText = `৳${totalAmount.toLocaleString()}`;
+      document.getElementById('hero-sale-price').innerText = `৳${itemPrice.toLocaleString()}`;
+      document.getElementById('sticky-price-display').innerText = `৳${itemPrice.toLocaleString()}`;
+
+      const discountRow = document.getElementById('summary-discount-row');
+      if (discount > 0) {
+        discountRow.classList.remove('hidden');
+        document.getElementById('summary-discount-amount').innerText = `- ৳${discount}`;
+      } else {
+        discountRow.classList.add('hidden');
+      }
+    }
+
+    // Handle Landing Page Form Submit & Direct Google Sheet Send
+    async function handleLandingOrderSubmit() {
+      const btn = document.getElementById('btn-submit-landing-order');
+      const btnText = document.getElementById('submit-btn-text');
+
+      const name = document.getElementById('landing-cust-name').value.trim();
+      const phone = document.getElementById('landing-cust-phone').value.trim();
+      const address = document.getElementById('landing-cust-address').value.trim();
+
+      if (!name || !phone || !address) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'সবগুলো তথ্য পূরণ করুন',
+          text: 'নাম, মোবাইল নম্বর ও ঠিকানা সঠিকভাবে দিন।',
+          confirmButtonColor: '#10b981'
+        });
+        return;
+      }
+
+      // 11-digit phone check
+      if (!/^01[3-9]\d{8}$/.test(phone)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'সঠিক মোবাইল নম্বর দিন',
+          text: 'দয়া করে ১১ ডিজিটের সঠিক বাংলাদেশি মোবাইল নম্বর দিন (যেমন: 017XXXXXXXX)।',
+          confirmButtonColor: '#ef4444'
+        });
+        return;
+      }
+
+      const selectedDeal = document.querySelector('input[name="order_deal"]:checked');
+      const selectedZone = document.querySelector('input[name="delivery_zone"]:checked');
+
+      const itemPrice = parseFloat(selectedDeal.getAttribute('data-price')) || 1490;
+      let deliveryFee = parseFloat(selectedZone.value) || 60;
+      const dealQty = parseInt(selectedDeal.getAttribute('data-qty')) || 1;
+      const dealName = selectedDeal.getAttribute('data-name') || '১টি স্মার্টওয়াচ';
+      const zoneName = selectedZone.getAttribute('data-zone') || 'Dhaka City';
+
+      if (dealQty >= 3) deliveryFee = 0;
+      const totalAmount = itemPrice + deliveryFee;
+
+      const orderId = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
+      const orderDate = new Date().toISOString().split('T')[0];
+
+      const newOrderData = {
+        id: orderId,
+        date: orderDate,
+        customerName: name,
+        phone: phone,
+        address: address,
+        district: zoneName,
+        items: [{ name: dealName, qty: dealQty, price: itemPrice }],
+        quantity: dealQty,
+        productName: dealName,
+        totalAmount: totalAmount,
+        deliveryFee: deliveryFee,
+        advance: 0,
+        codAmount: totalAmount,
+        status: "Pending",
+        courier: "Steadfast",
+        trackingId: "",
+        channel: "Landing Page",
+        note: `Zone: ${zoneName}`
+      };
+
+      // Loading state
+      btn.disabled = true;
+      btnText.innerText = "অর্ডার প্রসেস হচ্ছে... দয়া করে অপেক্ষা করুন";
+
+      // 1. Save to local ERP state
+      try {
+        let erpState = localStorage.getItem('OMNISTORE_APP_STATE_V1');
+        if (erpState) {
+          let parsed = JSON.parse(erpState);
+          if (!parsed.orders) parsed.orders = [];
+          parsed.orders.unshift(newOrderData);
+          localStorage.setItem('OMNISTORE_APP_STATE_V1', JSON.stringify(parsed));
+        }
+      } catch (e) {
+        console.warn("Local storage write error:", e);
+      }
+
+      // 2. Submit to Google Apps Script Web App Backend
+      const gsheetUrl = getActiveGSheetUrl();
+      if (gsheetUrl) {
+        try {
+          await fetch(gsheetUrl, {
+            method: 'POST',
+            mode: 'no-cors', // standard cross-origin for Google Apps Script Web App
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'CREATE_ORDER',
+              data: newOrderData
+            })
+          });
+        } catch (err) {
+          console.error("Google Sheets POST Error:", err);
+        }
+      }
+
+      // Reset loading
+      btn.disabled = false;
+      btnText.innerText = "অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)";
+
+      // Trigger Confetti Celebration 🎉
+      try {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      } catch (e) {}
+
+      // Show Success Modal
+      document.getElementById('modal-order-id').innerText = orderId;
+      document.getElementById('modal-cust-name').innerText = name;
+      document.getElementById('modal-cust-phone').innerText = phone;
+      document.getElementById('modal-items-desc').innerText = `${dealName} (${dealQty} পিস)`;
+      document.getElementById('modal-total-amount').innerText = `৳${totalAmount.toLocaleString()}`;
+      document.getElementById('modal-whatsapp-btn').href = `https://wa.me/8801700000000?text=${encodeURIComponent(`হ্যালো, আমি ল্যান্ডিং পেজ থেকে অর্ডার করেছি। অর্ডার আইডি: #${orderId}, নাম: ${name}, মোট টাকা: ৳${totalAmount}`)}`;
+      
+      document.getElementById('modal-order-success').classList.remove('hidden');
+      document.getElementById('cod-order-form').reset();
+      calculateLandingTotals();
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('modal-order-success').classList.add('hidden');
+    }
+
+    // Countdown Timer logic (5h 42m remaining)
+    function startCountdown() {
+      let totalSecs = (5 * 3600) + (42 * 60) + 19;
+      setInterval(() => {
+        if (totalSecs <= 0) totalSecs = 6 * 3600;
+        totalSecs--;
+        const h = Math.floor(totalSecs / 3600);
+        const m = Math.floor((totalSecs % 3600) / 60);
+        const s = totalSecs % 60;
+        document.getElementById('timer-hours').innerText = String(h).padStart(2, '0');
+        document.getElementById('timer-mins').innerText = String(m).padStart(2, '0');
+        document.getElementById('timer-secs').innerText = String(s).padStart(2, '0');
+      }, 1000);
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      calculateLandingTotals();
+      startCountdown();
+    });
+  </script>
+</body>
+</html>
