@@ -14,19 +14,19 @@
     .sidebar-bg { background-color: #0b1120; }
     .sidebar-active { background: #4f46e5 !important; color: #ffffff !important; border-radius: 0.5rem; }
     .sidebar-active i { color: #ffffff !important; }
-    .feature-card { transition: all 0.2s ease-in-out; }
-    .feature-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08); border-color: #cbd5e1; }
     .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
   </style>
 </head>
 <body class="flex h-screen overflow-hidden text-slate-800">
 
-  <!-- SIDEBAR -->
+  <!-- LEFT DARK SIDEBAR (WITH ALL 16 FEATURES) -->
   <aside class="w-64 sidebar-bg text-slate-300 flex flex-col justify-between h-full overflow-y-auto shrink-0 select-none custom-scrollbar border-r border-slate-800">
-    <div class="p-4 space-y-4">
-      <div class="flex items-center gap-3 px-2 py-1">
-        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-lg font-bold">
+    <div class="p-3 space-y-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3 px-2 py-2 border-b border-slate-800 pb-3">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-lg shadow-lg font-bold">
           <i class="fa-solid fa-cube"></i>
         </div>
         <div>
@@ -38,204 +38,118 @@
         </div>
       </div>
 
-      <!-- Core Navigation -->
+      <!-- Category 1: CORE OPERATIONS -->
       <div>
-        <p class="text-[11px] font-bold tracking-wider text-slate-500 uppercase px-2 mb-2">Core Operations</p>
-        <nav class="space-y-1 text-sm font-medium">
-          <div onclick="switchTab('modules')" id="btn-modules" class="sidebar-item flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 cursor-pointer sidebar-active">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-shapes text-indigo-400"></i><span>সব ফিচার ও মডিউল</span></div>
-            <span class="bg-indigo-950 text-indigo-300 text-[10px] px-2 py-0.5 rounded border border-indigo-800">16</span>
+        <p class="text-[11px] font-bold tracking-wider text-slate-500 uppercase px-2 mb-1.5">Core Operations</p>
+        <nav class="space-y-0.5 text-xs font-medium">
+          <div onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer sidebar-active">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-gauge-high text-indigo-400 w-4"></i><span>Admin Dashboard</span></div>
+            <span class="bg-emerald-950 text-emerald-400 text-[9px] px-1.5 py-0.5 rounded border border-emerald-800">Live</span>
           </div>
-          <div onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-item flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 cursor-pointer">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-gauge-high text-emerald-400"></i><span>Admin Dashboard</span></div>
-            <span class="bg-emerald-950 text-emerald-400 text-[10px] px-2 py-0.5 rounded border border-emerald-800">Live</span>
+          <div onclick="switchTab('orders')" id="btn-orders" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-clipboard-list text-amber-400 w-4"></i><span>Order Management</span></div>
+            <span class="bg-slate-800 text-slate-300 text-[10px] px-1.5 py-0.2 rounded-full font-bold">14</span>
           </div>
-          <div onclick="switchTab('orders')" id="btn-orders" class="sidebar-item flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 cursor-pointer">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-box-archive text-amber-400"></i><span>Order Management</span></div>
-            <span class="bg-slate-800 text-slate-300 text-[11px] px-2 py-0.5 rounded-full font-bold">14</span>
+          <div onclick="switchTab('weborders')" id="btn-weborders" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-globe text-emerald-400 w-4"></i><span>Web Orders</span></div>
+            <span class="bg-emerald-950 text-emerald-400 text-[9px] px-1.5 py-0.5 rounded">Sync</span>
           </div>
-          <div onclick="switchTab('products')" id="btn-products" class="sidebar-item flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 cursor-pointer">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-boxes-stacked text-sky-400"></i><span>Product & Inventory</span></div>
-            <span class="bg-rose-950 text-rose-400 text-[10px] px-2 py-0.5 rounded">2 Low</span>
+          <div onclick="switchTab('manualentry')" id="btn-manualentry" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-pen-to-square text-purple-400 w-4"></i><span>Manual Order (AI Auto-fill)</span></div>
           </div>
-          <div onclick="switchTab('customers')" id="btn-customers" class="sidebar-item flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 cursor-pointer">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-users text-purple-400"></i><span>Customers (CRM)</span></div>
-            <span class="text-slate-500 text-[10px]">Risk Check</span>
+          <div onclick="switchTab('inventory')" id="btn-inventory" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-boxes-stacked text-sky-400 w-4"></i><span>Inventory & Packaging</span></div>
+            <span class="bg-rose-950 text-rose-400 text-[9px] px-1.5 py-0.5 rounded">2 Low</span>
           </div>
-          <div onclick="switchTab('suppliers')" id="btn-suppliers" class="sidebar-item flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 cursor-pointer">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-truck-ramp-box text-teal-400"></i><span>Suppliers & Purchases</span></div>
+          <div onclick="switchTab('scantoreturn')" id="btn-scantoreturn" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-barcode text-cyan-400 w-4"></i><span>Scan to Return</span></div>
           </div>
         </nav>
       </div>
 
-      <!-- Integrations -->
+      <!-- Category 2: COURIERS, CRM & FRAUD -->
       <div>
-        <p class="text-[11px] font-bold tracking-wider text-slate-500 uppercase px-2 mb-2">Couriers & Automation</p>
-        <nav class="space-y-1 text-sm font-medium">
-          <div onclick="switchTab('couriers')" id="btn-couriers" class="sidebar-item flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 cursor-pointer">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-truck-fast text-emerald-400"></i><span>Courier Hub</span></div>
-            <span class="bg-emerald-950 text-emerald-400 text-[10px] px-2 py-0.5 rounded">Auto API</span>
+        <p class="text-[11px] font-bold tracking-wider text-slate-500 uppercase px-2 mb-1.5">Couriers & CRM</p>
+        <nav class="space-y-0.5 text-xs font-medium">
+          <div onclick="switchTab('couriers')" id="btn-couriers" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-right-left text-sky-400 w-4"></i><span>Courier Integration</span></div>
+            <span class="bg-sky-950 text-sky-400 text-[9px] px-1.5 py-0.5 rounded">Multi API</span>
           </div>
-          <div onclick="switchTab('accounting')" id="btn-accounting" class="sidebar-item flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-800 cursor-pointer">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-calculator text-rose-400"></i><span>Finance & P&L</span></div>
-            <span class="bg-indigo-950 text-indigo-400 text-[10px] px-2 py-0.5 rounded">ROI</span>
+          <div onclick="switchTab('fraudcheck')" id="btn-fraudcheck" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-triangle-exclamation text-amber-400 w-4"></i><span>Fraud Detection</span></div>
+            <span class="text-slate-400 text-[10px]">Real-time</span>
+          </div>
+          <div onclick="switchTab('aicall')" id="btn-aicall" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-phone text-teal-400 w-4"></i><span>AI Call Verification</span></div>
+          </div>
+          <div onclick="switchTab('smsauto')" id="btn-smsauto" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-comment-dots text-pink-400 w-4"></i><span>SMS Automation</span></div>
+          </div>
+          <div onclick="switchTab('automation')" id="btn-automation" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-bolt text-yellow-400 w-4"></i><span>AI Chat & Automation</span></div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Category 3: MARKETING, FINANCE & TEAM -->
+      <div>
+        <p class="text-[11px] font-bold tracking-wider text-slate-500 uppercase px-2 mb-1.5">Growth & Accounting</p>
+        <nav class="space-y-0.5 text-xs font-medium">
+          <div onclick="switchTab('landingbuilder')" id="btn-landingbuilder" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-house text-emerald-400 w-4"></i><span>Landing Page Builder</span></div>
+          </div>
+          <div onclick="switchTab('pixeltracking')" id="btn-pixeltracking" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-blue-400 w-4"></i><span>Server-Side Pixel</span></div>
+          </div>
+          <div onclick="switchTab('metaads')" id="btn-metaads" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-orange-400 w-4"></i><span>Meta Ads Tracking</span></div>
+          </div>
+          <div onclick="switchTab('accounting')" id="btn-accounting" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-calculator text-rose-400 w-4"></i><span>Accounting & P&L</span></div>
+          </div>
+          <div onclick="switchTab('team')" id="btn-team" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-users text-purple-400 w-4"></i><span>Team Management</span></div>
           </div>
         </nav>
       </div>
     </div>
 
     <!-- Admin Footer -->
-    <div class="p-4 border-t border-slate-800 flex items-center justify-between">
-      <div class="flex items-center gap-3">
+    <div class="p-3 border-t border-slate-800 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-full bg-indigo-600 font-bold text-white flex items-center justify-center text-xs">A</div>
         <div>
           <p class="text-xs font-bold text-white leading-none">admin</p>
           <p class="text-[10px] text-indigo-400 mt-0.5">Super Admin</p>
         </div>
       </div>
-      <i class="fa-solid fa-arrow-right-from-bracket text-slate-400 cursor-pointer hover:text-white"></i>
+      <i class="fa-solid fa-arrow-right-from-bracket text-slate-400 cursor-pointer hover:text-white text-sm"></i>
     </div>
   </aside>
 
   <!-- MAIN WORKSPACE -->
   <div class="flex-1 flex flex-col h-full overflow-hidden">
-    
-    <!-- Top Header -->
     <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between gap-4 shrink-0 shadow-sm">
       <div class="flex items-center gap-4 flex-1">
-        <i class="fa-solid fa-bars text-slate-500 cursor-pointer text-lg"></i>
+        <i class="fa-solid fa-bars text-slate-500 cursor-pointer text-base"></i>
         <div class="relative w-full max-w-md">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
-          <input type="text" id="global-search" oninput="handleSearch(this.value)" placeholder="অর্ডার নং, ফোন নম্বর বা মডিউল খুঁজুন..." class="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-indigo-500 transition">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
+          <input type="text" placeholder="অর্ডার নং, ফোন নম্বর বা কাস্টমার খুঁজুন..." class="w-full pl-10 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-indigo-500 transition">
         </div>
       </div>
-      <div class="flex items-center gap-3">
-        <button onclick="switchTab('orders')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm transition">
+      <div class="flex items-center gap-2.5">
+        <button onclick="switchTab('manualentry')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition">
           <i class="fa-solid fa-plus"></i> নতুন অর্ডার
         </button>
       </div>
     </header>
 
-    <!-- Dynamic Content Area -->
     <main class="flex-1 p-6 overflow-y-auto custom-scrollbar" id="content-container"></main>
   </div>
 
   <script>
-    const GAS_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
-
     const Views = {
-      // ১. মডিউল ডিরেক্টরি গ্রিড (১৬টি ফিচার কার্ড)
-      modules: `
-        <div class="max-w-7xl mx-auto space-y-6">
-          <div class="flex justify-between items-center border-b border-slate-200 pb-4">
-            <div>
-              <h2 class="text-2xl font-bold text-slate-900">সিস্টেম ফিচার ও অটোমেশন ডিরেক্টরি</h2>
-              <p class="text-xs text-slate-500 mt-1">ই-কমার্স বিজনেসের প্রতিটি ধাপ পরিচালনা করার জন্য তৈরি পূর্ণাঙ্গ মডিউল তালিকা</p>
-            </div>
-            <span class="text-xs font-bold text-slate-500 bg-slate-200/70 px-3 py-1.5 rounded-full" id="card-counter">১৬ টি মডিউল উপলব্ধ</span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="modules-grid">
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="switchTab('orders')">
-              <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-clipboard-list"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Order Management</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">সব Channel-এর Order এক Dashboard-এ। Status update, invoice print, duplicate detect...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="switchTab('orders')">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-globe"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Web Orders</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">WooCommerce, Shopify ও Laravel থেকে Order Auto-sync। Stock update, abandoned cart...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="switchTab('couriers')">
-              <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-right-left"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Courier Integration</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pathao, Steadfast, Redx ও Carrybee। এক ক্লিকে Bulk Book, Auto zone detect, Tracking auto-...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="switchTab('customers')">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-triangle-exclamation"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Fraud Detection</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Real-time Fraud Check Pathao ও Steadfast Database থেকে। Blacklist management ও...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="showGenericModule('AI Call Verification')">
-              <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-phone"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">AI Call Verification</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Auto phone call দিয়ে Customer Order Confirm করো। DTMF response দিয়ে order status auto-...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="showGenericModule('SMS Automation')">
-              <div class="w-10 h-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-comment-dots"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">SMS Automation</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Order status change হলে auto SMS। Custom template, Bangla/English support, SMS log সহ।</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="switchTab('dashboard')">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-chart-simple"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Analytics & Reports</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Real-time Sales chart, Order report, Product report, Courier performance, Profit & Loss সব।</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="showGenericModule('Landing Page Builder')">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-house"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Landing Page Builder</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">No-code Store Builder। Custom Domain, 10+ Template, Countdown timer, Facebook Pixel ...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="showGenericModule('Automation')">
-              <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-bolt"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Automation</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">AI Chat (Facebook, WhatsApp, Instagram, Telegram, Web widget), FB Inbox SMS Alert,...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="switchTab('products')">
-              <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-cube"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Inventory & Packaging</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Product stock tracking, Low stock alert, Packaging material inventory। Order-এ auto...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="switchTab('accounting')">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-calculator"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Accounting</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Income ও Expense ledger, Stock purchase, Courier payment reconciliation। সব হিসাব এক...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="showGenericModule('Team Management')">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-users"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Team Management</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Multiple user role (Admin, Moderator), 22+ granular permission। Team activity log সহ।</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="switchTab('orders')">
-              <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-pen-to-square"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Manual Order Entry + AI Auto-fill</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Customer-এর message copy করে AI-তে দাও — নাম, নম্বর, ঠিকানা, পণ্য সব Auto-fill। Manual...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="showGenericModule('Scan to Return')">
-              <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-barcode"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Scan to Return</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Barcode বা QR Code Scan করে Return পণ্য Receive করো। USB Scanner বা Camera দিয়েই...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="showGenericModule('Server-Side Pixel Tracking')">
-              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-shield-halved"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Server-Side Pixel Tracking</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Facebook CAPI, Google Ads Conversion, TikTok Events API — সব Server থেকে Setup। ...</p>
-            </div>
-
-            <div class="feature-card bg-white p-5 rounded-2xl border border-slate-200/80 cursor-pointer" onclick="showGenericModule('Meta Ads Spend Tracking')">
-              <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-chart-line"></i></div>
-              <h3 class="font-bold text-slate-800 text-base">Meta Ads Spend Tracking</h3>
-              <p class="text-xs text-slate-500 mt-1 leading-relaxed">প্রতিদিনের Facebook Ads খরচ Auto-record হয়। ROI ও ROAS সরাসরি ক্যালকুলেট করুন।</p>
-            </div>
-          </div>
-        </div>
-      `,
-
-      // ২. অ্যাডমিন ড্যাশবোর্ড ভিউ
+      // 1. ADMIN DASHBOARD
       dashboard: `
         <div class="space-y-6 max-w-7xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -292,78 +206,13 @@
         </div>
       `,
 
-      // ৩. প্রোডাক্ট ও ইনভেন্টরি
-      products: `
-        <div class="space-y-6 max-w-7xl mx-auto">
-          <div class="flex justify-between items-center">
-            <div>
-              <h2 class="text-2xl font-bold text-slate-800">প্রোডাক্ট ও ইনভেন্টরি ক্যাটালগ</h2>
-              <p class="text-sm text-slate-500 mt-0.5">স্টক লেভেল, ক্রয় ও বিক্রয় মূল্য এবং স্টক হিস্টোরি</p>
-            </div>
-            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-sm">+ নতুন পণ্য</button>
-          </div>
-          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <table class="w-full text-left text-sm text-slate-600">
-              <thead class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-400 uppercase">
-                <tr><th class="p-4">পণ্য ও SKU</th><th class="p-4">ক্যাটাগরি</th><th class="p-4">ক্রয়মূল্য</th><th class="p-4">বিক্রয়মূল্য</th><th class="p-4">স্টক</th><th class="p-4">স্ট্যাটাস</th></tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100">
-                <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">Premium Cotton Panjabi<br><span class="font-mono text-xs text-slate-400">PAN-COT-01</span></td><td class="p-4"><span class="bg-indigo-50 text-indigo-600 text-xs px-2.5 py-1 rounded-md font-semibold">Clothing</span></td><td class="p-4">৳ ৯৫০</td><td class="p-4 font-bold text-emerald-600">৳ ১,৮৫০</td><td class="p-4 font-bold">৪৫ পিস</td><td class="p-4"><span class="bg-emerald-50 text-emerald-600 text-xs px-2 py-0.5 rounded-full font-bold">In Stock</span></td></tr>
-                <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">Silk Designer Saree<br><span class="font-mono text-xs text-slate-400">SAR-SLK-02</span></td><td class="p-4"><span class="bg-indigo-50 text-indigo-600 text-xs px-2.5 py-1 rounded-md font-semibold">Clothing</span></td><td class="p-4">৳ ১,৮০০</td><td class="p-4 font-bold text-emerald-600">৳ ৩,২০০</td><td class="p-4 font-bold">১৮ পিস</td><td class="p-4"><span class="bg-emerald-50 text-emerald-600 text-xs px-2 py-0.5 rounded-full font-bold">In Stock</span></td></tr>
-                <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">Slim Fit Polo Shirt<br><span class="font-mono text-xs text-slate-400">POL-SLM-03</span></td><td class="p-4"><span class="bg-indigo-50 text-indigo-600 text-xs px-2.5 py-1 rounded-md font-semibold">Clothing</span></td><td class="p-4">৳ ৩৫০</td><td class="p-4 font-bold text-emerald-600">৳ ৬৫০</td><td class="p-4 font-bold text-rose-500">৪ পিস</td><td class="p-4"><span class="bg-rose-50 text-rose-600 text-xs px-2 py-0.5 rounded-full font-bold">Low Stock</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `,
-
-      // ৪. কাস্টমারস CRM
-      customers: `
-        <div class="space-y-6 max-w-7xl mx-auto">
-          <div class="flex justify-between items-center">
-            <div>
-              <h2 class="text-2xl font-bold text-slate-800">কাস্টমার ডিরেক্টরি ও ফ্রড রিস্ক চেকার (CRM)</h2>
-              <p class="text-sm text-slate-500 mt-0.5">গ্রাহকের অর্ডার হিস্টোরি ও রিটার্ন রিস্ক ট্র্যাকিং</p>
-            </div>
-          </div>
-          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <table class="w-full text-left text-sm text-slate-600">
-              <thead class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-400 uppercase">
-                <tr><th class="p-4">কাস্টমার ও ফোন</th><th class="p-4">ঠিকানা</th><th class="p-4">মোট অর্ডার</th><th class="p-4">সফল ডেলিভারি</th><th class="p-4">রিস্ক লেভেল</th><th class="p-4 text-center">যোগাযোগ</th></tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100">
-                <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">Tanvir Hasan<br><span class="text-xs text-slate-400 font-normal">01712345678</span></td><td class="p-4">Banani, Dhaka</td><td class="p-4 font-bold">৫ টি</td><td class="p-4 font-bold text-emerald-600">৫ টি</td><td class="p-4"><span class="bg-emerald-50 text-emerald-600 text-xs px-2 py-0.5 rounded-full font-bold">✓ Safe</span></td><td class="p-4 text-center space-x-2"><i class="fa-brands fa-whatsapp text-emerald-500 text-lg cursor-pointer"></i></td></tr>
-                <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">Kamrul Islam<br><span class="text-xs text-slate-400 font-normal">01521443322</span></td><td class="p-4">Comilla</td><td class="p-4 font-bold">৩ টি</td><td class="p-4 font-bold text-emerald-600">১ টি</td><td class="p-4"><span class="bg-rose-50 text-rose-500 text-xs px-2 py-0.5 rounded-full font-bold">⚠️ High Risk</span></td><td class="p-4 text-center space-x-2"><i class="fa-brands fa-whatsapp text-emerald-500 text-lg cursor-pointer"></i></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `,
-
-      // ৫. সাপ্লায়ার ও পারচেজ
-      suppliers: `
-        <div class="space-y-6 max-w-7xl mx-auto">
-          <h2 class="text-2xl font-bold text-slate-800">সাপ্লায়ার ও পারচেজ অর্ডার</h2>
-          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <table class="w-full text-left text-sm text-slate-600">
-              <thead class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-400 uppercase">
-                <tr><th class="p-4">সাপ্লায়ার</th><th class="p-4">মোবাইল</th><th class="p-4">মোট ক্রয়</th><th class="p-4">পরিশোধ</th><th class="p-4">বকেয়া ব্যালেন্স</th><th class="p-4 text-center">অ্যাকশন</th></tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100">
-                <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">Rahman Fabrics Ltd</td><td class="p-4">01700112233</td><td class="p-4 font-bold text-slate-800">৳ ১৮৫,০০০</td><td class="p-4 font-bold text-emerald-600">৳ ১৫০,০০০</td><td class="p-4 font-bold text-rose-500">৳ ৩৫,০০০</td><td class="p-4 text-center"><button class="bg-cyan-50 text-cyan-700 text-xs px-3 py-1.5 rounded-lg font-bold border border-cyan-200">বকেয়া পরিশোধ</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `,
-
-      // ৬. অর্ডার ম্যানেজমেন্ট
+      // 2. ORDER MANAGEMENT
       orders: `
         <div class="space-y-6 max-w-7xl mx-auto">
           <div class="flex justify-between items-center">
             <div>
-              <h2 class="text-2xl font-bold text-slate-800">অর্ডার ম্যানেজমেন্ট ও ১-ক্লিক কুরিয়ার বুকিং</h2>
-              <p class="text-sm text-slate-500 mt-0.5">সব চ্যানেলের অর্ডার সরাসরি প্রসেস করুন</p>
+              <h2 class="text-2xl font-bold text-slate-800">Order Management</h2>
+              <p class="text-sm text-slate-500">সব চ্যানেলের অর্ডার এক ড্যাশবোর্ডে ম্যানেজ করুন</p>
             </div>
           </div>
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -379,26 +228,157 @@
         </div>
       `,
 
-      // ৭. কুরিয়ার হাব
-      couriers: `
+      // 3. WEB ORDERS
+      weborders: `
         <div class="space-y-6 max-w-7xl mx-auto">
-          <h2 class="text-2xl font-bold text-slate-800">Courier API Hub & Status Sync</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-800">Steadfast Courier</h4><span class="inline-block bg-emerald-50 text-emerald-600 text-xs px-2.5 py-1 rounded-full font-bold mt-2">Live API</span></div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-800">Pathao Courier</h4><span class="inline-block bg-pink-50 text-pink-600 text-xs px-2.5 py-1 rounded-full font-bold mt-2">v2 Token</span></div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-800">RedX Logistics</h4><span class="inline-block bg-red-50 text-red-600 text-xs px-2.5 py-1 rounded-full font-bold mt-2">API Connected</span></div>
+          <h2 class="text-2xl font-bold text-slate-800">Web Orders & Live Sync</h2>
+          <p class="text-sm text-slate-500">WooCommerce, Shopify ও Laravel স্টোরের অর্ডার রিয়েল-টাইম সিঙ্ক হচ্ছে।</p>
+          <div class="bg-white p-8 rounded-2xl border border-slate-200 text-center"><i class="fa-solid fa-globe text-4xl text-emerald-500 mb-2"></i><p class="text-slate-600 font-bold">Webhooks Active</p></div>
+        </div>
+      `,
+
+      // 4. MANUAL ORDER (AI AUTO-FILL)
+      manualentry: `
+        <div class="max-w-3xl mx-auto bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h2 class="text-xl font-bold text-slate-800">Manual Order Entry + AI Auto-fill</h2>
+          <p class="text-xs text-slate-500">মেসেজ বক্স থেকে টেক্সট পেস্ট করলে নাম, নম্বর, ঠিকানা নিজে থেকেই ফর্ম পূরণ করে নিবে।</p>
+          <div><label class="text-xs font-bold text-slate-600">Customer Message Paste</label><textarea placeholder="গ্রাহকের সম্পূর্ণ মেসেজ পেস্ট করুন..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs mt-1 h-20"></textarea></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="text-xs text-slate-600">Customer Name</label><input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs mt-1"></div>
+            <div><label class="text-xs text-slate-600">Phone</label><input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs mt-1"></div>
+          </div>
+          <div><label class="text-xs text-slate-600">Delivery Address</label><input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs mt-1"></div>
+          <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2.5 rounded-lg shadow-sm">Confirm Order & Save</button>
+        </div>
+      `,
+
+      // 5. INVENTORY & PACKAGING
+      inventory: `
+        <div class="space-y-6 max-w-7xl mx-auto">
+          <h2 class="text-2xl font-bold text-slate-800">Inventory & Packaging Materials</h2>
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <table class="w-full text-left text-sm text-slate-600">
+              <thead class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-400 uppercase">
+                <tr><th class="p-4">পণ্য</th><th class="p-4">SKU</th><th class="p-4">স্টক</th><th class="p-4">প্যাকেজিং বক্স স্টক</th><th class="p-4">স্ট্যাটাস</th></tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">Premium Cotton Panjabi</td><td class="p-4 font-mono text-xs">PAN-COT-01</td><td class="p-4 font-bold">৪৫ পিস</td><td class="p-4">১২০ টি পলি/বক্স</td><td class="p-4"><span class="bg-emerald-50 text-emerald-600 text-xs px-2 py-0.5 rounded-full font-bold">In Stock</span></td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       `,
 
-      // ৮. ফাইন্যান্স
+      // 6. SCAN TO RETURN
+      scantoreturn: `
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4">
+          <div class="w-14 h-14 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center text-2xl mx-auto"><i class="fa-solid fa-barcode"></i></div>
+          <h2 class="text-xl font-bold text-slate-800">Scan to Return Hub</h2>
+          <p class="text-xs text-slate-500">USB বারকোড স্ক্যানার দিয়ে রিটার্ন পার্সেল স্ক্যান করলে ডাটাবেজে অটো স্টক রিস্টোর হবে।</p>
+          <input type="text" placeholder="Scan Barcode / Enter Tracking..." class="w-full text-center bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl p-3 text-sm focus:border-indigo-500 outline-none">
+        </div>
+      `,
+
+      // 7. COURIER INTEGRATION
+      couriers: `
+        <div class="space-y-6 max-w-7xl mx-auto">
+          <h2 class="text-2xl font-bold text-slate-800">Courier Integration Hub</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-800">Steadfast Courier</h4><span class="inline-block bg-emerald-50 text-emerald-600 text-xs px-2 py-0.5 rounded-full font-bold mt-2">API Connected</span></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-800">Pathao Courier</h4><span class="inline-block bg-pink-50 text-pink-600 text-xs px-2 py-0.5 rounded-full font-bold mt-2">v2 Token Active</span></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-800">RedX Logistics</h4><span class="inline-block bg-red-50 text-red-600 text-xs px-2 py-0.5 rounded-full font-bold mt-2">Direct API</span></div>
+          </div>
+        </div>
+      `,
+
+      // 8. FRAUD DETECTION
+      fraudcheck: `
+        <div class="space-y-6 max-w-7xl mx-auto">
+          <h2 class="text-2xl font-bold text-slate-800">Real-time Fraud & Return Risk Check</h2>
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs text-slate-500">Pathao & Steadfast সেন্ট্রাল ব্ল্যাকলিস্ট ডেটাবেজের সাথে ইন্টিগ্রেটেড।</p></div>
+        </div>
+      `,
+
+      // 9. AI CALL VERIFICATION
+      aicall: `
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4">
+          <div class="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center text-2xl mx-auto"><i class="fa-solid fa-phone"></i></div>
+          <h2 class="text-xl font-bold text-slate-800">AI Call Verification</h2>
+          <p class="text-xs text-slate-500">অটোমেটিক আইভিআর কল দিয়ে কাস্টমার কনফার্মেশন ও DTMF রেসপন্স ট্র্যাকিং।</p>
+        </div>
+      `,
+
+      // 10. SMS AUTOMATION
+      smsauto: `
+        <div class="max-w-3xl mx-auto bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h2 class="text-xl font-bold text-slate-800">SMS Automation Settings</h2>
+          <div><label class="text-xs text-slate-600">Order Placed SMS Template</label><textarea class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs mt-1">প্রিয় {name}, আপনার অর্ডার #{order_id} কনফার্ম হয়েছে। ধন্যবাদ!</textarea></div>
+          <button class="bg-indigo-600 text-white font-bold text-xs px-4 py-2 rounded-lg">Save Template</button>
+        </div>
+      `,
+
+      // 11. AI CHAT & AUTOMATION
+      automation: `
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center space-y-4">
+          <div class="w-14 h-14 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center text-2xl mx-auto"><i class="fa-solid fa-bolt"></i></div>
+          <h2 class="text-xl font-bold text-slate-800">AI Chat & Multi-Platform Automation</h2>
+          <p class="text-xs text-slate-500">Facebook, WhatsApp এবং Instagram মেসেজ অটোমেশন হাব।</p>
+        </div>
+      `,
+
+      // 12. LANDING PAGE BUILDER
+      landingbuilder: `
+        <div class="space-y-6 max-w-7xl mx-auto">
+          <h2 class="text-2xl font-bold text-slate-800">Landing Page Builder (No-Code)</h2>
+          <div class="bg-white p-8 rounded-2xl border border-slate-200 text-center"><p class="text-slate-600">১০+ হাই-কনভার্টিং ল্যান্ডিং পেজ টেমপ্লেট লাইভ রয়েছে।</p></div>
+        </div>
+      `,
+
+      // 13. SERVER-SIDE PIXEL TRACKING
+      pixeltracking: `
+        <div class="space-y-6 max-w-7xl mx-auto">
+          <h2 class="text-2xl font-bold text-slate-800">Server-Side Pixel Tracking (CAPI)</h2>
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs text-slate-500">Facebook Conversions API & TikTok Events API সার্ভার সাইড ট্র্যাকিং সক্রিয়।</p></div>
+        </div>
+      `,
+
+      // 14. META ADS TRACKING
+      metaads: `
+        <div class="space-y-6 max-w-7xl mx-auto">
+          <h2 class="text-2xl font-bold text-slate-800">Meta Ads Spend & ROAS Tracking</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs text-slate-400">Total Ad Spend</p><h3 class="text-2xl font-bold text-orange-600 mt-1">৳ ১৮,৫০০</h3></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs text-slate-400">Revenue</p><h3 class="text-2xl font-bold text-emerald-600 mt-1">৳ ১,৮৪,২০০</h3></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs text-slate-400">ROAS</p><h3 class="text-2xl font-bold text-indigo-600 mt-1">9.9x</h3></div>
+          </div>
+        </div>
+      `,
+
+      // 15. ACCOUNTING & P&L
       accounting: `
         <div class="space-y-6 max-w-7xl mx-auto">
-          <h2 class="text-2xl font-bold text-slate-800">Accounting & Profit / Loss Overview</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs font-semibold text-slate-400">Total Income</p><h3 class="text-2xl font-bold text-emerald-600 mt-1">৳ ১,৮৪,২০০</h3></div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs font-semibold text-slate-400">Total Expenses</p><h3 class="text-2xl font-bold text-rose-500 mt-1">৳ ১,৪৩,০০০</h3></div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs font-semibold text-slate-400">Net Profit</p><h3 class="text-2xl font-bold text-indigo-600 mt-1">৳ ৪১,২০০</h3></div>
+          <h2 class="text-2xl font-bold text-slate-800">Accounting & Profit / Loss Ledger</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs text-slate-400">মোট আয়</p><h3 class="text-2xl font-bold text-emerald-600 mt-1">৳ ১,৮৪,২০০</h3></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs text-slate-400">মোট খরচ</p><h3 class="text-2xl font-bold text-rose-500 mt-1">৳ ১,৪৩,০০০</h3></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs text-slate-400">নিট প্রফিট</p><h3 class="text-2xl font-bold text-indigo-600 mt-1">৳ ৪১,২০০</h3></div>
+          </div>
+        </div>
+      `,
+
+      // 16. TEAM MANAGEMENT
+      team: `
+        <div class="space-y-6 max-w-7xl mx-auto">
+          <h2 class="text-2xl font-bold text-slate-800">Team Management & Granular Permissions</h2>
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <table class="w-full text-left text-sm text-slate-600">
+              <thead class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-400 uppercase">
+                <tr><th class="p-4">নাম</th><th class="p-4">রোল</th><th class="p-4">স্ট্যাটাস</th></tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50"><td class="p-4 font-bold text-slate-800">Admin User</td><td class="p-4 font-semibold text-indigo-600">Super Admin</td><td class="p-4"><span class="bg-emerald-50 text-emerald-600 text-xs px-2 py-0.5 rounded-full font-bold">Active</span></td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       `
@@ -413,39 +393,6 @@
       container.innerHTML = Views[tabKey] || '<div class="p-8 text-center text-slate-400">মডিউল প্রস্তুত হচ্ছে...</div>';
 
       if (tabKey === 'dashboard') initChart();
-    }
-
-    function showGenericModule(name) {
-      const container = document.getElementById('content-container');
-      container.innerHTML = `
-        <div class="max-w-7xl mx-auto space-y-4">
-          <button onclick="switchTab('modules')" class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-2 rounded-xl border border-indigo-200 flex items-center gap-2 hover:bg-indigo-100 transition">
-            <i class="fa-solid fa-arrow-left"></i> সব মডিউলে ফিরে যান
-          </button>
-          <div class="bg-white p-12 rounded-2xl border border-slate-200 text-center shadow-sm">
-            <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">
-              <i class="fa-solid fa-cube"></i>
-            </div>
-            <h3 class="text-xl font-bold text-slate-800">${name}</h3>
-            <p class="text-slate-400 text-sm mt-1">এই মডিউলটির সাথে আপনার Google Sheet DB এবং ক্লাউড অটোমেশন কনফিগার করা রয়েছে।</p>
-          </div>
-        </div>
-      `;
-    }
-
-    function handleSearch(query) {
-      const activeView = document.getElementById('modules-grid');
-      if (activeView) {
-        const cards = activeView.querySelectorAll('.feature-card');
-        let count = 0;
-        cards.forEach(card => {
-          const match = card.innerText.toLowerCase().includes(query.toLowerCase());
-          card.style.display = match ? 'block' : 'none';
-          if (match) count++;
-        });
-        const counter = document.getElementById('card-counter');
-        if (counter) counter.innerText = `${count} টি মডিউল উপলব্ধ`;
-      }
     }
 
     function initChart() {
@@ -464,8 +411,8 @@
       });
     }
 
-    // Default Load: All Modules Grid
-    switchTab('modules');
+    // Default Load: Admin Dashboard View
+    switchTab('dashboard');
   </script>
 </body>
 </html>
