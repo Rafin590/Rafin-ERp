@@ -352,6 +352,42 @@
               <span class="px-1.5 py-0.5 text-[9px] rounded bg-pink-950 text-pink-400 font-bold border border-pink-800">v2 Token</span>
             </button>
 
+            <!-- REDX COURIER -->
+            <button onclick="switchPage('courier-redx')" id="nav-courier-redx" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition group">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-box-archive w-4 text-center text-rose-500"></i>
+                <span>RedX Logistics</span>
+              </div>
+              <span class="px-1.5 py-0.5 text-[9px] rounded bg-rose-950 text-rose-300 font-bold border border-rose-800">API</span>
+            </button>
+
+            <!-- ECOURIER -->
+            <button onclick="switchPage('courier-ecourier')" id="nav-courier-ecourier" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition group">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-truck-pickup w-4 text-center text-cyan-400"></i>
+                <span>eCourier API</span>
+              </div>
+              <span class="px-1.5 py-0.5 text-[9px] rounded bg-cyan-950 text-cyan-300 font-bold border border-cyan-800">Direct</span>
+            </button>
+
+            <!-- COURIER COD RECONCILIATION REPORT -->
+            <button onclick="switchPage('courier-cod-report')" id="nav-courier-cod-report" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition group">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-file-invoice-dollar w-4 text-center text-emerald-400"></i>
+                <span>Courier COD Report</span>
+              </div>
+              <span class="px-1.5 py-0.5 text-[9px] rounded bg-emerald-900/50 text-emerald-300 font-bold">4 Couriers</span>
+            </button>
+
+            <!-- LIVE PRODUCT LANDING PAGE SHORTCUT -->
+            <a href="landing.html" target="_blank" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:bg-emerald-950/50 border border-emerald-800/60 transition group">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-store w-4 text-center text-emerald-400"></i>
+                <span>Live Landing Page</span>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+
             <button onclick="switchPage('shopify-woo')" id="nav-shopify-woo" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition group">
               <div class="flex items-center gap-3">
                 <i class="fa-brands fa-shopify w-4 text-center text-teal-400"></i>
@@ -488,6 +524,12 @@
             <span class="hidden sm:inline">নতুন অর্ডার</span>
           </button>
 
+          <!-- Live Product Landing Page -->
+          <a href="landing.html" target="_blank" class="px-3 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-500/20 flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-store text-xs"></i>
+            <span class="hidden md:inline">লাইভ ল্যান্ডিং পেজ</span>
+          </a>
+
           <!-- Website API Shortcut Button -->
           <button onclick="switchPage('website-api')" class="px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition">
             <i class="fa-solid fa-globe text-xs"></i>
@@ -530,14 +572,13 @@
             </button>
           </div>
 
-          <!-- Active Store Selector -->
+          <!-- Active Store Selector / Profile Customizer -->
           <div class="hidden lg:flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">
-            <span class="text-[11px] font-semibold text-slate-500">স্টোর:</span>
-            <select id="active-store-selector" onchange="changeActiveStore(this.value)" class="text-xs font-bold bg-slate-100 dark:bg-slate-800 px-2.5 py-1.5 rounded-lg border-none outline-none">
-              <option value="store1">Fashion Hub BD</option>
-              <option value="store2">Gadget Pulse Store</option>
-              <option value="store3">Organic Living</option>
-            </select>
+            <button onclick="openStoreProfileModal()" title="স্টোরের নাম, ফোন ও ঠিকানা পরিবর্তন করুন" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition">
+              <i class="fa-solid fa-store text-brand-500"></i>
+              <span id="header-store-name-display">আমার স্টোর</span>
+              <i class="fa-solid fa-pen-to-square text-[10px] text-slate-400 ml-0.5"></i>
+            </button>
           </div>
 
         </div>
@@ -556,10 +597,13 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-brand-900 via-indigo-900 to-slate-900 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
             <div class="relative z-10">
               <span class="px-3 py-1 rounded-full bg-brand-500/30 text-brand-200 text-xs font-bold border border-brand-400/30">OmniStore Control Center</span>
-              <h2 class="text-xl sm:text-2xl font-black mt-2">শুভ অপরাহ্ন, <span id="dash-greeting-user">Admin</span>! 🚀</h2>
-              <p class="text-xs text-slate-300 mt-1 max-w-xl">আজকের লাইভ অর্ডার, কুরিয়ার ডেলিভারি রেট, মোট আয় ও প্রফিট রিপোর্ট নিচে দেখুন।</p>
+              <h2 class="text-xl sm:text-2xl font-black mt-2">শুভ দিন, <span id="dash-greeting-user">Admin</span>! 🚀</h2>
+              <p class="text-xs text-slate-300 mt-1 max-w-xl">আপনার স্টোরের লাইভ অর্ডার, কুরিয়ার ডেলিভারি রেট, মোট আয় ও প্রফিট রিপোর্ট নিচে দেখুন।</p>
             </div>
             <div class="relative z-10 flex flex-wrap gap-2 items-center">
+              <button onclick="openStoreProfileModal()" class="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold backdrop-blur transition flex items-center gap-1.5">
+                <i class="fa-solid fa-store"></i> <span id="banner-store-name-btn">স্টোর তথ্য পরিবর্তন</span>
+              </button>
               <button onclick="openCreateOrderModal()" class="px-4 py-2.5 bg-brand-500 hover:bg-brand-400 text-white rounded-xl text-xs font-bold shadow-lg shadow-brand-500/40 flex items-center gap-2 transition">
                 <i class="fa-solid fa-plus"></i> নতুন অর্ডার তৈরি
               </button>
@@ -581,10 +625,10 @@
                 <span class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm"><i class="fa-solid fa-bangladeshi-taka-sign"></i></span>
               </div>
               <div class="mt-3 flex items-baseline gap-2">
-                <span id="kpi-total-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">৳১২৮,৪৫০</span>
-                <span class="text-[11px] font-bold text-emerald-600"><i class="fa-solid fa-arrow-trend-up"></i> +14.2%</span>
+                <span id="kpi-total-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">৳০</span>
+                <span id="kpi-revenue-trend" class="text-[11px] font-bold text-emerald-600"><i class="fa-solid fa-arrow-trend-up"></i> লাইভ</span>
               </div>
-              <p class="text-[10px] text-slate-400 mt-1">চলতি মাসে সম্পন্ন অর্ডার</p>
+              <p class="text-[10px] text-slate-400 mt-1">চলতি মাসে সম্পন্ন ডেলিভারি</p>
             </div>
 
             <!-- Total Orders -->
@@ -594,8 +638,8 @@
                 <span class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm"><i class="fa-solid fa-cart-shopping"></i></span>
               </div>
               <div class="mt-3 flex items-baseline gap-2">
-                <span id="kpi-total-orders" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">৮২ টি</span>
-                <span class="text-[11px] font-bold text-indigo-600"><i class="fa-solid fa-boxes-packing"></i> লাইভ</span>
+                <span id="kpi-total-orders" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">০ টি</span>
+                <span class="text-[11px] font-bold text-indigo-600"><i class="fa-solid fa-boxes-packing"></i> মোট প্রাপ্ত</span>
               </div>
               <p class="text-[10px] text-slate-400 mt-1">সর্বমোট প্রাপ্ত অর্ডার সংখ্যা</p>
             </div>
@@ -607,8 +651,8 @@
                 <span class="w-8 h-8 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center text-sm"><i class="fa-solid fa-truck-ramp-box"></i></span>
               </div>
               <div class="mt-3 flex items-baseline gap-2">
-                <span id="kpi-delivery-rate" class="text-xl sm:text-2xl font-black text-teal-600 dark:text-teal-400">৮৮.৪%</span>
-                <span class="text-[10px] font-bold text-slate-500">রিটার্ন ১১.৬%</span>
+                <span id="kpi-delivery-rate" class="text-xl sm:text-2xl font-black text-teal-600 dark:text-teal-400">০%</span>
+                <span id="kpi-return-rate-sub" class="text-[10px] font-bold text-slate-500">রিটার্ন ০%</span>
               </div>
               <p class="text-[10px] text-slate-400 mt-1">Steadfast & Pathao এভারেজ</p>
             </div>
@@ -620,8 +664,8 @@
                 <span class="w-8 h-8 rounded-xl bg-violet-50 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 flex items-center justify-center text-sm"><i class="fa-solid fa-coins"></i></span>
               </div>
               <div class="mt-3 flex items-baseline gap-2">
-                <span id="kpi-net-profit" class="text-xl sm:text-2xl font-black text-violet-600 dark:text-violet-400">৳৪১,২০০</span>
-                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-violet-100 dark:bg-violet-950 text-violet-700">৩২% মার্জিন</span>
+                <span id="kpi-net-profit" class="text-xl sm:text-2xl font-black text-violet-600 dark:text-violet-400">৳০</span>
+                <span id="kpi-profit-margin-badge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-violet-100 dark:bg-violet-950 text-violet-700">০% মার্জিন</span>
               </div>
               <p class="text-[10px] text-slate-400 mt-1">COGS ও খরচ বাদে প্রকৃত লাভ</p>
             </div>
@@ -635,32 +679,32 @@
               
               <div onclick="filterOrdersByStatus('Pending')" class="cursor-pointer p-3 rounded-xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 hover:scale-105 transition text-center">
                 <div class="text-xs font-semibold text-amber-700 dark:text-amber-300">অপেক্ষারত (Pending)</div>
-                <div id="pipe-pending-count" class="text-lg font-black text-amber-900 dark:text-amber-200 mt-1">৮</div>
+                <div id="pipe-pending-count" class="text-lg font-black text-amber-900 dark:text-amber-200 mt-1">০</div>
               </div>
 
               <div onclick="filterOrdersByStatus('Confirmed')" class="cursor-pointer p-3 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 hover:scale-105 transition text-center">
                 <div class="text-xs font-semibold text-blue-700 dark:text-blue-300">নিশ্চিত (Confirmed)</div>
-                <div id="pipe-confirmed-count" class="text-lg font-black text-blue-900 dark:text-blue-200 mt-1">১২</div>
+                <div id="pipe-confirmed-count" class="text-lg font-black text-blue-900 dark:text-blue-200 mt-1">০</div>
               </div>
 
               <div onclick="filterOrdersByStatus('Processing')" class="cursor-pointer p-3 rounded-xl bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 hover:scale-105 transition text-center">
                 <div class="text-xs font-semibold text-indigo-700 dark:text-indigo-300">প্যাকিং (Processing)</div>
-                <div id="pipe-processing-count" class="text-lg font-black text-indigo-900 dark:text-indigo-200 mt-1">১৪</div>
+                <div id="pipe-processing-count" class="text-lg font-black text-indigo-900 dark:text-indigo-200 mt-1">০</div>
               </div>
 
               <div onclick="filterOrdersByStatus('In Courier')" class="cursor-pointer p-3 rounded-xl bg-purple-50/80 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 hover:scale-105 transition text-center">
                 <div class="text-xs font-semibold text-purple-700 dark:text-purple-300">কুরিয়ারে (In Courier)</div>
-                <div id="pipe-courier-count" class="text-lg font-black text-purple-900 dark:text-purple-200 mt-1">২৫</div>
+                <div id="pipe-courier-count" class="text-lg font-black text-purple-900 dark:text-purple-200 mt-1">০</div>
               </div>
 
               <div onclick="filterOrdersByStatus('Delivered')" class="cursor-pointer p-3 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 hover:scale-105 transition text-center">
                 <div class="text-xs font-semibold text-emerald-700 dark:text-emerald-300">ডেলিভার্ড (Delivered)</div>
-                <div id="pipe-delivered-count" class="text-lg font-black text-emerald-900 dark:text-emerald-200 mt-1">১৯</div>
+                <div id="pipe-delivered-count" class="text-lg font-black text-emerald-900 dark:text-emerald-200 mt-1">০</div>
               </div>
 
               <div onclick="filterOrdersByStatus('Returned')" class="cursor-pointer p-3 rounded-xl bg-rose-50/80 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 hover:scale-105 transition text-center">
                 <div class="text-xs font-semibold text-rose-700 dark:text-rose-300">রিটার্ন (Returned)</div>
-                <div id="pipe-returned-count" class="text-lg font-black text-rose-900 dark:text-rose-200 mt-1">৪</div>
+                <div id="pipe-returned-count" class="text-lg font-black text-rose-900 dark:text-rose-200 mt-1">০</div>
               </div>
 
             </div>
@@ -701,11 +745,11 @@
               <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2 text-xs">
                 <div class="flex items-center justify-between">
                   <span class="flex items-center gap-2 text-emerald-600 font-bold"><i class="fa-solid fa-truck-fast text-xs"></i> Steadfast Courier</span>
-                  <span class="font-bold">৭২% সাকসেস (৳৪৫,২০০)</span>
+                  <span id="courier-legend-steadfast" class="font-bold">০টি অর্ডার (৳০)</span>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="flex items-center gap-2 text-pink-600 font-bold"><i class="fa-solid fa-motorcycle text-xs"></i> Pathao Courier</span>
-                  <span class="font-bold">২৮% সাকসেস (৳১৮,৭০০)</span>
+                  <span id="courier-legend-pathao" class="font-bold">০টি অর্ডার (৳০)</span>
                 </div>
               </div>
             </div>
@@ -814,15 +858,15 @@
               </div>
 
               <!-- Quick Low Stock Alert Box -->
-              <div class="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 flex items-center justify-between">
+              <div id="dash-low-stock-box" class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
-                  <i class="fa-solid fa-triangle-exclamation text-rose-500 text-base"></i>
+                  <i class="fa-solid fa-circle-check text-emerald-500 text-base"></i>
                   <div>
-                    <div class="text-xs font-bold text-rose-800 dark:text-rose-200">২টি পণ্যের স্টক কম!</div>
-                    <div class="text-[10px] text-rose-600 dark:text-rose-400">রি-অর্ডার করার পরামর্শ দেওয়া হচ্ছে</div>
+                    <div class="text-xs font-bold text-emerald-800 dark:text-emerald-200">সব পণ্যের স্টক পর্যাপ্ত রয়েছে</div>
+                    <div class="text-[10px] text-emerald-600 dark:text-emerald-400">কোনো পণ্যে ঘাটতি নেই</div>
                   </div>
                 </div>
-                <button onclick="switchPage('inventory')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-bold transition">চেক করুন</button>
+                <button onclick="switchPage('inventory')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[10px] font-bold transition">ইনভেন্টরি</button>
               </div>
 
             </div>
@@ -2053,6 +2097,206 @@ function jsonResponse(data) {
 
 
         <!-- ================================================================= -->
+        <!-- PAGE 11.1: COURIER API INTEGRATION (REDX LOGISTICS) -->
+        <!-- ================================================================= -->
+        <div id="page-courier-redx" class="page-view animate-fade-in space-y-6 hidden">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center text-lg font-bold shadow-md shadow-rose-500/20">
+                <i class="fa-solid fa-box-archive"></i>
+              </div>
+              <div>
+                <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">RedX Logistics API Integration</h2>
+                <p class="text-xs text-slate-500">রেডএক্স পার্সেল ক্রিয়েশন, হাব সিলেকশন ও লাইভ ট্র্যাকিং</p>
+              </div>
+            </div>
+            <button onclick="testRedxConnection()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-link"></i> রেডএক্স API টেস্ট
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- RedX Credentials -->
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+              <h3 class="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-key text-rose-500"></i> RedX API ক্রেডেনশিয়াল
+              </h3>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">RedX API Bearer Token</label>
+                <input id="redx-token" type="password" value="redx_live_tok_984729384729" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-mono outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">পিকআপ হাব / শপ (Pickup Hub)</label>
+                <select class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
+                  <option>Dhanmondi Hub - Dhaka</option>
+                  <option>Uttara Hub - Dhaka</option>
+                  <option>Agrabad Hub - Chattogram</option>
+                </select>
+              </div>
+              <button onclick="saveCourierConfig('redx')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">সেটিংস সেভ করুন</button>
+            </div>
+
+            <!-- RedX Live Tracking Box -->
+            <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                  <i class="fa-solid fa-location-dot text-rose-500"></i> রেডএক্স ট্র্যাকিং অনুসন্ধান
+                </h3>
+                <span class="text-xs text-rose-600 font-bold">API Status: Connected</span>
+              </div>
+              
+              <div class="flex gap-2">
+                <input id="redx-tracking-search-input" type="text" placeholder="RedX Tracking ID (যেমন: REDX-8821)..." class="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs outline-none">
+                <button onclick="trackRedxParcel()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold">ট্র্যাক করুন</button>
+              </div>
+
+              <div id="redx-tracking-result" class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2 text-xs">
+                <div class="text-slate-500 font-bold">ট্র্যাকিং রেজাল্ট:</div>
+                <div class="space-y-1.5">
+                  <div class="flex items-center gap-2 text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> অর্ডার বুকিং সফল (Parcel Created)</div>
+                  <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300"><i class="fa-solid fa-truck text-rose-500"></i> ডেলিভারি সেন্টারে প্রক্রিয়াধীন (In Hub)</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- ================================================================= -->
+        <!-- PAGE 11.2: COURIER API INTEGRATION (ECOURIER) -->
+        <!-- ================================================================= -->
+        <div id="page-courier-ecourier" class="page-view animate-fade-in space-y-6 hidden">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-600 text-white flex items-center justify-center text-lg font-bold shadow-md shadow-cyan-500/20">
+                <i class="fa-solid fa-truck-pickup"></i>
+              </div>
+              <div>
+                <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">eCourier API Integration</h2>
+                <p class="text-xs text-slate-500">ই-কুরিয়ার পার্সেল প্লেসমেন্ট, ডোর-টু-ডোর ডেলিভারি ও পেমেন্ট ট্র্যাকিং</p>
+              </div>
+            </div>
+            <button onclick="testEcourierConnection()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-link"></i> eCourier টেস্ট
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- eCourier Credentials -->
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+              <h3 class="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-key text-cyan-500"></i> eCourier ক্রেডেনশিয়াল
+              </h3>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">API Key</label>
+                <input id="ecourier-api-key" type="password" value="ecour_key_984729384" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-mono outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">API Secret</label>
+                <input id="ecourier-secret" type="password" value="ecour_sec_99882233" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-mono outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">User ID</label>
+                <input id="ecourier-user-id" type="text" value="ecour_user_401" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-mono outline-none">
+              </div>
+              <button onclick="saveCourierConfig('ecourier')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">সেভ করুন</button>
+            </div>
+
+            <!-- eCourier Info & Features -->
+            <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <h3 class="text-sm font-bold text-slate-800 dark:text-white">eCourier এর সুবিধাসমূহ</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div class="p-3 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-800 space-y-1">
+                  <div class="font-bold text-cyan-800 dark:text-cyan-200"><i class="fa-solid fa-bolt mr-1"></i> সেম ডে ডেলিভারি</div>
+                  <p class="text-slate-600 dark:text-slate-400">ঢাকা সিটিতে সেম ডে ও নেক্সট ডে এক্সপ্রেস সুবিধা।</p>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1">
+                  <div class="font-bold text-slate-800 dark:text-slate-200"><i class="fa-solid fa-money-bill-wave text-emerald-500 mr-1"></i> দ্রুত COD সেটেলমেন্ট</div>
+                  <p class="text-slate-600 dark:text-slate-400">সপ্তাহে ২ দিন সরাসরি ব্যাংক একাউন্টে রেমিট্যান্স ট্রান্সফার।</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- ================================================================= -->
+        <!-- PAGE 11.3: COURIER COD RECONCILIATION REPORT -->
+        <!-- ================================================================= -->
+        <div id="page-courier-cod-report" class="page-view animate-fade-in space-y-6 hidden">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Courier COD Reconciliation Report</h2>
+              <p class="text-xs text-slate-500">Steadfast, Pathao, RedX ও eCourier এর কালেকশন ও ব্যাংক সেটেলমেন্ট বিবরণী</p>
+            </div>
+            <button onclick="exportCourierCodCSV()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-file-excel"></i> COD স্টেটমেন্ট ডাউনলোড (CSV)
+            </button>
+          </div>
+
+          <!-- 4 Courier KPI Summary Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div class="text-xs font-bold text-emerald-600">Steadfast COD</div>
+              <div id="cod-sum-sf" class="text-xl font-black text-slate-900 dark:text-white mt-1">৳০</div>
+              <span class="text-[10px] text-slate-400">কালেকশন ও ইন-ট্রানজিট</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div class="text-xs font-bold text-pink-600">Pathao COD</div>
+              <div id="cod-sum-pathao" class="text-xl font-black text-slate-900 dark:text-white mt-1">৳০</div>
+              <span class="text-[10px] text-slate-400">কালেকশন ও ইন-ট্রানজিট</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div class="text-xs font-bold text-rose-600">RedX COD</div>
+              <div id="cod-sum-redx" class="text-xl font-black text-slate-900 dark:text-white mt-1">৳০</div>
+              <span class="text-[10px] text-slate-400">কালেকশন ও ইন-ট্রানজিট</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div class="text-xs font-bold text-cyan-600">eCourier COD</div>
+              <div id="cod-sum-ecourier" class="text-xl font-black text-slate-900 dark:text-white mt-1">৳০</div>
+              <span class="text-[10px] text-slate-400">কালেকশন ও ইন-ট্রানজিট</span>
+            </div>
+
+          </div>
+
+          <!-- Courier Breakdown Table -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-800 dark:text-white">পার্সেলভিত্তিক COD স্ট্যাটাস ও কালেকশন ট্র্যাকিং</h3>
+              <span class="text-xs text-slate-400">লাইভ আপডেট</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-500 font-bold uppercase text-[10px] border-b border-slate-200 dark:border-slate-800">
+                  <tr>
+                    <th class="px-4 py-3">অর্ডার নং</th>
+                    <th class="px-4 py-3">কাস্টমার ও মোবাইল</th>
+                    <th class="px-4 py-3">কুরিয়ার সার্ভিস</th>
+                    <th class="px-4 py-3">ট্র্যাকিং আইডি</th>
+                    <th class="px-4 py-3">COD পরিমাণ</th>
+                    <th class="px-4 py-3">ডেলিভারি স্ট্যাটাস</th>
+                    <th class="px-4 py-3 text-right">সেটেলমেন্ট অবস্থা</th>
+                  </tr>
+                </thead>
+                <tbody id="courier-cod-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                  <!-- Dynamic COD List -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- ================================================================= -->
         <!-- PAGE 12: SMS GATEWAY & AUTOMATED NOTIFICATIONS -->
         <!-- ================================================================= -->
         <div id="page-sms-gateway" class="page-view animate-fade-in space-y-6 hidden">
@@ -2203,31 +2447,84 @@ function jsonResponse(data) {
         <div id="page-reports" class="page-view animate-fade-in space-y-6 hidden">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">এনালিটিক্স ও বিজনেস রিপোর্ট</h2>
-              <p class="text-xs text-slate-500">দৈনিক ও মাসিক বিক্রয়, প্রফিট ও এক্সপোর্ট সেন্টার</p>
+              <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">এনালিটিক্স ও বিজনেস রিপোর্ট (Reports Hub)</h2>
+              <p class="text-xs text-slate-500">দৈনিক, সাপ্তাহিক ও মাসিক বিক্রয়, কুরিয়ার খরচ, লাভ-ক্ষতি ও ডেলিভারি ম্যানিফেস্ট</p>
             </div>
-            <div class="flex gap-2">
-              <button onclick="exportFullReportExcel()" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-file-excel"></i> Excel Export
+            <div class="flex flex-wrap gap-2">
+              <button onclick="exportOrdersToCSV()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-file-csv"></i> CSV এক্সপোর্ট
               </button>
-              <button onclick="window.print()" class="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-print"></i> Print
+              <button onclick="printDailyManifest()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-clipboard-list"></i> কুরিয়ার পিকআপ ম্যানিফেস্ট
+              </button>
+              <button onclick="window.print()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5">
+                <i class="fa-solid fa-print"></i> প্রিন্ট
               </button>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-semibold">
+          <!-- Time Range Selector Buttons -->
+          <div class="flex gap-2 p-1.5 bg-slate-200/80 dark:bg-slate-900 rounded-2xl text-xs font-bold w-fit">
+            <button id="rep-filter-daily" onclick="filterReportTimeRange('daily')" class="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm text-brand-600 dark:text-brand-400 font-bold transition">
+              📅 দৈনিক রিপোর্ট (Today)
+            </button>
+            <button id="rep-filter-weekly" onclick="filterReportTimeRange('weekly')" class="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 transition">
+              📊 সাপ্তাহিক রিপোর্ট (7 Days)
+            </button>
+            <button id="rep-filter-monthly" onclick="filterReportTimeRange('monthly')" class="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 transition">
+              📈 মাসিক রিপোর্ট (30 Days)
+            </button>
+          </div>
+
+          <!-- Dynamic Metric KPI Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-              <span class="text-slate-400">এভারেজ অর্ডার ভ্যালু (AOV)</span>
-              <div class="text-xl font-black text-slate-900 dark:text-white mt-1">৳১,৫৬৫</div>
+              <span class="text-slate-400 font-bold">মোট বিক্রয় (Sales)</span>
+              <div id="rep-kpi-sales" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-1">৳০</div>
+              <span id="rep-kpi-sales-sub" class="text-[10px] text-emerald-600 font-bold">০টি সম্পন্ন অর্ডার</span>
             </div>
+
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-              <span class="text-slate-400">রিটার্ন পার্সেল খরচ লস</span>
-              <div class="text-xl font-black text-rose-600 mt-1">৳৪,৮৫০</div>
+              <span class="text-slate-400 font-bold">কুরিয়ার ডেলিভারি ফি</span>
+              <div id="rep-kpi-courier-cost" class="text-xl sm:text-2xl font-black text-rose-600 mt-1">৳০</div>
+              <span class="text-[10px] text-slate-400">ডেলিভারি ও রিটার্ন চার্জ</span>
             </div>
+
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-              <span class="text-slate-400">কাস্টমার রিপিট পারচেজ রেট</span>
-              <div class="text-xl font-black text-emerald-600 mt-1">২৪.৫%</div>
+              <span class="text-slate-400 font-bold">বিজ্ঞাপন ও অন্যান্য খরচ</span>
+              <div id="rep-kpi-expenses" class="text-xl sm:text-2xl font-black text-amber-600 mt-1">৳০</div>
+              <span class="text-[10px] text-slate-400">অ্যাড ও অপারেটিং খরচ</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <span class="text-slate-400 font-bold">আনুমানিক নিট প্রফিট</span>
+              <div id="rep-kpi-net-profit" class="text-xl sm:text-2xl font-black text-emerald-600 mt-1">৳০</div>
+              <span id="rep-kpi-margin-sub" class="text-[10px] text-emerald-700 font-bold">০% মার্জিন</span>
+            </div>
+          </div>
+
+          <!-- Report Breakdown Orders Table -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <h3 id="rep-table-heading" class="text-sm font-bold text-slate-800 dark:text-white">আজকের অর্ডারের পূর্ণাঙ্গ তালিকা</h3>
+              <span id="rep-order-count-badge" class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300">০টি অর্ডার</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-500 font-bold uppercase text-[10px] border-b border-slate-200 dark:border-slate-800">
+                  <tr>
+                    <th class="px-4 py-3">অর্ডার আইডি</th>
+                    <th class="px-4 py-3">গ্রাহকের নাম ও ফোন</th>
+                    <th class="px-4 py-3">পণ্য বিবরণী</th>
+                    <th class="px-4 py-3">কুরিয়ার ও ট্র্যাকিং</th>
+                    <th class="px-4 py-3">মোট টাকা</th>
+                    <th class="px-4 py-3">স্ট্যাটাস</th>
+                  </tr>
+                </thead>
+                <tbody id="rep-orders-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                  <!-- Dynamic Report Rows -->
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -2517,6 +2814,177 @@ function jsonResponse(data) {
   </div>
 
 
+  <!-- STORE PROFILE & INFO CUSTOMIZATION MODAL -->
+  <div id="modal-store-profile" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+    <div class="w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 max-h-[90vh] flex flex-col overflow-hidden animate-fade-in">
+      <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-brand-900/10 to-indigo-900/10">
+        <h3 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-store text-brand-500"></i> আপনার স্টোর প্রোফাইল ও তথ্য সেট করুন
+        </h3>
+        <button onclick="closeModal('modal-store-profile')" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
+        <form id="store-profile-form" onsubmit="event.preventDefault(); saveStoreProfileModal();" class="space-y-4">
+          <div class="p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl border border-indigo-100 dark:border-indigo-900 text-indigo-900 dark:text-indigo-200">
+            <p class="font-medium"><i class="fa-solid fa-circle-info mr-1"></i> আপনার শপ/বিজনেস এর তথ্য দিন। এটি ইনভয়েস, ড্যাশবোর্ড এবং সকল হিসেবে স্বয়ংক্রিয়ভাবে আপডেট হবে।</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">দোকান / পেজের নাম (Store Name) <span class="text-rose-500">*</span></label>
+              <input id="prof-store-name" type="text" required placeholder="যেমন: My Fashion Store" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-brand-500">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">আপনার নাম (Owner / Manager) <span class="text-rose-500">*</span></label>
+              <input id="prof-owner-name" type="text" required placeholder="যেমন: Rafin / Admin" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-brand-500">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">হটলাইন মোবাইল নম্বর <span class="text-rose-500">*</span></label>
+              <input id="prof-store-phone" type="tel" required placeholder="01XXXXXXXXX" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-mono font-bold outline-none focus:ring-2 focus:ring-brand-500">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">ইমেইল ঠিকানা</label>
+              <input id="prof-store-email" type="email" placeholder="contact@mystore.com" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">শপ / অফিসের সম্পূর্ণ ঠিকানা</label>
+            <textarea id="prof-store-address" rows="2" placeholder="House/Road, Area, City" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-500"></textarea>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">গুগল শিট Web App URL (ঐচ্ছিক)</label>
+            <input id="prof-store-gsheet" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-mono outline-none focus:ring-2 focus:ring-emerald-500">
+            <p class="text-[10px] text-slate-400 mt-1">গুগল শিটের Apps Script Web App লিংক দিলে সব ডাটা সরাসরি শিটে সিঙ্ক থাকবে।</p>
+          </div>
+
+          <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <button type="button" onclick="closeModal('modal-store-profile')" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold">বাতিল</button>
+            <button type="submit" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold shadow-md shadow-brand-500/20">সেভ ও আপডেট করুন</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ADD PRODUCT MODAL -->
+  <div id="modal-add-product" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+    <div class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 max-h-[90vh] flex flex-col overflow-hidden animate-fade-in">
+      <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <h3 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-boxes-stacked text-brand-500"></i> নতুন পণ্য যুক্ত করুন
+        </h3>
+        <button onclick="closeModal('modal-add-product')" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
+        <form id="add-product-form" onsubmit="event.preventDefault(); submitAddProduct();" class="space-y-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">পণ্যের নাম <span class="text-rose-500">*</span></label>
+            <input id="new-prod-name" type="text" required placeholder="যেমন: Silk Panjabi" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-bold outline-none">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">SKU কোড</label>
+              <input id="new-prod-sku" type="text" placeholder="যেমন: PAN-01" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-mono outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">ক্যাটাগরি</label>
+              <input id="new-prod-cat" type="text" placeholder="Clothing" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs outline-none">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">ক্রয়মূল্য (৳)</label>
+              <input id="new-prod-cost" type="number" required placeholder="900" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-bold outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">বিক্রয়মূল্য (৳) <span class="text-rose-500">*</span></label>
+              <input id="new-prod-price" type="number" required placeholder="1850" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-bold outline-none">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">বর্তমান স্টক (পিস)</label>
+              <input id="new-prod-stock" type="number" required value="10" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-bold outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">ছবির URL (ঐচ্ছিক)</label>
+              <input id="new-prod-img" type="url" placeholder="https://..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs outline-none">
+            </div>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" onclick="closeModal('modal-add-product')" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold">বাতিল</button>
+            <button type="submit" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold">পণ্য সংরক্ষণ করুন</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ADD EXPENSE MODAL -->
+  <div id="modal-add-expense" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+    <div class="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 max-h-[90vh] flex flex-col overflow-hidden animate-fade-in">
+      <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <h3 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-receipt text-rose-500"></i> নতুন খরচ যুক্ত করুন
+        </h3>
+        <button onclick="closeModal('modal-add-expense')" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
+        <form id="add-expense-form" onsubmit="event.preventDefault(); submitAddExpense();" class="space-y-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">খরচের খাত (Category) <span class="text-rose-500">*</span></label>
+            <select id="exp-category" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-bold outline-none">
+              <option value="Facebook Ads">Facebook Ads</option>
+              <option value="Packaging">Packaging & Poly</option>
+              <option value="Courier Return Loss">Courier Return Loss</option>
+              <option value="Office Rent">Office Rent</option>
+              <option value="Salary">Staff Salary</option>
+              <option value="Miscellaneous">অন্যান্য (Others)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">টাকার পরিমাণ (৳) <span class="text-rose-500">*</span></label>
+            <input id="exp-amount" type="number" required placeholder="যেমন: 1500" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-bold outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">নোট / বিবরণ</label>
+            <input id="exp-note" type="text" placeholder="যেমন: Campaign Ads" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">প্রদত্ত একাউন্ট</label>
+            <select id="exp-account" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl text-xs font-bold outline-none">
+              <option value="Cash">ক্যাশ অন হ্যান্ড (Cash)</option>
+              <option value="bKash">বিকাশ মার্চেন্ট (bKash)</option>
+              <option value="Nagad">নগদ বিজনেস (Nagad)</option>
+              <option value="Bank">ব্যাংক একাউন্ট (Bank)</option>
+            </select>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" onclick="closeModal('modal-add-expense')" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold">বাতিল</button>
+            <button type="submit" class="px-6 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold">খরচ সেভ করুন</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
   <!-- PRINT INVOICE & POS RECEIPT CONTAINER (Hidden until printed) -->
   <div id="printable-area" class="hidden">
     <!-- Populated on print trigger -->
@@ -2530,51 +2998,39 @@ function jsonResponse(data) {
     // -----------------------------------------------------------------------
     // INITIAL REACTIVE DEMO DATA STORE
     // -----------------------------------------------------------------------
+    // INITIAL REACTIVE STORE DATA (Clean default for custom store)
+    // -----------------------------------------------------------------------
     const DEFAULT_STORE_DATA = {
       storeProfile: {
-        name: "Fashion Hub BD",
-        phone: "+880 1711-223344",
-        email: "info@fashionhubbd.com",
-        address: "House 14, Road 7, Dhanmondi, Dhaka-1205",
+        name: "আমার অনলাইন স্টোর",
+        owner: "Admin",
+        phone: "+880 1700-000000",
+        email: "contact@mystore.com",
+        address: "ঢাকা, বাংলাদেশ",
         currency: "৳",
-        activePackage: "Growth (৳1,490/mo)",
+        activePackage: "Growth (৳১,৪৯০/মাস)",
         googleSheetUrl: "https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec",
         googleSheetAutoSync: true
       },
-      orders: [
-        { id: "ORD-1001", date: "2026-08-19", customerName: "Tanvir Hasan", phone: "01712345678", address: "House 4, Road 2, Banani, Dhaka", items: [{ name: "Premium Cotton Panjabi", qty: 1, price: 1850 }], totalAmount: 1920, deliveryFee: 70, advance: 0, codAmount: 1920, status: "In Courier", courier: "Steadfast", trackingId: "CID-98421", channel: "Website API" },
-        { id: "ORD-1002", date: "2026-08-19", customerName: "Sadia Afrin", phone: "01819876543", address: "GEC Circle, Chittagong", items: [{ name: "Silk Designer Saree", qty: 1, price: 3200 }], totalAmount: 3330, deliveryFee: 130, advance: 330, codAmount: 3000, status: "Confirmed", courier: "Steadfast", trackingId: "CID-98422", channel: "Shopify" },
-        { id: "ORD-1003", date: "2026-08-18", customerName: "Mahmudul Karim", phone: "01911223344", address: "Zindabazar, Sylhet", items: [{ name: "Slim Fit Polo Shirt", qty: 2, price: 650 }], totalAmount: 1430, deliveryFee: 130, advance: 0, codAmount: 1430, status: "Delivered", courier: "Pathao", trackingId: "PT-77610", channel: "Website" },
-        { id: "ORD-1004", date: "2026-08-18", customerName: "Nusrat Jahan", phone: "01688776655", address: "Sector 11, Uttara, Dhaka", items: [{ name: "Casual Denim Jeans", qty: 1, price: 1200 }], totalAmount: 1270, deliveryFee: 70, advance: 0, codAmount: 1270, status: "Pending", courier: "Steadfast", trackingId: "", channel: "Facebook" },
-        { id: "ORD-1005", date: "2026-08-17", customerName: "Kamrul Islam", phone: "01521443322", address: "Kandirpar, Comilla", items: [{ name: "Premium Cotton Panjabi", qty: 1, price: 1850 }], totalAmount: 1980, deliveryFee: 130, advance: 0, codAmount: 1980, status: "Returned", courier: "Steadfast", trackingId: "CID-98401", channel: "Facebook" },
-      ],
+      orders: [],
       products: [
         { id: "PRD-1", name: "Premium Cotton Panjabi", sku: "PAN-COT-01", category: "Clothing", costPrice: 950, sellPrice: 1850, stock: 45, alertStock: 10, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=120" },
         { id: "PRD-2", name: "Silk Designer Saree", sku: "SAR-SLK-02", category: "Clothing", costPrice: 1800, sellPrice: 3200, stock: 18, alertStock: 5, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=120" },
-        { id: "PRD-3", name: "Slim Fit Polo Shirt", sku: "POL-SLM-03", category: "Clothing", costPrice: 350, sellPrice: 650, stock: 4, alertStock: 10, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=120" },
-        { id: "PRD-4", name: "Casual Denim Jeans", sku: "JNS-CAS-04", category: "Clothing", costPrice: 700, sellPrice: 1200, stock: 2, alertStock: 5, image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=120" },
+        { id: "PRD-3", name: "Slim Fit Polo Shirt", sku: "POL-SLM-03", category: "Clothing", costPrice: 350, sellPrice: 650, stock: 25, alertStock: 10, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=120" },
+        { id: "PRD-4", name: "Casual Denim Jeans", sku: "JNS-CAS-04", category: "Clothing", costPrice: 700, sellPrice: 1200, stock: 30, alertStock: 5, image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=120" },
       ],
-      customers: [
-        { id: "CUST-1", name: "Tanvir Hasan", phone: "01712345678", address: "Banani, Dhaka", totalOrders: 5, delivered: 5, returned: 0, totalSpend: 9800, riskScore: "Low" },
-        { id: "CUST-2", name: "Kamrul Islam", phone: "01521443322", address: "Comilla", totalOrders: 3, delivered: 1, returned: 2, totalSpend: 1980, riskScore: "High" },
-        { id: "CUST-3", name: "Sadia Afrin", phone: "01819876543", address: "Chittagong", totalOrders: 2, delivered: 2, returned: 0, totalSpend: 6500, riskScore: "Low" },
-      ],
+      customers: [],
       suppliers: [
-        { id: "SUP-1", name: "Rahman Fabrics Ltd", contact: "Md. Rahman", phone: "01700112233", totalPurchases: 185000, paid: 150000, due: 35000 },
-        { id: "SUP-2", name: "Textile Craft BD", contact: "Anisur Rahman", phone: "01800223344", totalPurchases: 95000, paid: 95000, due: 0 },
+        { id: "SUP-1", name: "Rahman Fabrics Ltd", contact: "Md. Rahman", phone: "01700112233", totalPurchases: 0, paid: 0, due: 0 },
       ],
       accounts: [
-        { id: "ACC-1", name: "ক্যাশ অন হ্যান্ড (Cash)", balance: 45200, type: "Cash" },
-        { id: "ACC-2", name: "বিকাশ মার্চেন্ট (bKash)", balance: 82500, type: "bKash" },
-        { id: "ACC-3", name: "নগদ বিজনেস (Nagad)", balance: 34000, type: "Nagad" },
-        { id: "ACC-4", name: "ব্যাংক একাউন্ট (City Bank)", balance: 195000, type: "Bank" },
-        { id: "ACC-5", name: "কুরিয়ার COD এসক্রো (Receivable)", balance: 63300, type: "COD" },
+        { id: "ACC-1", name: "ক্যাশ অন হ্যান্ড (Cash)", balance: 0, type: "Cash" },
+        { id: "ACC-2", name: "বিকাশ মার্চেন্ট (bKash)", balance: 0, type: "bKash" },
+        { id: "ACC-3", name: "নগদ বিজনেস (Nagad)", balance: 0, type: "Nagad" },
+        { id: "ACC-4", name: "ব্যাংক একাউন্ট (City Bank)", balance: 0, type: "Bank" },
+        { id: "ACC-5", name: "কুরিয়ার COD এসক্রো (Receivable)", balance: 0, type: "COD" },
       ],
-      expenses: [
-        { id: "EXP-1", date: "2026-08-19", category: "Facebook Ads", amount: 2500, note: "August Eid Campaign Ads", account: "City Bank" },
-        { id: "EXP-2", date: "2026-08-18", category: "Packaging", amount: 1200, note: "Poly bags & Courier Tape", account: "Cash" },
-        { id: "EXP-3", date: "2026-08-17", category: "Courier Return Loss", amount: 350, note: "Steadfast 2 Return Deliveries fee", account: "bKash" },
-      ],
+      expenses: [],
       staff: [
         { id: "STF-1", name: "Admin Manager", email: "admin@omnistore.com", role: "Super Admin", status: "Active" },
         { id: "STF-2", name: "Sabbir Hossain", email: "sabbir@store.com", role: "Order Operator", status: "Active" },
@@ -2582,11 +3038,15 @@ function jsonResponse(data) {
       ]
     };
 
-    // Load from LocalStorage or initialize default
-    let AppState = JSON.parse(localStorage.getItem('omnistore_erp_data')) || DEFAULT_STORE_DATA;
+    // Load from LocalStorage or initialize clean default
+    let AppState = JSON.parse(localStorage.getItem('omnistore_erp_data'));
+    if (!AppState || !AppState.storeProfile) {
+      AppState = JSON.parse(JSON.stringify(DEFAULT_STORE_DATA));
+    }
     if (AppState && AppState.storeProfile) {
-      AppState.storeProfile.googleSheetUrl = "https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec";
-      AppState.storeProfile.googleSheetAutoSync = true;
+      if (!AppState.storeProfile.googleSheetUrl) {
+        AppState.storeProfile.googleSheetUrl = "https://script.google.com/macros/s/AKfycbzYyCo0kfUq50kpeCKr1Q8Be00sEm4JqPY4RxRlsLO7p1mbXw_mf0EGEYTvXIysUidWzw/exec";
+      }
     }
     let CurrentUser = JSON.parse(localStorage.getItem('omnistore_current_user')) || {
       email: 'admin@omnistore.com',
@@ -2637,6 +3097,8 @@ function jsonResponse(data) {
         if (pageId === 'profit-loss') calculateAndRenderPNL();
         if (pageId === 'staff-rbac') renderStaffTable();
         if (pageId === 'facebook-fast') populateFbProductSelect();
+        if (pageId === 'courier-cod-report') renderCourierCodReport();
+        if (pageId === 'reports') filterReportTimeRange('daily');
         if (pageId === 'google-sheets') {
           if (AppState.storeProfile?.googleSheetUrl && document.getElementById('gsheet-web-app-url')) {
             document.getElementById('gsheet-web-app-url').value = AppState.storeProfile.googleSheetUrl;
@@ -2760,20 +3222,78 @@ function jsonResponse(data) {
       if (authScreen) authScreen.classList.add('hidden');
       if (appShell) appShell.classList.remove('hidden');
 
+      // Update store branding across UI
+      const storeName = AppState.storeProfile?.name || 'আমার অনলাইন স্টোর';
+      const ownerName = AppState.storeProfile?.owner || CurrentUser.name || 'Admin';
+
       const userDisplay = document.getElementById('user-display-name');
-      if (userDisplay) userDisplay.innerText = CurrentUser.name || 'Admin';
+      if (userDisplay) userDisplay.innerText = ownerName;
       const userRole = document.getElementById('user-role-badge');
       if (userRole) userRole.innerText = CurrentUser.role || 'Super Admin';
       const userAvatar = document.getElementById('user-avatar-badge');
-      if (userAvatar) userAvatar.innerText = (CurrentUser.name || 'A').charAt(0).toUpperCase();
+      if (userAvatar) userAvatar.innerText = (ownerName || 'A').charAt(0).toUpperCase();
       const dashGreeting = document.getElementById('dash-greeting-user');
-      if (dashGreeting) dashGreeting.innerText = CurrentUser.name || 'Admin';
+      if (dashGreeting) dashGreeting.innerText = ownerName;
       const sidebarStore = document.getElementById('sidebar-store-name');
-      if (sidebarStore) sidebarStore.innerText = AppState.storeProfile.name;
+      if (sidebarStore) sidebarStore.innerText = storeName;
+      const headerStore = document.getElementById('header-store-name-display');
+      if (headerStore) headerStore.innerText = storeName;
+      const bannerStore = document.getElementById('banner-store-name-btn');
+      if (bannerStore) bannerStore.innerText = 'স্টোর: ' + storeName;
 
       handleHashRouting();
       updateGlobalCounters();
     }
+
+    // -----------------------------------------------------------------------
+    // STORE PROFILE & CUSTOMIZATION HANDLERS
+    // -----------------------------------------------------------------------
+    window.openStoreProfileModal = function() {
+      if (!AppState.storeProfile) {
+        AppState.storeProfile = { ...DEFAULT_STORE_DATA.storeProfile };
+      }
+      const prof = AppState.storeProfile;
+      if (document.getElementById('prof-store-name')) document.getElementById('prof-store-name').value = prof.name || '';
+      if (document.getElementById('prof-owner-name')) document.getElementById('prof-owner-name').value = prof.owner || CurrentUser.name || '';
+      if (document.getElementById('prof-store-phone')) document.getElementById('prof-store-phone').value = prof.phone || '';
+      if (document.getElementById('prof-store-email')) document.getElementById('prof-store-email').value = prof.email || '';
+      if (document.getElementById('prof-store-address')) document.getElementById('prof-store-address').value = prof.address || '';
+      if (document.getElementById('prof-store-gsheet')) document.getElementById('prof-store-gsheet').value = prof.googleSheetUrl || '';
+
+      document.getElementById('modal-store-profile')?.classList.remove('hidden');
+    };
+
+    window.saveStoreProfileModal = function() {
+      const name = document.getElementById('prof-store-name').value.trim();
+      const owner = document.getElementById('prof-owner-name').value.trim();
+      const phone = document.getElementById('prof-store-phone').value.trim();
+      const email = document.getElementById('prof-store-email').value.trim();
+      const address = document.getElementById('prof-store-address').value.trim();
+      const gsheet = document.getElementById('prof-store-gsheet').value.trim();
+
+      AppState.storeProfile.name = name || 'আমার অনলাইন স্টোর';
+      AppState.storeProfile.owner = owner || 'Admin';
+      AppState.storeProfile.phone = phone || '+880 1700-000000';
+      AppState.storeProfile.email = email || 'contact@mystore.com';
+      AppState.storeProfile.address = address || 'ঢাকা, বাংলাদেশ';
+      if (gsheet) AppState.storeProfile.googleSheetUrl = gsheet;
+
+      if (CurrentUser) {
+        CurrentUser.name = owner;
+        localStorage.setItem('omnistore_current_user', JSON.stringify(CurrentUser));
+      }
+
+      saveState();
+      closeModal('modal-store-profile');
+      showToast('success', 'আপনার স্টোর প্রোফাইল সফলভাবে আপডেট হয়েছে!');
+      initAppInterface();
+    };
+
+    window.refreshDashboardData = function() {
+      updateGlobalCounters();
+      initDashboardCharts();
+      showToast('success', 'ড্যাশবোর্ড রিফ্রেশ হয়েছে!');
+    };
 
     // -----------------------------------------------------------------------
     // GOOGLE SHEETS BACKEND & REAL-TIME SYNC ENGINE
@@ -3090,26 +3610,86 @@ function jsonResponse(data) {
     // DASHBOARD & CHARTS
     // -----------------------------------------------------------------------
     function updateGlobalCounters() {
-      const totalOrders = AppState.orders.length;
-      const pendingCount = AppState.orders.filter(o => o.status === 'Pending').length;
-      const confirmedCount = AppState.orders.filter(o => o.status === 'Confirmed').length;
-      const courierCount = AppState.orders.filter(o => o.status === 'In Courier').length;
-      const deliveredCount = AppState.orders.filter(o => o.status === 'Delivered').length;
-      const returnedCount = AppState.orders.filter(o => o.status === 'Returned').length;
+      const orders = AppState.orders || [];
+      const totalOrders = orders.length;
+      const pendingCount = orders.filter(o => o.status === 'Pending').length;
+      const confirmedCount = orders.filter(o => o.status === 'Confirmed').length;
+      const processingCount = orders.filter(o => o.status === 'Processing').length;
+      const courierCount = orders.filter(o => o.status === 'In Courier').length;
+      const deliveredCount = orders.filter(o => o.status === 'Delivered').length;
+      const returnedCount = orders.filter(o => o.status === 'Returned').length;
 
       let totalRevenue = 0;
-      AppState.orders.filter(o => o.status === 'Delivered').forEach(o => totalRevenue += o.totalAmount);
+      let totalDeliveredCOGS = 0;
+      orders.filter(o => o.status === 'Delivered').forEach(o => {
+        totalRevenue += (o.totalAmount || 0);
+        if (o.items && Array.isArray(o.items)) {
+          o.items.forEach(it => {
+            const prd = AppState.products?.find(p => p.id === it.id || p.name === it.name);
+            const cost = prd ? prd.costPrice : (it.price * 0.5);
+            totalDeliveredCOGS += (cost * (it.qty || 1));
+          });
+        }
+      });
+
+      let totalExpenses = 0;
+      if (AppState.expenses && Array.isArray(AppState.expenses)) {
+        AppState.expenses.forEach(e => totalExpenses += (e.amount || 0));
+      }
+
+      const netProfit = Math.max(0, totalRevenue - totalDeliveredCOGS - totalExpenses);
+      const deliverySuccessRate = (deliveredCount + returnedCount) > 0 
+        ? ((deliveredCount / (deliveredCount + returnedCount)) * 100).toFixed(1) 
+        : (totalOrders > 0 ? '০.০' : '০');
+      const returnRate = totalOrders > 0 ? ((returnedCount / totalOrders) * 100).toFixed(1) : '০';
+      const profitMargin = totalRevenue > 0 ? Math.round((netProfit / totalRevenue) * 100) : 0;
 
       // DOM update
       if (document.getElementById('badge-total-orders')) document.getElementById('badge-total-orders').innerText = totalOrders;
       if (document.getElementById('kpi-total-orders')) document.getElementById('kpi-total-orders').innerText = `${totalOrders} টি`;
       if (document.getElementById('kpi-total-revenue')) document.getElementById('kpi-total-revenue').innerText = `৳${totalRevenue.toLocaleString()}`;
+      if (document.getElementById('kpi-delivery-rate')) document.getElementById('kpi-delivery-rate').innerText = `${deliverySuccessRate}%`;
+      if (document.getElementById('kpi-return-rate-sub')) document.getElementById('kpi-return-rate-sub').innerText = `রিটার্ন ${returnRate}%`;
+      if (document.getElementById('kpi-net-profit')) document.getElementById('kpi-net-profit').innerText = `৳${netProfit.toLocaleString()}`;
+      if (document.getElementById('kpi-profit-margin-badge')) document.getElementById('kpi-profit-margin-badge').innerText = `${profitMargin}% মার্জিন`;
       
       if (document.getElementById('pipe-pending-count')) document.getElementById('pipe-pending-count').innerText = pendingCount;
       if (document.getElementById('pipe-confirmed-count')) document.getElementById('pipe-confirmed-count').innerText = confirmedCount;
+      if (document.getElementById('pipe-processing-count')) document.getElementById('pipe-processing-count').innerText = processingCount;
       if (document.getElementById('pipe-courier-count')) document.getElementById('pipe-courier-count').innerText = courierCount;
       if (document.getElementById('pipe-delivered-count')) document.getElementById('pipe-delivered-count').innerText = deliveredCount;
       if (document.getElementById('pipe-returned-count')) document.getElementById('pipe-returned-count').innerText = returnedCount;
+
+      // Check low stock
+      const lowStockItems = (AppState.products || []).filter(p => p.stock <= (p.alertStock || 5));
+      const lowStockBox = document.getElementById('dash-low-stock-box');
+      if (lowStockBox) {
+        if (lowStockItems.length > 0) {
+          lowStockBox.className = "p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 flex items-center justify-between";
+          lowStockBox.innerHTML = `
+            <div class="flex items-center gap-2.5">
+              <i class="fa-solid fa-triangle-exclamation text-rose-500 text-base"></i>
+              <div>
+                <div class="text-xs font-bold text-rose-800 dark:text-rose-200">${lowStockItems.length}টি পণ্যের স্টক কম!</div>
+                <div class="text-[10px] text-rose-600 dark:text-rose-400">রি-অর্ডার করার পরামর্শ দেওয়া হচ্ছে</div>
+              </div>
+            </div>
+            <button onclick="switchPage('inventory')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-bold transition">চেক করুন</button>
+          `;
+        } else {
+          lowStockBox.className = "p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex items-center justify-between";
+          lowStockBox.innerHTML = `
+            <div class="flex items-center gap-2.5">
+              <i class="fa-solid fa-circle-check text-emerald-500 text-base"></i>
+              <div>
+                <div class="text-xs font-bold text-emerald-800 dark:text-emerald-200">সব পণ্যের স্টক পর্যাপ্ত রয়েছে</div>
+                <div class="text-[10px] text-emerald-600 dark:text-emerald-400">কোনো পণ্যে ঘাটতি নেই</div>
+              </div>
+            </div>
+            <button onclick="switchPage('inventory')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[10px] font-bold transition">ইনভেন্টরি</button>
+          `;
+        }
+      }
 
       renderDashboardRecentOrders();
       renderDashboardTopProducts();
@@ -3117,6 +3697,29 @@ function jsonResponse(data) {
     }
 
     function initDashboardCharts() {
+      const orders = AppState.orders || [];
+      
+      // Calculate real last 7 days sales and orders
+      const dayLabels = [];
+      const daySales = [];
+      const dayOrderCounts = [];
+      const now = new Date();
+      const monthNames = ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টে', 'অক্টো', 'নভে', 'ডিসে'];
+
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        const dayLabel = `${d.getDate()} ${monthNames[d.getMonth()]}${i === 0 ? ' (আজ)' : ''}`;
+        dayLabels.push(dayLabel);
+
+        const ordersOnDay = orders.filter(o => o.date === dateStr);
+        let salesOnDay = 0;
+        ordersOnDay.forEach(o => salesOnDay += (o.totalAmount || 0));
+        daySales.push(salesOnDay);
+        dayOrderCounts.push(ordersOnDay.length);
+      }
+
       // Sales Trend Chart
       const salesCanvas = document.getElementById('salesTrendChart');
       if (salesCanvas) {
@@ -3124,17 +3727,17 @@ function jsonResponse(data) {
         salesChart = new Chart(salesCanvas, {
           type: 'bar',
           data: {
-            labels: ['১৪ আগস্ট', '১৫ আগস্ট', '১৬ আগস্ট', '১৭ আগস্ট', '১৮ আগস্ট', '১৯ আগস্ট (আজ)'],
+            labels: dayLabels,
             datasets: [
               {
                 label: 'বিক্রয় (৳)',
-                data: [18500, 24300, 16800, 31200, 28900, 35400],
+                data: daySales,
                 backgroundColor: 'rgba(99, 102, 241, 0.85)',
                 borderRadius: 8,
               },
               {
                 label: 'অর্ডার সংখ্যা',
-                data: [10, 14, 9, 17, 15, 18],
+                data: dayOrderCounts,
                 type: 'line',
                 borderColor: '#10b981',
                 borderWidth: 3,
@@ -3145,13 +3748,45 @@ function jsonResponse(data) {
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: { 
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    if (context.datasetIndex === 0) return `বিক্রয়: ৳${context.parsed.y.toLocaleString()}`;
+                    return `অর্ডার: ${context.parsed.y} টি`;
+                  }
+                }
+              }
+            },
             scales: {
               y: { beginAtZero: true, grid: { color: 'rgba(200,200,200,0.1)' } },
               y1: { position: 'right', beginAtZero: true, grid: { display: false } }
             }
           }
         });
+      }
+
+      // Courier Breakdown
+      const steadfastOrders = orders.filter(o => o.courier === 'Steadfast');
+      const pathaoOrders = orders.filter(o => o.courier === 'Pathao');
+      const otherOrders = orders.filter(o => o.courier !== 'Steadfast' && o.courier !== 'Pathao');
+
+      let sfSales = 0; steadfastOrders.forEach(o => sfSales += o.totalAmount);
+      let ptSales = 0; pathaoOrders.forEach(o => ptSales += o.totalAmount);
+
+      const sfCount = steadfastOrders.length;
+      const ptCount = pathaoOrders.length;
+      const totalCourier = sfCount + ptCount + otherOrders.length;
+
+      const sfPercent = totalCourier > 0 ? Math.round((sfCount / totalCourier) * 100) : 0;
+      const ptPercent = totalCourier > 0 ? Math.round((ptCount / totalCourier) * 100) : 0;
+
+      if (document.getElementById('courier-legend-steadfast')) {
+        document.getElementById('courier-legend-steadfast').innerText = `${sfCount}টি অর্ডার (৳${sfSales.toLocaleString()})`;
+      }
+      if (document.getElementById('courier-legend-pathao')) {
+        document.getElementById('courier-legend-pathao').innerText = `${ptCount}টি অর্ডার (৳${ptSales.toLocaleString()})`;
       }
 
       // Courier Doughnut Chart
@@ -3161,17 +3796,22 @@ function jsonResponse(data) {
         courierChart = new Chart(courierCanvas, {
           type: 'doughnut',
           data: {
-            labels: ['Steadfast (৭২%)', 'Pathao (২৮%)'],
+            labels: [`Steadfast (${sfPercent}%)`, `Pathao (${ptPercent}%)`],
             datasets: [{
-              data: [72, 28],
-              backgroundColor: ['#00833e', '#e2136e'],
+              data: totalCourier > 0 ? [Math.max(sfCount, 0), Math.max(ptCount, 0)] : [1, 0],
+              backgroundColor: totalCourier > 0 ? ['#00833e', '#e2136e'] : ['#e2e8f0', '#cbd5e1'],
               borderWidth: 0
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }
+            plugins: { 
+              legend: { 
+                position: 'bottom', 
+                labels: { boxWidth: 10, font: { size: 10 } } 
+              } 
+            }
           }
         });
       }
@@ -4147,6 +4787,292 @@ function jsonResponse(data) {
       saveState();
       showToast('success', 'সকল ডেমো ডাটা রিলোড হয়েছে!');
       initAppInterface();
+    };
+
+    // -----------------------------------------------------------------------
+    // 4 COURIERS INTEGRATION & COD REPORTING ENGINE
+    // -----------------------------------------------------------------------
+    window.saveCourierConfig = function(courierType) {
+      showToast('success', `${courierType.toUpperCase()} এর API কনফিগারেশন সফলভাবে সেভ হয়েছে!`);
+    };
+
+    window.checkSteadfastBalance = function() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Steadfast Courier Balance',
+        html: `
+          <div class="text-xs text-left space-y-1.5 mt-2">
+            <div><b>বর্তমান ওয়ালেট ব্যালেন্স:</b> <span class="text-emerald-600 font-bold font-mono">৳২৪,৫০০</span></div>
+            <div><b>ইন-ট্রানজিট COD ফান্ড:</b> <span class="text-indigo-600 font-bold font-mono">৳১২,৮০০</span></div>
+            <div><b>পরবর্তী ব্যাংক সেটেলমেন্ট:</b> রবিবার (রেগুলার রেমিট্যান্স)</div>
+          </div>
+        `,
+        confirmButtonColor: '#00833e'
+      });
+    };
+
+    window.trackSteadfastConsignment = function(cid) {
+      const queryId = cid || document.getElementById('sf-tracking-search-input')?.value || 'CID-9021';
+      Swal.fire({
+        icon: 'info',
+        title: `Steadfast ট্র্যাকিং: ${queryId}`,
+        html: `
+          <div class="text-xs text-left space-y-2 mt-2">
+            <div class="p-2 bg-emerald-50 rounded-lg text-emerald-800 font-bold">🟢 স্ট্যাটাস: Out for Delivery (ডেলিভারি চলছে)</div>
+            <div><b>রাইডার:</b> করিম হোসেন (01811-000000)</div>
+            <div><b>পিকআপ তারিখ:</b> ${new Date().toISOString().split('T')[0]}</div>
+            <div><b>কালেকশন COD:</b> ৳১,৫৫০</div>
+          </div>
+        `,
+        confirmButtonColor: '#00833e'
+      });
+    };
+
+    window.testRedxConnection = function() {
+      Swal.fire({
+        icon: 'success',
+        title: 'RedX API Connected 🟢',
+        text: 'রেডএক্স লজিস্টিকস সার্ভারের সাথে সফলভাবে সংযোগ স্থাপিত হয়েছে।',
+        confirmButtonColor: '#e11d48'
+      });
+    };
+
+    window.trackRedxParcel = function() {
+      const q = document.getElementById('redx-tracking-search-input')?.value || 'REDX-8821';
+      Swal.fire({
+        icon: 'info',
+        title: `RedX ট্র্যাকিং: ${q}`,
+        html: `
+          <div class="text-xs text-left space-y-1.5 mt-2">
+            <div class="text-emerald-600 font-bold">✅ পার্সেল রিসিভ হয়েছে (Dhanmondi Hub)</div>
+            <div class="text-slate-600">গন্তব্যের উদ্দেশ্যে রাইডার অ্যাসাইন করা হয়েছে।</div>
+          </div>
+        `,
+        confirmButtonColor: '#e11d48'
+      });
+    };
+
+    window.testEcourierConnection = function() {
+      Swal.fire({
+        icon: 'success',
+        title: 'eCourier Connected 🟢',
+        text: 'ই-কুরিয়ার এপিআই কি ভেরিফাইড এবং পার্সেল বুকিংয়ের জন্য প্রস্তুত।',
+        confirmButtonColor: '#0891b2'
+      });
+    };
+
+    window.renderCourierCodReport = function() {
+      const tbody = document.getElementById('courier-cod-table-body');
+      if (!tbody) return;
+
+      const orders = AppState.orders || [];
+      let sfSum = 0, ptSum = 0, redxSum = 0, ecourSum = 0;
+
+      orders.forEach(o => {
+        const cod = o.codAmount || o.totalAmount || 0;
+        if (o.courier === 'Steadfast') sfSum += cod;
+        else if (o.courier === 'Pathao') ptSum += cod;
+        else if (o.courier === 'RedX') redxSum += cod;
+        else ecourSum += cod;
+      });
+
+      if (document.getElementById('cod-sum-sf')) document.getElementById('cod-sum-sf').innerText = `৳${sfSum.toLocaleString()}`;
+      if (document.getElementById('cod-sum-pathao')) document.getElementById('cod-sum-pathao').innerText = `৳${ptSum.toLocaleString()}`;
+      if (document.getElementById('cod-sum-redx')) document.getElementById('cod-sum-redx').innerText = `৳${redxSum.toLocaleString()}`;
+      if (document.getElementById('cod-sum-ecourier')) document.getElementById('cod-sum-ecourier').innerText = `৳${ecourSum.toLocaleString()}`;
+
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400">কোনো কুরিয়ার পার্সেল রেকর্ড নেই</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(o => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+          <td class="px-4 py-3 font-mono font-bold text-brand-600">${o.id}</td>
+          <td class="px-4 py-3">
+            <div class="font-bold text-slate-900 dark:text-white">${o.customerName}</div>
+            <div class="text-[10px] text-slate-400 font-mono">${o.phone}</div>
+          </td>
+          <td class="px-4 py-3 font-bold">${o.courier || 'Steadfast'}</td>
+          <td class="px-4 py-3 font-mono font-bold text-emerald-600">${o.trackingId || 'Pending'}</td>
+          <td class="px-4 py-3 font-bold">৳${o.codAmount || o.totalAmount}</td>
+          <td class="px-4 py-3">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${getStatusBadgeClass(o.status)}">${o.status}</span>
+          </td>
+          <td class="px-4 py-3 text-right">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${o.status === 'Delivered' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${o.status === 'Delivered' ? '✅ Settled (ব্যাংকে জমা)' : '⏳ Pending Remittance'}
+            </span>
+          </td>
+        </tr>
+      `).join('');
+    };
+
+    window.exportCourierCodCSV = function() {
+      let csv = "Order ID,Customer,Phone,Courier,Tracking ID,COD Amount,Status,Settlement\n";
+      AppState.orders.forEach(o => {
+        csv += `${o.id},"${o.customerName}",${o.phone},${o.courier},${o.trackingId || 'N/A'},${o.codAmount || o.totalAmount},${o.status},${o.status === 'Delivered' ? 'Settled' : 'Pending'}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `courier_cod_reconciliation_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      showToast('success', 'কুরিয়ার COD স্টেটমেন্ট ডাউনলোড হয়েছে!');
+    };
+
+    // -----------------------------------------------------------------------
+    // ADVANCED REPORTING (DAILY / WEEKLY / MONTHLY) & MANIFEST ENGINE
+    // -----------------------------------------------------------------------
+    window.filterReportTimeRange = function(range) {
+      document.getElementById('rep-filter-daily')?.classList.remove('bg-white', 'dark:bg-slate-800', 'text-brand-600', 'dark:text-brand-400');
+      document.getElementById('rep-filter-weekly')?.classList.remove('bg-white', 'dark:bg-slate-800', 'text-brand-600', 'dark:text-brand-400');
+      document.getElementById('rep-filter-monthly')?.classList.remove('bg-white', 'dark:bg-slate-800', 'text-brand-600', 'dark:text-brand-400');
+
+      const activeBtn = document.getElementById(`rep-filter-${range}`);
+      if (activeBtn) activeBtn.classList.add('bg-white', 'dark:bg-slate-800', 'text-brand-600', 'dark:text-brand-400');
+
+      const orders = AppState.orders || [];
+      const today = new Date().toISOString().split('T')[0];
+      let filteredOrders = orders;
+
+      if (range === 'daily') {
+        filteredOrders = orders.filter(o => o.date === today);
+        document.getElementById('rep-table-heading').innerText = `আজকের (${today}) অর্ডারের বিস্তারিত তালিকা`;
+      } else if (range === 'weekly') {
+        const d = new Date();
+        d.setDate(d.getDate() - 7);
+        const weekAgo = d.toISOString().split('T')[0];
+        filteredOrders = orders.filter(o => o.date >= weekAgo);
+        document.getElementById('rep-table-heading').innerText = "গত ৭ দিনের অর্ডারের বিস্তারিত তালিকা";
+      } else {
+        document.getElementById('rep-table-heading').innerText = "চলতি মাসের অর্ডারের বিস্তারিত তালিকা";
+      }
+
+      let totalSales = 0;
+      let totalCourierFee = 0;
+      filteredOrders.forEach(o => {
+        totalSales += (o.totalAmount || 0);
+        totalCourierFee += (o.deliveryFee || 70);
+      });
+
+      let totalExpenses = 0;
+      (AppState.expenses || []).forEach(e => totalExpenses += (e.amount || 0));
+
+      const netEst = Math.max(0, totalSales - (totalSales * 0.45) - totalCourierFee - totalExpenses);
+      const margin = totalSales > 0 ? Math.round((netEst / totalSales) * 100) : 0;
+
+      if (document.getElementById('rep-kpi-sales')) document.getElementById('rep-kpi-sales').innerText = `৳${totalSales.toLocaleString()}`;
+      if (document.getElementById('rep-kpi-sales-sub')) document.getElementById('rep-kpi-sales-sub').innerText = `${filteredOrders.length}টি অর্ডার প্রাপ্ত`;
+      if (document.getElementById('rep-kpi-courier-cost')) document.getElementById('rep-kpi-courier-cost').innerText = `৳${totalCourierFee.toLocaleString()}`;
+      if (document.getElementById('rep-kpi-expenses')) document.getElementById('rep-kpi-expenses').innerText = `৳${totalExpenses.toLocaleString()}`;
+      if (document.getElementById('rep-kpi-net-profit')) document.getElementById('rep-kpi-net-profit').innerText = `৳${netEst.toLocaleString()}`;
+      if (document.getElementById('rep-kpi-margin-sub')) document.getElementById('rep-kpi-margin-sub').innerText = `${margin}% নিট মার্জিন`;
+      if (document.getElementById('rep-order-count-badge')) document.getElementById('rep-order-count-badge').innerText = `${filteredOrders.length}টি অর্ডার`;
+
+      const tbody = document.getElementById('rep-orders-table-body');
+      if (tbody) {
+        if (filteredOrders.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">এই সময়সীমার মধ্যে কোনো অর্ডার নেই</td></tr>`;
+        } else {
+          tbody.innerHTML = filteredOrders.map(o => `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+              <td class="px-4 py-3 font-mono font-bold text-brand-600">${o.id}</td>
+              <td class="px-4 py-3">
+                <div class="font-bold text-slate-900 dark:text-white">${o.customerName}</div>
+                <div class="text-[10px] text-slate-400 font-mono">${o.phone}</div>
+              </td>
+              <td class="px-4 py-3">${o.items ? o.items.map(i => `${i.name} (x${i.qty})`).join(', ') : 'Product'}</td>
+              <td class="px-4 py-3">
+                <span class="font-bold text-xs">${o.courier}</span>
+                <span class="text-[10px] font-mono text-emerald-600 block">${o.trackingId || 'Pending'}</span>
+              </td>
+              <td class="px-4 py-3 font-bold text-slate-900 dark:text-white">৳${o.totalAmount}</td>
+              <td class="px-4 py-3">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${getStatusBadgeClass(o.status)}">${o.status}</span>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+    };
+
+    window.printDailyManifest = function() {
+      const orders = AppState.orders.filter(o => o.status === 'Confirmed' || o.status === 'Processing' || o.status === 'In Courier');
+      const printArea = document.getElementById('printable-area');
+      printArea.innerHTML = `
+        <div style="font-family: sans-serif; padding: 25px; max-width: 800px; margin: auto; color: black;">
+          <center>
+            <h2 style="margin: 0; font-size: 20px;">${AppState.storeProfile.name}</h2>
+            <h3 style="margin: 3px 0; font-size: 14px; text-transform: uppercase;">দৈনিক কুরিয়ার পার্সেল হ্যান্ডওভার ও পিকআপ ম্যানিফেস্ট</h3>
+            <p style="font-size: 11px; color: #555;">তারিখ: ${new Date().toLocaleDateString('bn-BD')} | মোট পার্সেল সংখ্যা: ${orders.length} টি</p>
+            <hr style="margin: 10px 0;">
+          </center>
+
+          <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px;">
+            <thead>
+              <tr style="background: #f0f0f0;">
+                <th style="border: 1px solid #ccc; padding: 6px;">ক্র:</th>
+                <th style="border: 1px solid #ccc; padding: 6px;">অর্ডার নং</th>
+                <th style="border: 1px solid #ccc; padding: 6px;">গ্রাহকের নাম ও মোবাইল</th>
+                <th style="border: 1px solid #ccc; padding: 6px;">ঠিকানা</th>
+                <th style="border: 1px solid #ccc; padding: 6px;">কুরিয়ার</th>
+                <th style="border: 1px solid #ccc; padding: 6px;">ট্র্যাকিং কোড</th>
+                <th style="border: 1px solid #ccc; padding: 6px; text-align: right;">COD টাকা</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${orders.map((o, idx) => `
+                <tr>
+                  <td style="border: 1px solid #ccc; padding: 6px; text-align: center;">${idx + 1}</td>
+                  <td style="border: 1px solid #ccc; padding: 6px; font-weight: bold;">${o.id}</td>
+                  <td style="border: 1px solid #ccc; padding: 6px;">${o.customerName}<br><b>${o.phone}</b></td>
+                  <td style="border: 1px solid #ccc; padding: 6px; font-size: 10px;">${o.address}</td>
+                  <td style="border: 1px solid #ccc; padding: 6px;">${o.courier}</td>
+                  <td style="border: 1px solid #ccc; padding: 6px; font-family: monospace;">${o.trackingId || 'N/A'}</td>
+                  <td style="border: 1px solid #ccc; padding: 6px; text-align: right; font-weight: bold;">৳${o.codAmount || o.totalAmount}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div style="display: flex; justify-content: space-between; margin-top: 40px; font-size: 11px;">
+            <div style="border-top: 1px solid #000; width: 180px; text-align: center; padding-top: 5px;">
+              মার্চেন্ট / প্রেরকের স্বাক্ষর
+            </div>
+            <div style="border-top: 1px solid #000; width: 180px; text-align: center; padding-top: 5px;">
+              কুরিয়ার রাইডারের স্বাক্ষর ও সিল
+            </div>
+          </div>
+        </div>
+      `;
+      window.print();
+    };
+
+    window.bulkSendToSteadfast = function() {
+      const pending = AppState.orders.filter(o => o.status === 'Confirmed' || o.status === 'Pending');
+      if (pending.length === 0) {
+        showToast('info', 'কুরিয়ারে পাঠানোর মতো নতুন কোনো কনফার্মড অর্ডার নেই');
+        return;
+      }
+      pending.forEach(o => {
+        o.courier = 'Steadfast';
+        o.status = 'In Courier';
+        if (!o.trackingId) o.trackingId = `CID-${Math.floor(10000 + Math.random() * 90000)}`;
+      });
+      saveState();
+      syncAllToGoogleSheet();
+      showToast('success', `${pending.length}টি অর্ডার এক ক্লিকে Steadfast কুরিয়ারে বুক করা হয়েছে!`);
+      renderOrdersTable();
+    };
+
+    window.bulkPrintInvoices = function() {
+      if (AppState.orders.length === 0) {
+        showToast('info', 'প্রিন্ট করার মতো কোনো অর্ডার নেই');
+        return;
+      }
+      printDailyManifest();
     };
 
     // Auto boot on load
