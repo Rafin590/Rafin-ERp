@@ -46,13 +46,13 @@
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-gauge-high text-indigo-400 w-4"></i><span>Admin Dashboard</span></div>
             <span class="bg-emerald-950 text-emerald-400 text-[9px] px-1.5 py-0.5 rounded border border-emerald-800">Live</span>
           </div>
-          <div onclick="switchTab('orders')" id="btn-orders" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer sidebar-active">
+          <div onclick="switchTab('orders')" id="btn-orders" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-clipboard-list text-amber-400 w-4"></i><span>Order Management</span></div>
             <span class="bg-slate-800 text-slate-300 text-[10px] px-1.5 py-0.2 rounded-full font-bold" id="sidebar-order-count">3</span>
           </div>
-          <div onclick="switchTab('weborders')" id="btn-weborders" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+          <div onclick="switchTab('weborders')" id="btn-weborders" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer sidebar-active">
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-globe text-emerald-400 w-4"></i><span>Web Orders</span></div>
-            <span class="bg-emerald-950 text-emerald-400 text-[9px] px-1.5 py-0.5 rounded">Sync</span>
+            <span class="bg-emerald-950 text-emerald-400 text-[9px] px-1.5 py-0.5 rounded" id="sidebar-weborder-count">4 New</span>
           </div>
           <div onclick="switchTab('manualentry')" id="btn-manualentry" class="sidebar-item flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
             <div class="flex items-center gap-2.5"><i class="fa-solid fa-pen-to-square text-purple-400 w-4"></i><span>Manual Order (AI Auto-fill)</span></div>
@@ -134,7 +134,7 @@
         <i class="fa-solid fa-bars text-slate-500 cursor-pointer text-base"></i>
         <div class="relative w-full max-w-md">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
-          <input type="text" id="globalSearchInput" oninput="filterOrdersLive(this.value)" placeholder="অর্ডার আইডি, ফোন বা নাম দিয়ে খুঁজুন..." class="w-full pl-10 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-indigo-500 transition">
+          <input type="text" id="globalSearchInput" oninput="handleGlobalSearch(this.value)" placeholder="অর্ডার আইডি, ফোন বা নাম দিয়ে খুঁজুন..." class="w-full pl-10 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:bg-white focus:border-indigo-500 transition">
         </div>
       </div>
       <div class="flex items-center gap-2.5">
@@ -151,7 +151,7 @@
   <div id="orderModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-lg rounded-2xl p-6 shadow-2xl border border-slate-200 space-y-4">
       <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-        <h3 class="text-lg font-bold text-slate-800">নতুন অর্ডার তৈরি করুন</h3>
+        <h3 class="text-lg font-bold text-slate-800">নতুন ম্যানুয়াল অর্ডার তৈরি</h3>
         <button onclick="closeOrderModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       
@@ -194,11 +194,18 @@
   </div>
 
   <script>
-    // State Management for Orders
+    // In-Memory Database
     let ordersList = [
       { id: "ORD-9021", date: "19 Aug, 2026", customer: "Tanvir Hasan", phone: "01712345678", address: "House 12, Road 4, Banani", city: "Dhaka", product: "Premium Cotton Panjabi", qty: 1, cod: 1850, status: "Processing", courier: "Steadfast", tracking: "" },
       { id: "ORD-9022", date: "19 Aug, 2026", customer: "Kamrul Islam", phone: "01521443322", address: "Kandirpar, Main Road", city: "Cumilla", product: "Silk Designer Saree", qty: 1, cod: 3200, status: "Pending", courier: "Pathao", tracking: "" },
       { id: "ORD-9023", date: "18 Aug, 2026", customer: "Sadia Afrin", phone: "01819876543", address: "GEC Circle, Nasirabad", city: "Chattogram", product: "Slim Fit Polo Shirt", qty: 2, cod: 1300, status: "Delivered", courier: "Steadfast", tracking: "ST-88912" }
+    ];
+
+    let webOrdersList = [
+      { id: "WEB-1048", platform: "WooCommerce", date: "20 Aug, 2026 (10:45 AM)", customer: "Rakib Chowdhury", phone: "01755667788", address: "Sector 7, Uttara", city: "Dhaka", product: "Executive Formal Shirt (L)", total: 1450, payment: "Cash on Delivery", status: "Unfulfilled", syncStatus: "Synced" },
+      { id: "SHO-5821", platform: "Shopify", date: "20 Aug, 2026 (09:20 AM)", customer: "Nusrat Jahan", phone: "01911223344", address: "Zindabazar", city: "Sylhet", product: "Embroidered Lawn Three Piece", total: 3800, payment: "bKash Online", status: "Unfulfilled", syncStatus: "Synced" },
+      { id: "LAR-3012", platform: "Laravel Web", date: "19 Aug, 2026 (08:15 PM)", customer: "Mehedi Hasan", phone: "01688990011", address: "Chawkbazar", city: "Chattogram", product: "Denim Slim Jeans", total: 1200, payment: "Cash on Delivery", status: "Unfulfilled", syncStatus: "Synced" },
+      { id: "LND-9011", platform: "Landing Page", date: "19 Aug, 2026 (06:00 PM)", customer: "Shakil Ahmed", phone: "01300112233", address: "Shibbari Moor", city: "Gazipur", product: "Magic Hair Oil Combo", total: 950, payment: "Cash on Delivery", status: "Transferred", syncStatus: "Processed" }
     ];
 
     const Views = {
@@ -218,7 +225,7 @@
                 <span>মোট প্রাপ্ত অর্ডার</span>
                 <span class="text-indigo-600 text-xs font-bold bg-indigo-50 px-2 py-0.5 rounded">লাইভ</span>
               </div>
-              <h3 class="text-3xl font-bold text-slate-800 mt-2" id="kpiTotalOrders">১৪২ টি</h3>
+              <h3 class="text-3xl font-bold text-slate-800 mt-2">১৪২ টি</h3>
             </div>
             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
               <div class="flex justify-between items-center text-slate-500 text-sm font-semibold">
@@ -256,40 +263,10 @@
             <p class="text-xs text-slate-400 mb-4">গত ৭ দিনের বিক্রয় পারফরম্যান্স</p>
             <div class="h-72 w-full"><canvas id="salesChart"></canvas></div>
           </div>
-
-          <!-- District Summary -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
-              <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                <div>
-                  <h4 class="font-bold text-slate-800 text-base">জেলা ভিত্তিক অর্ডার সামারি (District Distribution)</h4>
-                  <p class="text-xs text-slate-400">কোন জেলা থেকে কত পার্সেন্ট রেশিও অর্ডার আসছে</p>
-                </div>
-                <span class="bg-indigo-50 text-indigo-600 text-xs font-bold px-2.5 py-1 rounded-lg">Top Areas</span>
-              </div>
-              <div class="space-y-4">
-                <div>
-                  <div class="flex justify-between text-xs font-semibold mb-1"><span class="text-slate-700 font-bold">Dhaka (ঢাকা)</span><span class="text-slate-500">৬৮ টি অর্ডার <span class="text-indigo-600 font-bold ml-1">(৪৭.৯%)</span></span></div>
-                  <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden"><div class="bg-indigo-600 h-full rounded-full" style="width: 47.9%"></div></div>
-                </div>
-                <div>
-                  <div class="flex justify-between text-xs font-semibold mb-1"><span class="text-slate-700 font-bold">Chattogram (চট্টগ্রাম)</span><span class="text-slate-500">২৪ টি অর্ডার <span class="text-emerald-600 font-bold ml-1">(১৬.৯%)</span></span></div>
-                  <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full rounded-full" style="width: 16.9%"></div></div>
-                </div>
-              </div>
-            </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-              <div>
-                <h4 class="font-bold text-slate-800 text-base mb-1">অর্ডার পার্সেন্টেজ শেয়ার</h4>
-                <p class="text-xs text-slate-400 mb-4">রেশিও ডোনাট চার্ট</p>
-                <div class="h-56 relative flex items-center justify-center"><canvas id="districtRatioChart"></canvas></div>
-              </div>
-            </div>
-          </div>
         </div>
       `,
 
-      // 2. ORDER MANAGEMENT (FULL ADVANCED UI)
+      // 2. ORDER MANAGEMENT
       orders: `
         <div class="space-y-6 max-w-7xl mx-auto pb-10">
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -297,32 +274,11 @@
               <h2 class="text-2xl font-bold text-slate-800">Order Management</h2>
               <p class="text-xs text-slate-500 mt-0.5">সব চ্যানেলের অর্ডার এক ড্যাশবোর্ডে ম্যানেজ ও ১-ক্লিকে কুরিয়ার বুকিং করুন</p>
             </div>
-            <div class="flex items-center gap-2.5">
-              <button onclick="openOrderModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-sm transition">
-                <i class="fa-solid fa-plus"></i> নতুন অর্ডার যোগ করুন
-              </button>
-            </div>
+            <button onclick="openOrderModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-sm transition">
+              <i class="fa-solid fa-plus"></i> নতুন অর্ডার যোগ করুন
+            </button>
           </div>
 
-          <!-- Filter & Controls Toolbar -->
-          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between gap-3 items-center">
-            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto text-xs">
-              <button onclick="filterByStatus('All')" class="status-btn font-bold px-3 py-1.5 rounded-lg bg-indigo-600 text-white" id="filter-All">সকল অর্ডার (<span id="count-all">0</span>)</button>
-              <button onclick="filterByStatus('Pending')" class="status-btn font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200" id="filter-Pending">Pending</button>
-              <button onclick="filterByStatus('Processing')" class="status-btn font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200" id="filter-Processing">Processing</button>
-              <button onclick="filterByStatus('Delivered')" class="status-btn font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200" id="filter-Delivered">Delivered</button>
-            </div>
-
-            <div class="flex items-center gap-2 w-full md:w-auto">
-              <select id="courierFilterSelect" onchange="filterOrdersLive()" class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-600 outline-none">
-                <option value="All">সকল কুরিয়ার</option>
-                <option value="Steadfast">Steadfast</option>
-                <option value="Pathao">Pathao</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Orders Table -->
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-left text-xs text-slate-600">
@@ -334,11 +290,100 @@
                     <th class="p-4">COD অ্যামাউন্ট</th>
                     <th class="p-4">স্ট্যাটাস</th>
                     <th class="p-4 text-center">কুরিয়ার ও বুকিং</th>
-                    <th class="p-4 text-center">অ্যাকশন</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100" id="ordersTableBody">
-                  <!-- Injected via JavaScript -->
+                <tbody class="divide-y divide-slate-100" id="ordersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `,
+
+      // 3. WEB ORDERS (FULL AUTOMATION & LIVE SYNC HUB)
+      weborders: `
+        <div class="space-y-6 max-w-7xl mx-auto pb-10">
+          <!-- Top Web Order Performance Cards -->
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-2xl font-bold text-slate-800">Web Orders & Live Store Sync</h2>
+                <span class="bg-emerald-50 text-emerald-600 text-xs px-2.5 py-0.5 rounded-full font-bold border border-emerald-200 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Webhook Active
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1">WooCommerce, Shopify, Laravel ও Landing Page থেকে আসা সরাসরি ওয়েব অর্ডার</p>
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <button onclick="syncAllWebhooks()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-sm transition">
+                <i class="fa-solid fa-arrows-rotate"></i> ইনস্ট্যান্ট সিঙ্ক করুন
+              </button>
+            </div>
+          </div>
+
+          <!-- Channel Stats Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-[11px] font-bold text-slate-400 uppercase">WooCommerce</p>
+                <h3 class="text-xl font-bold text-slate-800 mt-1">১ টি নতুন অর্ডার</h3>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-lg"><i class="fa-brands fa-wordpress"></i></div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-[11px] font-bold text-slate-400 uppercase">Shopify Store</p>
+                <h3 class="text-xl font-bold text-slate-800 mt-1">১ টি নতুন অর্ডার</h3>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-brands fa-shopify"></i></div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-[11px] font-bold text-slate-400 uppercase">Laravel Platform</p>
+                <h3 class="text-xl font-bold text-slate-800 mt-1">১ টি নতুন অর্ডার</h3>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-lg"><i class="fa-brands fa-laravel"></i></div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-[11px] font-bold text-slate-400 uppercase">Landing Page</p>
+                <h3 class="text-xl font-bold text-slate-800 mt-1">১ টি প্রসেসড</h3>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg"><i class="fa-solid fa-file-code"></i></div>
+            </div>
+          </div>
+
+          <!-- Web Platform Filter Buttons -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+              <button onclick="filterWebPlatform('All')" id="btn-web-All" class="web-filter-btn font-bold px-3 py-1.5 rounded-lg bg-indigo-600 text-white">সব ওয়েব চ্যানেল</button>
+              <button onclick="filterWebPlatform('WooCommerce')" id="btn-web-WooCommerce" class="web-filter-btn font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">WooCommerce</button>
+              <button onclick="filterWebPlatform('Shopify')" id="btn-web-Shopify" class="web-filter-btn font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">Shopify</button>
+              <button onclick="filterWebPlatform('Laravel Web')" id="btn-web-Laravel Web" class="web-filter-btn font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">Laravel</button>
+              <button onclick="filterWebPlatform('Landing Page')" id="btn-web-Landing Page" class="web-filter-btn font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">Landing Page</button>
+            </div>
+            <div class="text-xs text-slate-400 font-medium">অটো-সিঙ্ক ইন্টারভ্যাল: <span class="text-emerald-600 font-bold">৩০ সেকেন্ড</span></div>
+          </div>
+
+          <!-- Web Orders Table -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-50/80 border-b border-slate-200 font-bold text-slate-400 uppercase tracking-wider">
+                  <tr>
+                    <th class="p-4">অর্ডার নং ও প্ল্যাটফর্ম</th>
+                    <th class="p-4">কাস্টমার তথ্য</th>
+                    <th class="p-4">অর্ডারকৃত পণ্য</th>
+                    <th class="p-4">পেমেন্ট মেথড ও মোট</th>
+                    <th class="p-4">সিঙ্ক স্ট্যাটাস</th>
+                    <th class="p-4 text-center">ERP ট্রান্সফার ও অ্যাকশন</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100" id="webOrdersTableBody">
+                  <!-- Rendered via JS -->
                 </tbody>
               </table>
             </div>
@@ -346,8 +391,7 @@
         </div>
       `,
 
-      // OTHER TABS (Placeholders)
-      weborders: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Web Orders</h2><p class="text-xs text-slate-400 mt-1">Syncing with WooCommerce / Shopify</p></div>`,
+      // OTHER MODULES (Placeholders)
       manualentry: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Manual Order Entry</h2><p class="text-xs text-slate-400 mt-1">AI Fast Order Paste Module</p></div>`,
       inventory: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Inventory & Packaging</h2></div>`,
       scantoreturn: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Scan to Return Hub</h2></div>`,
@@ -363,7 +407,7 @@
       team: `<div class="p-8 bg-white rounded-2xl border border-slate-200 text-center"><h2 class="text-xl font-bold">Team Management</h2></div>`
     };
 
-    let activeFilterStatus = 'All';
+    let activeWebPlatform = 'All';
 
     function switchTab(tabKey) {
       document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('sidebar-active'));
@@ -375,226 +419,132 @@
 
       if (tabKey === 'dashboard') initChart();
       if (tabKey === 'orders') renderOrdersTable();
+      if (tabKey === 'weborders') renderWebOrdersTable();
     }
 
-    // RENDER ORDERS IN TABLE
-    function renderOrdersTable() {
-      const tbody = document.getElementById('ordersTableBody');
+    // RENDER WEB ORDERS
+    function renderWebOrdersTable() {
+      const tbody = document.getElementById('webOrdersTableBody');
       if (!tbody) return;
 
       const query = (document.getElementById('globalSearchInput')?.value || '').toLowerCase();
-      const courierFilter = document.getElementById('courierFilterSelect')?.value || 'All';
 
-      const filtered = ordersList.filter(o => {
-        const matchesStatus = activeFilterStatus === 'All' || o.status === activeFilterStatus;
-        const matchesCourier = courierFilter === 'All' || o.courier === courierFilter;
+      const filtered = webOrdersList.filter(o => {
+        const matchesPlatform = activeWebPlatform === 'All' || o.platform === activeWebPlatform;
         const matchesSearch = o.id.toLowerCase().includes(query) || o.customer.toLowerCase().includes(query) || o.phone.includes(query) || o.product.toLowerCase().includes(query);
-        return matchesStatus && matchesCourier && matchesSearch;
+        return matchesPlatform && matchesSearch;
       });
 
-      // Update sidebar counter
-      const sideCounter = document.getElementById('sidebar-order-count');
-      if (sideCounter) sideCounter.innerText = ordersList.length;
-      
-      const countAll = document.getElementById('count-all');
-      if (countAll) countAll.innerText = ordersList.length;
-
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">কোনো অর্ডার পাওয়া যায়নি।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">কোনো ওয়েব অর্ডার পাওয়া যায়নি।</td></tr>`;
         return;
       }
 
       tbody.innerHTML = filtered.map(order => {
-        let statusBadge = '';
-        if (order.status === 'Processing') statusBadge = '<span class="bg-amber-50 text-amber-600 border border-amber-200 px-2.5 py-1 rounded-full font-bold">Processing</span>';
-        else if (order.status === 'Pending') statusBadge = '<span class="bg-blue-50 text-blue-600 border border-blue-200 px-2.5 py-1 rounded-full font-bold">Pending</span>';
-        else if (order.status === 'Delivered') statusBadge = '<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 px-2.5 py-1 rounded-full font-bold">Delivered</span>';
-        else statusBadge = `<span class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full font-bold">${order.status}</span>`;
+        let platformBadge = '';
+        if (order.platform === 'WooCommerce') platformBadge = '<span class="bg-purple-50 text-purple-600 border border-purple-200 text-[10px] px-2 py-0.5 rounded-md font-bold"><i class="fa-brands fa-wordpress mr-1"></i>WooCommerce</span>';
+        else if (order.platform === 'Shopify') platformBadge = '<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-md font-bold"><i class="fa-brands fa-shopify mr-1"></i>Shopify</span>';
+        else if (order.platform === 'Laravel Web') platformBadge = '<span class="bg-red-50 text-red-600 border border-red-200 text-[10px] px-2 py-0.5 rounded-md font-bold"><i class="fa-brands fa-laravel mr-1"></i>Laravel</span>';
+        else platformBadge = '<span class="bg-sky-50 text-sky-600 border border-sky-200 text-[10px] px-2 py-0.5 rounded-md font-bold"><i class="fa-solid fa-globe mr-1"></i>Landing Page</span>';
 
-        let courierAction = '';
-        if (order.tracking) {
-          courierAction = `
-            <div>
-              <span class="text-[11px] font-bold text-slate-700">${order.courier}</span>
-              <p class="text-[10px] text-emerald-600 font-mono font-bold">${order.tracking}</p>
-            </div>
-          `;
+        let actionBtn = '';
+        if (order.status === 'Transferred') {
+          actionBtn = '<span class="text-emerald-600 font-bold text-[11px] bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200"><i class="fa-solid fa-check mr-1"></i>ERP-তে যুক্ত</span>';
         } else {
-          courierAction = `
-            <button onclick="bookCourier('${order.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] px-3 py-1.5 rounded-lg shadow-sm transition">
-              Book ${order.courier}
-            </button>
-          `;
+          actionBtn = `<button onclick="transferToCoreOrders('${order.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5 mx-auto"><i class="fa-solid fa-arrow-right"></i> অর্ডার কনফার্ম করুন</button>`;
         }
 
         return `
           <tr class="hover:bg-slate-50 transition">
             <td class="p-4">
-              <span class="font-bold text-indigo-600 text-sm">${order.id}</span>
-              <p class="text-[11px] text-slate-400 mt-0.5">${order.date}</p>
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-indigo-600 text-sm font-mono">${order.id}</span>
+                ${platformBadge}
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">${order.date}</p>
             </td>
             <td class="p-4">
               <p class="font-bold text-slate-800 text-xs">${order.customer}</p>
               <p class="text-slate-400 text-[11px]">${order.phone}</p>
-              <p class="text-slate-500 text-[10px] mt-0.5">${order.address}, <span class="font-semibold text-slate-700">${order.city}</span></p>
+              <p class="text-slate-500 text-[10px]">${order.address}, <span class="font-semibold text-slate-700">${order.city}</span></p>
             </td>
             <td class="p-4">
               <p class="font-semibold text-slate-800">${order.product}</p>
-              <p class="text-[11px] text-slate-400 font-medium">পরিমাণ: ${order.qty} পিস</p>
-            </td>
-            <td class="p-4 font-bold text-slate-800 text-sm">
-              ৳ ${order.cod.toLocaleString()}
+              <span class="text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">Qty: 1</span>
             </td>
             <td class="p-4">
-              <select onchange="updateOrderStatus('${order.id}', this.value)" class="bg-slate-50 border border-slate-200 rounded-lg p-1 text-xs font-semibold outline-none">
-                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
-                <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-              </select>
+              <p class="font-bold text-slate-800 text-sm">৳ ${order.total.toLocaleString()}</p>
+              <p class="text-[10px] text-slate-400 font-medium">${order.payment}</p>
+            </td>
+            <td class="p-4">
+              <span class="bg-emerald-50 text-emerald-600 text-[10px] px-2 py-0.5 rounded-full font-bold border border-emerald-200 flex items-center gap-1 w-max">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ${order.syncStatus}
+              </span>
             </td>
             <td class="p-4 text-center">
-              ${courierAction}
-            </td>
-            <td class="p-4 text-center space-x-2">
-              <button onclick="printInvoice('${order.id}')" title="Print Invoice" class="text-slate-400 hover:text-indigo-600"><i class="fa-solid fa-print"></i></button>
-              <button onclick="deleteOrder('${order.id}')" title="Delete" class="text-slate-400 hover:text-rose-600"><i class="fa-regular fa-trash-can"></i></button>
+              ${actionBtn}
             </td>
           </tr>
         `;
       }).join('');
     }
 
-    function filterByStatus(status) {
-      activeFilterStatus = status;
-      document.querySelectorAll('.status-btn').forEach(btn => {
+    function filterWebPlatform(platform) {
+      activeWebPlatform = platform;
+      document.querySelectorAll('.web-filter-btn').forEach(btn => {
         btn.classList.remove('bg-indigo-600', 'text-white');
         btn.classList.add('bg-slate-100', 'text-slate-600');
       });
-      const activeBtn = document.getElementById(`filter-${status}`);
-      if (activeBtn) {
-        activeBtn.classList.add('bg-indigo-600', 'text-white');
-        activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+      const targetBtn = document.getElementById(`btn-web-${platform}`);
+      if (targetBtn) {
+        targetBtn.classList.add('bg-indigo-600', 'text-white');
+        targetBtn.classList.remove('bg-slate-100', 'text-slate-600');
       }
-      renderOrdersTable();
+      renderWebOrdersTable();
     }
 
-    function filterOrdersLive(val) {
-      renderOrdersTable();
-    }
-
-    function updateOrderStatus(orderId, newStatus) {
-      const target = ordersList.find(o => o.id === orderId);
-      if (target) {
-        target.status = newStatus;
-        renderOrdersTable();
-      }
-    }
-
-    function bookCourier(orderId) {
-      const target = ordersList.find(o => o.id === orderId);
-      if (target) {
-        target.tracking = (target.courier === 'Steadfast' ? 'ST-' : 'PT-') + Math.floor(10000 + Math.random() * 90000);
-        target.status = 'Processing';
-        renderOrdersTable();
-      }
-    }
-
-    function deleteOrder(orderId) {
-      if (confirm(`আপনি কি অর্ডার ${orderId} ডিলিট করতে চান?`)) {
-        ordersList = ordersList.filter(o => o.id !== orderId);
-        renderOrdersTable();
-      }
-    }
-
-    function printInvoice(orderId) {
-      const order = ordersList.find(o => o.id === orderId);
-      if (!order) return;
-      const printWin = window.open('', '', 'width=600,height=600');
-      printWin.document.write(`
-        <html><head><title>Invoice ${order.id}</title><style>body{font-family:sans-serif;padding:20px;} table{width:100%;border-collapse:collapse;} td,th{border:1px solid #ddd;padding:8px;}</style></head><body>
-          <h2>INVOICE: ${order.id}</h2>
-          <p><strong>Customer:</strong> ${order.customer} (${order.phone})<br><strong>Address:</strong> ${order.address}, ${order.city}</p>
-          <table><tr><th>Product</th><th>Qty</th><th>COD Amount</th></tr><tr><td>${order.product}</td><td>${order.qty}</td><td>Tk ${order.cod}</td></tr></table>
-        </body></html>
-      `);
-      printWin.document.close();
-      printWin.print();
-    }
-
-    // MODAL HANDLERS
-    function openOrderModal() { document.getElementById('orderModal').classList.remove('hidden'); }
-    function closeOrderModal() { document.getElementById('orderModal').classList.add('hidden'); }
-
-    function submitNewOrder() {
-      const name = document.getElementById('newCustName').value;
-      const phone = document.getElementById('newCustPhone').value;
-      const city = document.getElementById('newCustCity').value;
-      const address = document.getElementById('newCustAddress').value;
-      const product = document.getElementById('newProdName').value;
-      const cod = Number(document.getElementById('newCOD').value) || 0;
-
-      if (!name || !phone) {
-        alert("দয়া করে কাস্টমারের নাম এবং মোবাইল নম্বর দিন।");
-        return;
-      }
-
-      const newId = "ORD-" + Math.floor(9024 + Math.random() * 500);
-      ordersList.unshift({
-        id: newId,
-        date: "20 Aug, 2026",
-        customer: name,
-        phone: phone,
-        address: address,
-        city: city || "Dhaka",
-        product: product || "Standard Item",
-        qty: 1,
-        cod: cod,
-        status: "Pending",
-        courier: "Steadfast",
-        tracking: ""
-      });
-
-      closeOrderModal();
-      switchTab('orders');
-    }
-
-    function initChart() {
-      const ctx = document.getElementById('salesChart');
-      if (ctx) {
-        new Chart(ctx.getContext('2d'), {
-          type: 'bar',
-          data: {
-            labels: ['১৪ আগস্ট', '১৫ আগস্ট', '১৬ আগস্ট', '১৭ আগস্ট', '১৮ আগস্ট', '১৯ আগস্ট (আজ)'],
-            datasets: [
-              { type: 'line', label: 'অর্ডার', data: [10, 14, 9, 17, 15, 18], borderColor: '#10b981', borderWidth: 3, tension: 0.3, yAxisID: 'y1' },
-              { type: 'bar', label: 'সেলস (৳)', data: [18000, 24000, 16500, 31000, 28500, 35000], backgroundColor: 'rgba(99, 102, 241, 0.75)', borderRadius: 8, yAxisID: 'y' }
-            ]
-          },
-          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, y1: { position: 'right', beginAtZero: true, display: false }, x: { grid: { display: false } } } }
+    function transferToCoreOrders(webOrderId) {
+      const target = webOrdersList.find(o => o.id === webOrderId);
+      if (target && target.status !== 'Transferred') {
+        target.status = 'Transferred';
+        
+        // Push into Main Order List
+        ordersList.unshift({
+          id: "ORD-" + Math.floor(9030 + Math.random() * 500),
+          date: "20 Aug, 2026",
+          customer: target.customer,
+          phone: target.phone,
+          address: target.address,
+          city: target.city,
+          product: target.product,
+          qty: 1,
+          cod: target.total,
+          status: "Pending",
+          courier: "Steadfast",
+          tracking: ""
         });
-      }
 
-      const districtCtx = document.getElementById('districtRatioChart');
-      if (districtCtx) {
-        new Chart(districtCtx.getContext('2d'), {
-          type: 'doughnut',
-          data: {
-            labels: ['Dhaka', 'Chattogram', 'Gazipur', 'Narayanganj', 'Cumilla', 'Others'],
-            datasets: [{
-              data: [47.9, 16.9, 12.7, 9.8, 7.0, 5.7],
-              backgroundColor: ['#4f46e5', '#10b981', '#0ea5e9', '#f59e0b', '#a855f7', '#94a3b8'],
-              borderWidth: 0,
-              hoverOffset: 4
-            }]
-          },
-          options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }
-        });
+        // Update Side Count
+        const countBadge = document.getElementById('sidebar-order-count');
+        if (countBadge) countBadge.innerText = ordersList.length;
+
+        renderWebOrdersTable();
+        alert(`অর্ডারটি (${webOrderId}) সফলভাবে Order Management-এ ট্রান্সফার করা হয়েছে!`);
       }
     }
 
-    // Default View: Order Management
-    switchTab('orders');
+    function syncAllWebhooks() {
+      alert("WooCommerce, Shopify ও Laravel Webhook থেকে নতুন ডেটা সিঙ্ক করা হয়েছে!");
+      renderWebOrdersTable();
+    }
+
+    function handleGlobalSearch(val) {
+      renderOrdersTable();
+      renderWebOrdersTable();
+    }
+
+    // Initial Load: Web Orders View
+    switchTab('weborders');
   </script>
 </body>
 </html>
